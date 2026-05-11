@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tim · Web Meeting Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* Stayful brand — deeper forest green, matching the live site */
+  --green:#5a7d51;
+  --green-d:#2d4a35;
+  --green-dd:#1f3325;
+  --green-light:#7a9b71;
+  --green-pale:#e8efde;
+  --green-soft:#f3f6ec;
+  --cream:#faf7f0;
+  --cream-d:#f1ede2;
+  --white:#ffffff;
+  --am:#b8841f;
+  --am-pale:#fbf2dd;
+  --ink:#1a2418;
+  --ink2:#3a4a3a;
+  --muted:#76847a;
+  --muted-l:#a3aea7;
+  --line:rgba(45,74,53,0.08);
+  --line-d:rgba(255,255,255,0.1);
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --ease:cubic-bezier(0.4,0,0.2,1);
+}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--cream);font-family:var(--sans);color:var(--ink);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased;}
+
+/* ─── TOP NAVIGATION ─────────────────────────── */
+.tb{
+  position:fixed;top:0;left:0;right:0;height:54px;z-index:100;
+  background:rgba(255,255,255,0.96);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;padding:0 22px;gap:18px;
+}
+.tb-logo-img{height:24px;width:auto;display:block;}
+.tb-divider{width:1px;height:18px;background:var(--line);}
+.tb-b{font-size:11.5px;color:var(--muted);font-weight:400;letter-spacing:0.02em;}
+.tb-b strong{color:var(--ink2);font-weight:500;}
+.tb-menu{margin-left:auto;display:flex;gap:1px;}
+.tb-i{
+  font-size:11px;color:var(--ink2);padding:7px 11px;
+  background:transparent;border:none;border-radius:7px;cursor:pointer;
+  font-family:var(--sans);font-weight:400;letter-spacing:0.01em;
+  transition:all 0.18s var(--ease);white-space:nowrap;
+}
+.tb-i:hover{background:var(--green-soft);color:var(--green-d);}
+.tb-i.active{background:var(--green-d);color:#fff;}
+.tb-slide-lbl{display:none;font-size:11px;color:var(--green);font-weight:500;letter-spacing:0.04em;text-transform:uppercase;}
+
+/* ─── DECK CONTAINER ─────────────────────────── */
+.deck{position:fixed;top:54px;left:0;right:0;bottom:48px;overflow:hidden;}
+.slide{
+  position:absolute;inset:0;padding:42px 64px 60px;
+  opacity:0;pointer-events:none;
+  overflow-y:auto;
+  transition:opacity 0.42s var(--ease),transform 0.42s var(--ease);
+  display:flex;flex-direction:column;
+}
+.slide.active{opacity:1;pointer-events:auto;}
+.slide.next{transform:translateX(36px);}
+.slide.prev{transform:translateX(-36px);}
+
+/* Custom scrollbar — subtle, on-brand, visible on light AND dark slides */
+.slide::-webkit-scrollbar{width:9px;}
+.slide::-webkit-scrollbar-track{background:transparent;}
+.slide::-webkit-scrollbar-thumb{background:rgba(45,74,53,0.22);border-radius:99px;}
+.slide::-webkit-scrollbar-thumb:hover{background:rgba(45,74,53,0.4);}
+.slide.dark::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.2);}
+.slide.dark::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.34);}
+.slide{scrollbar-width:thin;scrollbar-color:rgba(45,74,53,0.22) transparent;}
+.slide.dark{scrollbar-color:rgba(255,255,255,0.2) transparent;}
+
+/* Scroll cue — subtle fade at bottom of slide indicating more content below */
+.slide::after{
+  content:"";position:sticky;bottom:0;left:0;right:0;height:24px;margin-top:-24px;
+  background:linear-gradient(180deg,transparent,var(--cream) 90%);
+  pointer-events:none;flex-shrink:0;
+}
+.slide.dark::after{background:linear-gradient(180deg,transparent,var(--green-d) 90%);}
+.slide.white::after{background:linear-gradient(180deg,transparent,var(--white) 90%);}
+.slide.notepad::after{display:none;}
+
+.slide.dark{background:var(--green-d);color:#f3eee0;}
+.slide.dark::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at 80% 0%,rgba(122,155,113,0.14),transparent 60%),
+             radial-gradient(ellipse at 0% 100%,rgba(45,74,53,0.4),transparent 50%);
+  pointer-events:none;
+}
+.slide.dark>*{position:relative;z-index:1;}
+.slide.cream{background:var(--cream);}
+.slide.white{background:var(--white);}
+
+/* Slide 1: Notepad — different layout */
+.slide.notepad{padding:0;overflow-y:auto;}
+
+/* Eyebrow + headlines */
+.eb{
+  font-size:10px;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--green);font-weight:500;margin-bottom:18px;
+  display:flex;align-items:center;gap:10px;
+}
+.eb::before{content:"";width:24px;height:1px;background:var(--green);display:inline-block;}
+.slide.dark .eb{color:var(--green-light);}
+.slide.dark .eb::before{background:var(--green-light);}
+
+h1{
+  font-family:var(--serif);font-size:54px;font-weight:400;
+  line-height:1.04;color:var(--green-d);letter-spacing:-0.012em;
+  margin-bottom:14px;
+}
+h2{
+  font-family:var(--serif);font-size:42px;font-weight:400;
+  line-height:1.06;color:var(--green-d);letter-spacing:-0.008em;
+  margin-bottom:12px;
+}
+.slide.dark h1,.slide.dark h2{color:#f3eee0;}
+h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
+.slide.dark h1 em,.slide.dark h2 em{color:var(--green-light);}
+
+.sh{font-size:14.5px;color:var(--ink2);font-weight:400;line-height:1.6;max-width:760px;}
+.slide.dark .sh{color:rgba(243,238,224,0.78);}
+
+/* ─── COVER ──────────────────────────────────── */
+.cover-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:48px;margin-top:36px;align-items:end;}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.stat{padding:20px 22px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:14px;backdrop-filter:blur(8px);}
+.stat-l{font-size:9.5px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(243,238,224,0.5);font-weight:500;margin-bottom:8px;}
+.stat-v{font-family:var(--serif);font-size:38px;line-height:1;font-weight:400;color:#fff;letter-spacing:-0.01em;}
+.stat-s{font-size:11px;color:rgba(243,238,224,0.6);margin-top:7px;font-weight:300;}
+.cover-side{display:flex;flex-direction:column;gap:11px;padding:20px 22px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:14px;}
+.cs-row{display:flex;justify-content:space-between;align-items:baseline;gap:14px;}
+.cs-l{font-size:10.5px;color:rgba(243,238,224,0.5);font-weight:300;letter-spacing:0.04em;text-transform:uppercase;}
+.cs-v{font-family:var(--serif);font-size:24px;color:#fff;font-weight:400;}
+.cover-pills{display:flex;gap:7px;flex-wrap:wrap;margin-top:16px;}
+.pill{
+  display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:99px;
+  font-size:11px;font-weight:400;background:rgba(255,255,255,0.06);color:rgba(243,238,224,0.85);
+  border:1px solid rgba(255,255,255,0.13);letter-spacing:0.02em;
+}
+.pill.live{background:rgba(122,155,113,0.16);border-color:rgba(122,155,113,0.32);color:#bcd1b3;}
+.cover-foot{margin-top:18px;font-size:10.5px;color:rgba(243,238,224,0.4);font-weight:300;letter-spacing:0.04em;}
+
+/* Honest disclosure box */
+.disclosure{
+  margin-top:18px;padding:14px 18px;background:rgba(184,132,31,0.12);
+  border-left:2px solid var(--am);border-radius:4px;
+  font-size:12.5px;color:rgba(243,238,224,0.85);font-weight:300;line-height:1.55;
+}
+.slide.cream .disclosure,.slide.white .disclosure{
+  background:var(--am-pale);border-left-color:var(--am);color:var(--ink2);
+}
+.disclosure strong{color:var(--am);font-weight:500;}
+.slide.dark .disclosure strong{color:#e8b961;}
+
+/* ─── CARDS ──────────────────────────────────── */
+.cards-2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:26px;}
+.cards-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px;}
+.cards-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:26px;}
+
+.card{
+  background:var(--green-pale);padding:24px 22px;border-radius:14px;
+  border:1px solid rgba(45,74,53,0.05);
+  transition:transform 0.22s var(--ease),box-shadow 0.22s var(--ease);
+}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(45,74,53,0.07);}
+.card-w{background:var(--white);border:1px solid var(--green-pale);}
+.card-soft{background:var(--green-soft);}
+.card-dk{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);color:#f3eee0;}
+.card-dk .ct,.card-dk .cv{color:#f3eee0;}
+.card-am{background:var(--am-pale);border:1px solid rgba(184,132,31,0.18);}
+
+.cs{font-size:9.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--green);font-weight:500;margin-bottom:11px;}
+.ct{font-family:var(--serif);font-size:26px;font-weight:400;color:var(--green-d);line-height:1.08;margin-bottom:8px;letter-spacing:-0.005em;}
+.cv{font-size:13px;color:var(--ink2);line-height:1.55;font-weight:400;}
+.card-dk .cs{color:var(--green-light);}
+.card-dk .cv{color:rgba(243,238,224,0.75);}
+
+/* ─── INCOME / NUMBERS ───────────────────────── */
+.income-strip{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;}
+.is-cell{padding:20px 22px;background:var(--green-soft);border-radius:13px;border:1px solid rgba(45,74,53,0.05);}
+.is-l{font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:7px;}
+.is-v{font-family:var(--serif);font-size:34px;color:var(--green-d);font-weight:400;line-height:1;letter-spacing:-0.005em;}
+.is-n{font-size:11.5px;color:var(--green);margin-top:8px;font-style:italic;font-weight:400;}
+
+.chart-wrap{margin-top:24px;background:var(--green-soft);padding:22px 24px 16px;border-radius:14px;position:relative;}
+.chart-h{font-size:10.5px;color:var(--muted);font-weight:500;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px;}
+.bars{display:flex;align-items:flex-end;justify-content:space-between;height:130px;gap:6px;position:relative;}
+.bw{flex:1;display:flex;align-items:flex-end;justify-content:center;height:100%;position:relative;cursor:pointer;}
+.bar{
+  width:100%;max-width:36px;background:linear-gradient(180deg,var(--green) 0%,var(--green-d) 100%);
+  border-radius:4px 4px 0 0;transition:height 0.9s var(--ease),filter 0.18s ease;
+  position:relative;
+}
+.bar.lo{background:linear-gradient(180deg,#c4a663 0%,#9a7e3a 100%);}
+.bw:hover .bar{filter:brightness(1.12);}
+.bnames{display:flex;justify-content:space-between;margin-top:9px;gap:6px;}
+.bm{flex:1;text-align:center;font-size:10px;color:var(--muted);font-weight:400;letter-spacing:0.04em;}
+.ltl-line{position:absolute;left:24px;right:24px;height:2px;background:repeating-linear-gradient(90deg,var(--am) 0,var(--am) 5px,transparent 5px,transparent 10px);pointer-events:none;}
+.ltl-lbl{position:absolute;right:24px;font-size:10px;color:var(--am);font-weight:500;background:var(--green-soft);padding:1px 7px;letter-spacing:0.04em;}
+#bar-tip{
+  position:absolute;pointer-events:none;z-index:50;
+  background:var(--green-dd);border-radius:8px;padding:9px 13px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.22);
+  opacity:0;transform:translateY(4px);transition:opacity 0.15s,transform 0.15s;
+  min-width:96px;
+}
+#bar-tip.show{opacity:1;transform:translateY(0);}
+.tip-month{font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.5);font-weight:500;margin-bottom:4px;}
+.tip-val{font-family:var(--serif);font-size:24px;font-weight:400;color:#fff;line-height:1;margin-bottom:3px;}
+.tip-vs{font-size:10.5px;color:rgba(255,255,255,0.55);font-weight:300;}
+
+/* ─── INVESTMENT ─────────────────────────────── */
+.inv-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:32px;margin-top:26px;}
+.inv-headline{padding:32px 32px;background:var(--green-d);border-radius:18px;color:#f3eee0;position:relative;overflow:hidden;}
+.inv-headline::before{
+  content:"";position:absolute;top:-50%;right:-30%;width:80%;height:160%;
+  background:radial-gradient(circle,rgba(122,155,113,0.16),transparent 70%);
+  pointer-events:none;
+}
+.inv-headline>*{position:relative;}
+.inv-headline .ihl{font-family:var(--serif);font-size:60px;line-height:0.96;font-weight:400;letter-spacing:-0.018em;}
+.inv-headline .ihs{font-size:13px;color:rgba(243,238,224,0.72);margin-top:16px;line-height:1.6;font-weight:300;max-width:340px;}
+.inv-rows{display:flex;flex-direction:column;gap:9px;}
+.inv-row{padding:15px 20px;background:var(--green-pale);border-radius:11px;display:flex;justify-content:space-between;align-items:baseline;}
+.inv-l{font-size:12px;color:var(--ink2);font-weight:400;}
+.inv-v{font-family:var(--serif);font-size:24px;color:var(--green-d);font-weight:400;letter-spacing:-0.005em;}
+
+/* ─── LTL vs STR head-to-head comparison ─── */
+.vs-grid{
+  display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:stretch;
+  margin-top:24px;
+}
+.vs-card{
+  padding:24px 26px;border-radius:16px;display:flex;flex-direction:column;gap:12px;
+  position:relative;
+}
+.vs-card.vs-ltl{
+  background:var(--cream-d);border:1px solid var(--line);
+}
+.vs-card.vs-str{
+  background:var(--green-d);color:#f3eee0;border:1px solid var(--green-d);
+  box-shadow:0 12px 36px rgba(45,74,53,0.16);
+  position:relative;overflow:hidden;
+}
+.vs-card.vs-str::before{
+  content:"";position:absolute;top:-50%;right:-20%;width:60%;height:160%;
+  background:radial-gradient(circle,rgba(122,155,113,0.18),transparent 70%);
+  pointer-events:none;
+}
+.vs-card.vs-str>*{position:relative;}
+.vs-tag{
+  font-size:9.5px;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--muted);font-weight:500;
+}
+.vs-card.vs-str .vs-tag{color:var(--green-light);}
+.vs-rev{
+  font-family:var(--serif);font-size:42px;line-height:1;color:var(--green-d);
+  font-weight:400;letter-spacing:-0.012em;margin-top:2px;
+}
+.vs-card.vs-str .vs-rev{color:#fff;}
+.vs-rev-l{font-size:11.5px;color:var(--muted);font-weight:400;line-height:1.45;}
+.vs-card.vs-str .vs-rev-l{color:rgba(243,238,224,0.62);}
+.vs-stack{
+  margin-top:auto;padding-top:14px;border-top:1px solid var(--line);
+  display:flex;flex-direction:column;gap:9px;
+}
+.vs-card.vs-str .vs-stack{border-top-color:rgba(255,255,255,0.13);}
+.vs-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-size:13px;color:var(--ink2);font-weight:400;
+}
+.vs-card.vs-str .vs-row{color:rgba(243,238,224,0.78);}
+.vs-row.vs-cashflow{
+  font-family:var(--serif);font-size:22px;color:var(--green-d);
+  padding-top:9px;border-top:1px dashed var(--line);font-weight:500;
+  letter-spacing:-0.005em;
+}
+.vs-card.vs-str .vs-row.vs-cashflow{
+  color:#fff;border-top-color:rgba(255,255,255,0.16);
+}
+.vs-mo{font-size:11px;color:var(--muted);font-style:italic;font-weight:400;line-height:1.4;}
+.vs-card.vs-str .vs-mo{color:rgba(243,238,224,0.6);}
+.vs-arrow{
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:42px;color:var(--green);font-weight:300;
+  padding:0 4px;
+}
+
+.upside-bar{
+  margin-top:18px;padding:22px 28px;
+  background:linear-gradient(135deg,var(--green-pale) 0%,var(--green-soft) 100%);
+  border:1px solid rgba(45,74,53,0.1);border-radius:14px;
+  display:grid;grid-template-columns:auto auto 1fr;gap:28px;align-items:center;
+}
+.upside-l{
+  font-size:10px;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--green);font-weight:500;line-height:1.3;max-width:120px;
+}
+.upside-v{
+  font-family:var(--serif);font-size:42px;color:var(--green-d);font-weight:400;
+  line-height:1;letter-spacing:-0.014em;
+}
+.upside-s{
+  font-size:12.5px;color:var(--ink2);font-weight:400;text-align:right;line-height:1.5;
+}
+
+/* ─── WHO BOOKS ──────────────────────────────── */
+.guests-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:26px;}
+.gc{
+  padding:24px 24px;background:var(--white);border:1px solid var(--green-pale);
+  border-radius:16px;display:flex;flex-direction:column;gap:10px;
+  transition:transform 0.22s var(--ease),box-shadow 0.22s var(--ease);
+}
+.gc:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(45,74,53,0.06);}
+.gc-h{display:flex;align-items:center;gap:14px;}
+.gc-icon{
+  width:48px;height:48px;border-radius:12px;background:var(--green-pale);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-size:22px;color:var(--green-d);
+}
+.gc-meta{flex:1;}
+.gc-tag{font-size:9.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--green);font-weight:500;}
+.gc-title{font-family:var(--serif);font-size:22px;color:var(--green-d);font-weight:400;line-height:1.1;margin-top:2px;}
+.gc-desc{font-size:13px;color:var(--ink2);line-height:1.55;}
+.gc-source{
+  font-size:11px;color:var(--muted);font-weight:400;
+  padding-top:11px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.gc-impact{
+  font-size:9px;font-weight:500;letter-spacing:0.1em;padding:3px 9px;border-radius:99px;
+  background:var(--green);color:#fff;
+}
+.gc-impact.MEDIUM{background:var(--am);}
+
+/* ─── COMPARABLE TABLE ───────────────────────── */
+.comp-table{margin-top:24px;background:var(--white);border-radius:14px;border:1px solid var(--green-pale);overflow:hidden;}
+.comp-row{display:grid;grid-template-columns:2fr 0.7fr 0.7fr 0.7fr 0.9fr 0.6fr;padding:14px 22px;border-bottom:1px solid var(--green-pale);align-items:center;font-size:13px;}
+.comp-row:last-child{border-bottom:none;}
+.comp-row.head{background:var(--green-soft);font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);font-weight:500;}
+.comp-row .name{color:var(--ink);font-weight:400;}
+.comp-row .num{font-family:var(--serif);font-size:17px;color:var(--green-d);font-weight:400;}
+.comp-row .badge{font-size:9.5px;background:var(--green);color:#fff;padding:3px 9px;border-radius:99px;font-weight:500;letter-spacing:0.06em;text-align:center;}
+
+/* ─── DEMAND DRIVER GRID ─────────────────────── */
+.dd-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:24px;}
+.dd-card{padding:16px 18px;background:var(--green-soft);border-radius:12px;border:1px solid rgba(45,74,53,0.05);}
+.dd-l{font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:8px;}
+.dd-name{font-family:var(--serif);font-size:18px;color:var(--green-d);font-weight:400;line-height:1.15;margin-bottom:7px;}
+.dd-meta{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--ink2);}
+.dd-impact{font-size:9px;font-weight:500;letter-spacing:0.1em;padding:3px 8px;border-radius:99px;}
+.dd-impact.HIGH{background:var(--green);color:#fff;}
+.dd-impact.MEDIUM{background:var(--am);color:#fff;}
+
+/* ─── TWO-COL SPLIT ──────────────────────────── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:24px;}
+.two-col h3{font-family:var(--serif);font-size:24px;font-weight:400;color:var(--green-d);margin-bottom:14px;letter-spacing:-0.005em;}
+.slide.dark .two-col h3{color:#f3eee0;}
+.list-clean{list-style:none;padding:0;}
+.list-clean li{padding:10px 0;border-bottom:1px solid var(--line);font-size:13px;color:var(--ink2);display:flex;align-items:flex-start;gap:11px;line-height:1.5;}
+.list-clean li:last-child{border-bottom:none;}
+.list-clean li::before{content:"";flex-shrink:0;width:5px;height:5px;border-radius:50%;background:var(--green);margin-top:8px;}
+.slide.dark .list-clean li{color:rgba(243,238,224,0.82);border-bottom-color:var(--line-d);}
+.slide.dark .list-clean li::before{background:var(--green-light);}
+
+/* ─── ONBOARDING TIMELINE ────────────────────── */
+.onb-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:38px;margin-top:24px;}
+.timeline{display:flex;flex-direction:column;gap:14px;position:relative;}
+.timeline::before{
+  content:"";position:absolute;left:17px;top:14px;bottom:14px;width:1px;
+  background:linear-gradient(180deg,var(--green-light) 0%,rgba(122,155,113,0.2) 100%);
+}
+.tl-item{display:flex;gap:18px;align-items:flex-start;position:relative;}
+.tl-dot{
+  width:36px;height:36px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--green-soft);border:1.5px solid var(--green-light);
+  font-family:var(--serif);font-size:16px;color:var(--green-d);font-weight:500;
+  position:relative;z-index:2;
+}
+.tl-dot.filled{background:var(--green);color:#fff;border-color:var(--green);}
+.tl-content{flex:1;padding-top:4px;}
+.tl-title{font-family:var(--serif);font-size:19px;color:var(--green-d);font-weight:500;line-height:1.2;margin-bottom:4px;letter-spacing:-0.005em;}
+.tl-desc{font-size:13px;color:var(--ink2);line-height:1.55;font-weight:400;}
+.tl-when{font-size:10.5px;color:var(--green);font-weight:500;margin-top:6px;letter-spacing:0.06em;text-transform:uppercase;}
+
+.onb-side{display:flex;flex-direction:column;gap:14px;}
+.onb-card{padding:22px 22px;border-radius:14px;border:1px solid var(--green-pale);background:var(--white);}
+.onb-card.amber{background:var(--am-pale);border-color:rgba(184,132,31,0.2);}
+.onb-card.green{background:var(--green-d);border-color:var(--green-d);color:#fff;}
+.onb-l{font-size:9.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:8px;}
+.onb-card.green .onb-l{color:rgba(243,238,224,0.55);}
+.onb-amount{font-family:var(--serif);font-size:38px;color:var(--green-d);font-weight:400;line-height:1;margin-bottom:6px;letter-spacing:-0.012em;}
+.onb-card.green .onb-amount{color:#fff;}
+.onb-card.amber .onb-amount{color:var(--am);}
+.onb-desc{font-size:12.5px;color:var(--ink2);line-height:1.55;font-weight:400;}
+.onb-card.green .onb-desc{color:rgba(243,238,224,0.7);}
+
+/* ─── BOOK FOLLOW-UP (Next Steps) ────────────── */
+.bm-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:38px;margin-top:24px;align-items:start;}
+.bm-steps{display:flex;flex-direction:column;gap:13px;}
+.bm-step{display:flex;gap:15px;align-items:flex-start;padding:16px 20px;background:rgba(255,255,255,0.04);border:1px solid var(--line-d);border-radius:13px;}
+.bm-num{font-family:var(--serif);font-size:34px;color:var(--green-light);font-weight:400;line-height:1;flex-shrink:0;width:38px;letter-spacing:-0.01em;}
+.bm-bd{flex:1;}
+.bm-bd .bt{font-family:var(--serif);font-size:19px;color:#f3eee0;font-weight:500;margin-bottom:5px;line-height:1.2;}
+.bm-bd .bs{font-size:12.5px;color:rgba(243,238,224,0.65);line-height:1.55;}
+.bm-cta{
+  padding:32px 32px;background:rgba(122,155,113,0.16);
+  border-radius:18px;border:1px solid rgba(122,155,113,0.3);text-align:center;
+}
+.bm-cta .ch{font-family:var(--serif);font-size:32px;color:#fff;font-weight:400;line-height:1.06;margin-bottom:14px;letter-spacing:-0.008em;}
+.bm-btn{
+  display:inline-block;padding:14px 30px;background:var(--green);color:#fff;
+  border-radius:99px;font-size:14px;font-weight:500;text-decoration:none;
+  letter-spacing:0.01em;transition:all 0.22s var(--ease);
+  border:none;cursor:pointer;font-family:var(--sans);
+}
+.bm-btn:hover{background:var(--green-d);transform:translateY(-1px);box-shadow:0 8px 24px rgba(45,74,53,0.4);}
+.bm-close{margin-top:30px;font-style:italic;font-size:15px;color:rgba(243,238,224,0.72);font-family:var(--serif);font-weight:400;letter-spacing:-0.005em;}
+.bm-contact{margin-top:18px;font-size:11.5px;color:rgba(243,238,224,0.55);font-weight:300;letter-spacing:0.04em;}
+
+/* ─── BOTTOM NAV ─────────────────────────────── */
+.nav{
+  position:fixed;bottom:0;left:0;right:0;height:48px;z-index:100;
+  background:rgba(255,255,255,0.96);backdrop-filter:blur(14px);
+  border-top:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;gap:22px;padding:0 24px;
+}
+.nav-arr{
+  width:34px;height:34px;border-radius:50%;border:1px solid rgba(45,74,53,0.18);
+  background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all 0.18s var(--ease);color:var(--green-d);font-size:14px;
+}
+.nav-arr:hover{background:var(--green-d);border-color:var(--green-d);color:#fff;transform:scale(1.05);}
+.nav-arr:disabled{opacity:0.3;cursor:default;}
+.nav-arr:disabled:hover{background:transparent;border-color:rgba(45,74,53,0.18);color:var(--green-d);transform:none;}
+.dots{display:flex;gap:6px;align-items:center;}
+.dot{width:7px;height:7px;border-radius:50%;background:rgba(45,74,53,0.2);cursor:pointer;transition:all 0.22s var(--ease);}
+.dot.active{background:var(--green);width:24px;border-radius:99px;}
+.nav-counter{font-size:11px;color:var(--muted);min-width:60px;text-align:center;letter-spacing:0.04em;}
+
+/* ─── SLIDE 1: NOTEPAD ───────────────────────── */
+.np-wrap{padding:36px 56px 56px;background:var(--cream);min-height:100%;}
+.np-header{display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+.np-title{font-family:var(--serif);font-size:38px;color:var(--green-d);font-weight:400;line-height:1.05;letter-spacing:-0.012em;}
+.np-meta{font-size:12px;color:var(--muted);text-align:right;line-height:1.7;}
+.np-meta .nm-l{font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--green);font-weight:500;}
+.np-section{margin-bottom:30px;}
+.np-section-h{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--green-d);font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.np-section-h::before{content:"";display:inline-block;width:20px;height:1px;background:var(--green);}
+.np-context{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.np-ctx{padding:15px 17px;background:var(--white);border-radius:10px;border:1px solid var(--green-pale);}
+.np-ctx-l{font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:6px;}
+.np-ctx-v{font-size:13px;color:var(--ink);font-weight:400;line-height:1.45;}
+.np-fresh-note{padding:14px 18px;background:var(--am-pale);border-left:3px solid var(--am);border-radius:6px;font-size:12.5px;color:var(--ink2);line-height:1.6;}
+.np-fresh-note strong{color:var(--am);font-weight:500;}
+.np-q{margin-bottom:16px;}
+.np-q label{display:block;font-size:13px;color:var(--green-d);font-weight:500;margin-bottom:7px;}
+.np-q textarea,.np-notes textarea{
+  width:100%;min-height:50px;padding:11px 14px;border:1px solid var(--green-pale);
+  border-radius:8px;background:var(--white);font-family:var(--sans);font-size:13px;color:var(--ink);
+  resize:vertical;line-height:1.55;transition:border-color 0.2s,box-shadow 0.2s;
+}
+.np-q textarea:focus,.np-notes textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(90,125,81,0.13);}
+.np-notes textarea{min-height:100px;}
+.np-nextsteps{display:grid;grid-template-columns:repeat(2,1fr);gap:10px 28px;}
+.np-ns-row{display:flex;align-items:center;gap:11px;font-size:13px;color:var(--ink2);padding:8px 0;}
+.np-ns-row input[type="checkbox"]{width:16px;height:16px;accent-color:var(--green);cursor:pointer;}
+.np-ns-row input[type="date"]{padding:6px 10px;border:1px solid var(--green-pale);border-radius:6px;font-family:var(--sans);font-size:12px;background:var(--white);color:var(--ink);}
+.np-copy-row{margin-top:32px;display:flex;justify-content:flex-end;align-items:center;gap:14px;}
+.np-copy-status{font-size:11.5px;color:var(--green);font-weight:500;opacity:0;transition:opacity 0.25s;}
+.np-copy-status.show{opacity:1;}
+.np-copy-btn{
+  padding:12px 26px;background:var(--green-d);color:#fff;border:none;border-radius:99px;
+  font-size:13px;font-weight:500;cursor:pointer;font-family:var(--sans);letter-spacing:0.01em;
+  transition:all 0.22s var(--ease);
+}
+.np-copy-btn:hover{background:var(--green);transform:translateY(-1px);box-shadow:0 6px 18px rgba(45,74,53,0.32);}
+.np-mode{
+  display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;
+  background:var(--am-pale);color:var(--am);font-size:11px;font-weight:500;letter-spacing:0.04em;
+  border:1px solid rgba(184,132,31,0.22);margin-top:8px;
+}
+
+/* Stagger entry */
+.fi{opacity:0;transform:translateY(10px);}
+.slide.active .fi{animation:fi 0.5s var(--ease) forwards;}
+.slide.active .fi:nth-child(1){animation-delay:0.05s;}
+.slide.active .fi:nth-child(2){animation-delay:0.13s;}
+.slide.active .fi:nth-child(3){animation-delay:0.21s;}
+.slide.active .fi:nth-child(4){animation-delay:0.29s;}
+.slide.active .fi:nth-child(5){animation-delay:0.37s;}
+.slide.active .fi:nth-child(6){animation-delay:0.45s;}
+@keyframes fi{to{opacity:1;transform:translateY(0);}}
+
+/* Mobile */
+@media (max-width:900px){
+  .slide{padding:22px 24px;}
+  .tb-menu{display:none;}
+  .tb-slide-lbl{display:inline;}
+  .cards-2,.cards-3,.cards-4,.dd-grid,.cover-grid,.bm-grid,.inv-grid,.income-strip,.two-col,.np-context,.np-nextsteps,.guests-grid,.onb-grid{grid-template-columns:1fr;}
+  .vs-grid{grid-template-columns:1fr;}
+  .vs-arrow{transform:rotate(90deg);padding:6px 0;}
+  .upside-bar{grid-template-columns:1fr;text-align:left;gap:10px;}
+  .upside-s{text-align:left;}
+  h1{font-size:32px;}h2{font-size:26px;}
+  .np-wrap{padding:22px 24px 36px;}
+}
+
+/* ─── Merged comparables section inside Numbers slide ─── */
+.merge-divider{
+  height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);
+  margin:38px 0 30px;
+}
+.comp-section{margin-top:0;}
+.comp-h{
+  font-family:var(--serif);font-size:30px;line-height:1.08;color:var(--green-d);
+  font-weight:400;letter-spacing:-0.008em;margin-top:8px;margin-bottom:8px;
+}
+.comp-h em{font-style:italic;color:var(--green);font-weight:400;}
+.comp-sub{font-size:13.5px;color:var(--ink2);font-weight:400;line-height:1.55;max-width:760px;margin-bottom:18px;}
+
+/* ─── Dark-slide context overrides ─── */
+
+/* Cards on dark slides (How Stayful Works, Vet Guests, Onboarding) */
+.slide.dark .card{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.09);
+  color:#f3eee0;
+}
+.slide.dark .card .cs{color:var(--green-light);}
+.slide.dark .card .ct{color:#f3eee0;}
+.slide.dark .card .cv{color:rgba(243,238,224,0.78);}
+.slide.dark .card.card-soft{
+  background:rgba(255,255,255,0.025);
+  border-color:rgba(255,255,255,0.06);
+}
+.slide.dark .card.card-am{
+  background:rgba(184,132,31,0.12);
+  border-color:rgba(184,132,31,0.25);
+}
+.slide.dark .card.card-am .cs{color:#e0a64a;}
+.slide.dark .card.card-am .cv{color:rgba(243,238,224,0.85);}
+
+/* Hover on dark */
+.slide.dark .card:hover{
+  background:rgba(255,255,255,0.06);
+  box-shadow:0 8px 30px rgba(0,0,0,0.18);
+}
+
+/* LTL/STR comparison cards on a DARK slide (Investment Returns) */
+.slide.dark .vs-card.vs-ltl{
+  background:rgba(255,255,255,0.05);
+  border-color:rgba(255,255,255,0.12);
+  color:#f3eee0;
+}
+.slide.dark .vs-card.vs-ltl .vs-tag{color:rgba(243,238,224,0.55);}
+.slide.dark .vs-card.vs-ltl .vs-rev{color:#f3eee0;}
+.slide.dark .vs-card.vs-ltl .vs-rev-l{color:rgba(243,238,224,0.55);}
+.slide.dark .vs-card.vs-ltl .vs-stack{border-top-color:rgba(255,255,255,0.13);}
+.slide.dark .vs-card.vs-ltl .vs-row{color:rgba(243,238,224,0.78);}
+.slide.dark .vs-card.vs-ltl .vs-row.vs-cashflow{color:#f3eee0;border-top-color:rgba(255,255,255,0.16);}
+.slide.dark .vs-card.vs-ltl .vs-mo{color:rgba(243,238,224,0.5);}
+/* STR card flips to cream/light to pop on dark bg */
+.slide.dark .vs-card.vs-str{
+  background:var(--green-pale);
+  color:var(--green-d);
+  border-color:var(--green-pale);
+  box-shadow:0 16px 42px rgba(0,0,0,0.28);
+}
+.slide.dark .vs-card.vs-str::before{display:none;}
+.slide.dark .vs-card.vs-str .vs-tag{color:var(--green);}
+.slide.dark .vs-card.vs-str .vs-rev{color:var(--green-d);}
+.slide.dark .vs-card.vs-str .vs-rev-l{color:var(--muted);}
+.slide.dark .vs-card.vs-str .vs-stack{border-top-color:var(--line);}
+.slide.dark .vs-card.vs-str .vs-row{color:var(--ink2);}
+.slide.dark .vs-card.vs-str .vs-row.vs-cashflow{color:var(--green-d);border-top-color:var(--line);}
+.slide.dark .vs-card.vs-str .vs-mo{color:var(--muted);}
+.slide.dark .vs-arrow{color:var(--green-light);}
+
+/* Upside bar on dark */
+.slide.dark .upside-bar{
+  background:linear-gradient(135deg,rgba(122,155,113,0.18) 0%,rgba(45,74,53,0.5) 100%);
+  border-color:rgba(122,155,113,0.3);
+}
+.slide.dark .upside-l{color:var(--green-light);}
+.slide.dark .upside-v{color:#fff;}
+.slide.dark .upside-s{color:rgba(243,238,224,0.78);}
+
+/* Onboarding timeline on dark */
+.slide.dark .timeline::before{
+  background:linear-gradient(180deg,rgba(122,155,113,0.6) 0%,rgba(122,155,113,0.12) 100%);
+}
+.slide.dark .tl-dot{
+  background:rgba(255,255,255,0.04);
+  border-color:rgba(122,155,113,0.5);
+  color:#f3eee0;
+}
+.slide.dark .tl-dot.filled{
+  background:var(--green);
+  border-color:var(--green);
+  color:#fff;
+}
+.slide.dark .tl-title{color:#f3eee0;}
+.slide.dark .tl-desc{color:rgba(243,238,224,0.75);}
+.slide.dark .tl-when{color:var(--green-light);}
+
+.slide.dark .onb-card{
+  background:rgba(255,255,255,0.04);
+  border-color:rgba(255,255,255,0.09);
+}
+.slide.dark .onb-card .onb-l{color:rgba(243,238,224,0.55);}
+.slide.dark .onb-card .onb-amount{color:#f3eee0;}
+.slide.dark .onb-card .onb-desc{color:rgba(243,238,224,0.78);}
+.slide.dark .onb-card.amber{
+  background:rgba(184,132,31,0.13);
+  border-color:rgba(184,132,31,0.25);
+}
+.slide.dark .onb-card.amber .onb-amount{color:#e0a64a;}
+.slide.dark .onb-card.green{
+  background:var(--green-pale);
+  border-color:var(--green-pale);
+  color:var(--green-d);
+}
+.slide.dark .onb-card.green .onb-l{color:var(--green);}
+.slide.dark .onb-card.green .onb-amount{color:var(--green-d);}
+.slide.dark .onb-card.green .onb-desc{color:var(--ink2);}
+
+/* List-clean inside dark onb-card.green needs override too */
+.slide.dark .onb-card.green .list-clean li{color:var(--ink2);border-bottom-color:var(--line);}
+.slide.dark .onb-card.green .list-clean li::before{background:var(--green);}
+
+/* ─── Light-slide context overrides for what was previously dark ─── */
+
+/* Next Steps on cream — invert the bm-cta + bm-step pattern */
+.slide.cream .bm-step{
+  background:var(--white);
+  border:1px solid var(--green-pale);
+}
+.slide.cream .bm-step .bt{color:var(--green-d);}
+.slide.cream .bm-step .bs{color:var(--ink2);}
+.slide.cream .bm-num{color:var(--green);}
+
+.slide.cream .bm-cta{
+  background:var(--green-d);
+  border-color:var(--green-d);
+  box-shadow:0 14px 38px rgba(45,74,53,0.18);
+  position:relative;overflow:hidden;
+}
+.slide.cream .bm-cta::before{
+  content:"";position:absolute;top:-50%;right:-30%;width:80%;height:160%;
+  background:radial-gradient(circle,rgba(122,155,113,0.16),transparent 70%);
+  pointer-events:none;
+}
+.slide.cream .bm-cta>*{position:relative;}
+.slide.cream .bm-cta .ch{color:#fff;}
+.slide.cream .bm-cta .bm-contact{color:rgba(243,238,224,0.65);}
+
+.slide.cream .bm-close{color:var(--green-d);}
+
+@media (max-width:900px){
+  .comp-row{grid-template-columns:1fr;gap:6px;padding:12px 16px;}
+  .comp-row.head{display:none;}
+  .comp-row .name{font-weight:500;}
+}
+
+
+/* ── Comp banner ─────────────────────────────────────────────── */
+.comp-banner{display:flex;align-items:center;gap:0;background:var(--gd);border-radius:10px;padding:16px 20px;margin-bottom:12px;}
+.cb-item{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;}
+.cb-l{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--gc);font-weight:600;order:-1;}
+.cb-v{font-family:var(--serif);font-size:26px;font-weight:300;color:var(--gc);line-height:1;}
+.cb-div{width:1px;height:40px;background:rgba(255,255,255,0.1);flex-shrink:0;}
+
+/* ── Comp table — full width, all rows ───────────────────────── */
+.comp-table{width:100%;border:1px solid var(--bd);border-radius:10px;overflow:hidden;font-size:11.5px;margin-bottom:12px;}
+.comp-row{display:grid;grid-template-columns:1fr 60px 64px 48px 80px 76px;gap:0;border-bottom:1px solid var(--bd);padding:6px 12px;align-items:center;}
+.comp-row:last-child{border-bottom:none;}
+.comp-row.head{background:var(--gp);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mu);font-weight:500;padding:7px 12px;}
+.comp-row.top-row{background:rgba(93,129,86,0.04);}
+.comp-row .name{color:var(--ch);font-weight:300;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.comp-row .num{text-align:right;color:var(--mid);font-weight:400;}
+.comp-row .rat{color:var(--ch);font-weight:500;}
+.comp-row .badge{font-size:8.5px;background:var(--green);color:#fff;padding:1px 5px;border-radius:4px;margin-left:4px;vertical-align:middle;}
+
+/* ── Amenity intel strip ─────────────────────────────────────── */
+.amenity-intel{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:10px;}
+.ai-col{padding:18px 20px;border-radius:12px;border:1px solid var(--bd);}
+.ai-base{background:var(--gp);}
+.ai-edge{background:rgba(93,129,86,0.06);border-color:rgba(93,129,86,0.2);}
+.ai-gap{background:var(--amp);border-color:rgba(196,124,26,0.2);}
+.ai-lbl{font-size:13px;font-weight:600;color:var(--ch);margin-bottom:4px;}
+.ai-base .ai-lbl{color:var(--mid);}
+.ai-edge .ai-lbl{color:var(--green);}
+.ai-gap .ai-lbl{color:var(--am);}
+.ai-sub{font-size:11px;color:var(--mu);margin-bottom:10px;font-weight:300;line-height:1.5;}
+.ai-gap .ai-sub{color:rgba(196,124,26,0.7);}
+.ai-tags{display:flex;flex-wrap:wrap;gap:5px;}
+.ai-tag{font-size:12px;padding:4px 12px;border-radius:100px;font-weight:400;}
+.at-base{background:white;color:var(--mid);border:1px solid var(--bd);}
+.at-edge{background:rgba(93,129,86,0.1);color:var(--green);border:1px solid rgba(93,129,86,0.2);}
+.at-gap{background:white;color:var(--am);border:1px solid rgba(196,124,26,0.25);}
+
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<div class="tb">
+  <img class="tb-logo-img" src="https://images.squarespace-cdn.com/content/v1/64946e7680c92451dce86167/b6f59d1c-fee6-4f55-948b-3c05b6e18a3b/Stayful_Dark_Green.png?format=300w" alt="Stayful">
+  <div class="tb-divider"></div>
+  <div class="tb-b">Web Meeting · <strong>Tim</strong> · Adelphi Wharf 2, Salford</div>
+  <div class="tb-slide-lbl" id="tb-slide-lbl"></div>
+  <div class="tb-menu" id="tb-menu"></div>
+</div>
+
+<div class="deck" id="deck">
+
+<!-- ═══ SLIDE 1: NOTEPAD ═══ -->
+<div class="slide notepad active" data-name="Notes" data-bg="cream">
+  <div class="np-wrap">
+    <div class="np-header">
+      <div>
+        <div class="np-title">Web Meeting Notes</div>
+        <div class="np-mode">Existing property owner · No mortgage · Web meeting no-show rebook</div>
+      </div>
+      <div class="np-meta">
+        <div class="nm-l">Today</div>
+        <div id="np-date"></div>
+      </div>
+    </div>
+
+    <div class="np-section">
+      <div class="np-section-h">Lead context</div>
+      <div class="np-context">
+        <div class="np-ctx">
+          <div class="np-ctx-l">Profile</div>
+          <div class="np-ctx-v">Existing property looking for higher return — Adelphi Wharf 2, Salford M3</div>
+        </div>
+        <div class="np-ctx">
+          <div class="np-ctx-l">Web meeting address</div>
+          <div class="np-ctx-v">Flat 524, Adelphi Wharf 2, Adelphi Street, Salford, M3 6EN Adelphi Wharf 2, Salford M3 4LA</div>
+        </div>
+        <div class="np-ctx">
+          <div class="np-ctx-l">Phone</div>
+          <div class="np-ctx-v">jacksrmitchell@live.co.uk</div>
+        </div>
+        <div class="np-ctx">
+          <div class="np-ctx-l">Property</div>
+          <div class="np-ctx-v">Adelphi Wharf 2, Salford M3 4LA</div>
+        </div>
+        <div class="np-ctx">
+          <div class="np-ctx-l">Stayful net (annual)</div>
+          <div class="np-ctx-v">£65,752 · £5,479/mo</div>
+        </div>
+        <div class="np-ctx">
+          <div class="np-ctx-l">Mortgage / month</div>
+          <div class="np-ctx-v">no mortgage — fully covered by STL net (surplus £2,979/mo)</div>
+        </div>
+      </div>
+      <div class="np-fresh-note" style="margin-top:14px;">
+        <strong>Note:</strong> Tim's mortgage is £1,926/month. Short-let nets £5,479/month — covering the mortgage in full and leaving £2,979/month clear. Long-let at £1,185/month leaves a £1,315/month shortfall. The mortgage coverage story is the key narrative.
+      </div>
+    </div>
+
+    <div class="np-section">
+      <div class="np-section-h">Discovery</div>
+      <div class="np-q">
+        <label>Is the property currently tenanted or vacant?</label>
+        <textarea data-q="current_status" placeholder="Vacant · tenanted (end date?) · used personally"></textarea>
+      </div>
+      <div class="np-q">
+        <label>Why move to short-let vs long-let?</label>
+        <textarea data-q="trigger" placeholder="Higher income · more control · current tenant leaving"></textarea>
+      </div>
+      <div class="np-q">
+        <label>Experience with STR / Airbnb?</label>
+        <textarea data-q="familiarity" placeholder="Complete novice · heard of it · tried it before"></textarea>
+      </div>
+      <div class="np-q">
+        <label>Any concerns — void months, property wear, management effort?</label>
+        <textarea data-q="concerns" placeholder="Specific objections to address"></textarea>
+      </div>
+      <div class="np-q">
+        <label>Timeline to go live?</label>
+        <textarea data-q="timeline" placeholder="Immediately · 1-3 months · after works"></textarea>
+      </div>
+      <div class="np-q">
+        <label>What would make them sign today?</label>
+        <textarea data-q="think_about" placeholder="What they need to see / check"></textarea>
+      </div>
+    </div>
+
+    <div class="np-section np-notes">
+      <div class="np-section-h">Notes</div>
+      <textarea data-q="notes" placeholder="Anything else from the call — body language, hesitations, energy"></textarea>
+    </div>
+
+    <div class="np-section">
+      <div class="np-section-h">Next steps</div>
+      <div class="np-nextsteps">
+        <div class="np-ns-row">
+          <input type="checkbox" data-ns="followup-booked" id="ns-fu">
+          <label for="ns-fu">Follow-up booked</label>
+        </div>
+        <div class="np-ns-row">
+          <span>Follow-up date:</span>
+          <input type="date" data-ns="followup-date">
+        </div>
+        <div class="np-ns-row">
+          <input type="checkbox" data-ns="send-agreement" id="ns-ag">
+          <label for="ns-ag">Send management agreement</label>
+        </div>
+        <div class="np-ns-row">
+          <input type="checkbox" data-ns="send-cases" id="ns-cs">
+          <label for="ns-cs">Send case studies</label>
+        </div>
+        <div class="np-ns-row">
+          <input type="checkbox" data-ns="send-income-breakdown" id="ns-ib">
+          <label for="ns-ib">Send detailed income breakdown</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="np-copy-row">
+      <span class="np-copy-status" id="np-copy-status">Copied — paste into Monday call summary</span>
+      <button class="np-copy-btn" id="np-copy">Copy all to clipboard</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 2: COVER ═══ -->
+<div class="slide dark" data-name="Property" data-bg="dark">
+  <div class="fi"><div class="eb">Stayful · Airbnb Management Company</div></div>
+  <h1 class="fi">What Adelphi Wharf 2, Salford<br>could yield as a managed <em>short let</em></h1>
+  <p class="sh fi" style="margin-top:14px;">Income analysis for Tim's 2-bedroom apartment at Adelphi Wharf 2, Salford. Based on 12 active Airbnb comparables within 0.32 km — this Salford/Manchester market is proven. STL net of £1,926/month is 80% more than long-let.</p>
+
+  <div class="cover-grid fi">
+    <div>
+      <div class="stat-row">
+        <div class="stat">
+          <div class="stat-l">Net per month</div>
+          <div class="stat-v">£1,926</div>
+          <div class="stat-s">£23,112 / year, after all fees</div>
+        </div>
+        <div class="stat">
+          <div class="stat-l">Uplift over long-let</div>
+          <div class="stat-v">+£4,294</div>
+          <div class="stat-s">+362% / +£51,528 per year vs long-let</div>
+        </div>
+        <div class="stat">
+          <div class="stat-l">Investment risk</div>
+          <div class="stat-v">3 / 100</div>
+          <div class="stat-s">Low risk · direct booking score 100/100</div>
+        </div>
+      </div>
+      <div class="cover-pills">
+        <span class="pill">12 active comparables · 0.40 km</span>
+        <span class="pill">Median annual revenue £84,933</span>
+        <span class="pill live">Listed on Airbnb · Booking.com</span>
+      </div>
+    </div>
+    <div class="cover-side">
+      <div class="cs-row"><div class="cs-l">Avg nightly rate</div><div class="cs-v">£411</div></div>
+      <div class="cs-row"><div class="cs-l">Occupancy</div><div class="cs-v">82%</div></div>
+      <div class="cs-row"><div class="cs-l">Market avg occupancy</div><div class="cs-v">68%</div></div>
+      <div class="cs-row"><div class="cs-l">Bedrooms · Sleeps</div><div class="cs-v">3 · 8</div></div>
+    </div>
+  </div>
+
+  <div class="cover-foot fi">Source: Stayful Property Income Analysis · 7 May 2026 · Data via Airbtics</div>
+</div>
+
+<!-- ═══ SLIDE 6: NUMBERS ═══ -->
+<div class="slide white" data-name="The Numbers" data-bg="white">
+  <div class="fi"><div class="eb">Twelve months · Real demand · Adelphi Wharf 2, Salford M3</div></div>
+  <h2 class="fi">£1,926 average per month — no mortgage, <em>£853/month more than long-let</em></h2>
+  <p class="sh fi">Even March — the quietest month at £1,208 — still beats long-let by £135. Short-let averages £853/month more than long-let on the same property, every month.</p>
+
+  <div class="chart-wrap fi" id="chart">
+    <div class="chart-h">Net monthly income · Adelphi Wharf 2, Salford · Dashed line = long-let net £1,073</div>
+    <div class="bars" id="bars"></div>
+    <div class="bnames" id="bnames"></div>
+    <div class="ltl-line" id="ltl-line" style="bottom:42px;"></div>
+    <div class="ltl-lbl" style="bottom:33px;">LTL £1,073</div>
+  </div>
+
+  <div class="income-strip fi">
+    <div class="is-cell">
+      <div class="is-l">Quietest month — March</div>
+      <div class="is-v">£1,208</div>
+      <div class="is-n">+£135 above long-let, even in the quietest month</div>
+    </div>
+    <div class="is-cell">
+      <div class="is-l">Peak month — July</div>
+      <div class="is-v">£2,612</div>
+      <div class="is-n">+£1,539 above long-let</div>
+    </div>
+  </div>
+
+  <!-- Folded-in comparables section -->
+  <div class="merge-divider fi"></div>
+
+  <div class="comp-section fi">
+    <div class="eb">12 active Airbnb listings within 0.32 km · Adelphi Wharf 2, Salford</div>
+    <h3 class="comp-h">The market your listing enters — <em>all active comparables</em></h3>
+
+    <div class="comp-banner">
+      <div class="cb-item"><div class="cb-l">Average Rating</div><div class="cb-v">4.6 ★</div></div>
+      <div class="cb-div"></div>
+      <div class="cb-item"><div class="cb-l">Average Reviews</div><div class="cb-v">33</div></div>
+      <div class="cb-div"></div>
+      <div class="cb-item"><div class="cb-l">Average Nightly Rate</div><div class="cb-v">£200</div></div>
+      <div class="cb-div"></div>
+      <div class="cb-item"><div class="cb-l">Average Occupancy</div><div class="cb-v">60%</div></div>
+      <div class="cb-div"></div>
+      <div class="cb-item"><div class="cb-l">Average Annual Revenue</div><div class="cb-v">£24,211</div></div>
+    </div>
+
+    <div class="comp-table">
+      <div class="comp-row head"><div>Property</div><div>Dist</div><div>Nightly</div><div>Occ</div><div>Annual</div><div>Rating</div></div>
+      <div class="comp-row"><div class="name">Stunning 3 bed Townhouse Manchester</div><div>0.09 km</div><div class="num">£278</div><div class="num">66%</div><div class="num">£27,544</div><div class="num rat">5.0 ★</div></div>
+      <div class="comp-row top-row"><div class="name">Penthouse Apt · Large Balcony · Long Stay</div><div>0.13 km</div><div class="num">£170</div><div class="num">67%</div><div class="num">£37,503</div><div class="num rat">5.0 ★ <span class="badge">Top</span></div></div>
+      <div class="comp-row"><div class="name">Family-friendly oasis · Balcony + WiFi</div><div>0.13 km</div><div class="num">£147</div><div class="num">92%</div><div class="num">£26,729</div><div class="num rat">4.0 ★</div></div>
+      <div class="comp-row"><div class="name">Spacious 3BR · Pool Table + PS5 · Balcony</div><div>0.13 km</div><div class="num">£265</div><div class="num">46%</div><div class="num">£18,431</div><div class="num rat">5.0 ★</div></div>
+      <div class="comp-row"><div class="name">Cozy 2Bd Apt · Central · Long-stay Discounts</div><div>0.13 km</div><div class="num">£164</div><div class="num">31%</div><div class="num">£5,215</div><div class="num rat">5.0 ★</div></div>
+      <div class="comp-row"><div class="name">Luxurious Modern High Rise · Central Manchester</div><div>0.18 km</div><div class="num">£151</div><div class="num">90%</div><div class="num">£14,971</div><div class="num rat">4.0 ★</div></div>
+      <div class="comp-row top-row"><div class="name">Modern Town House + Parking · Manchester City Centre</div><div>0.19 km</div><div class="num">£318</div><div class="num">40%</div><div class="num">£39,829</div><div class="num rat">5.0 ★ <span class="badge">Top</span></div></div>
+      <div class="comp-row top-row"><div class="name">Adelphi Townhouse 2 BDR 1 Bath</div><div>0.22 km</div><div class="num">£153</div><div class="num">70%</div><div class="num">£34,659</div><div class="num rat">4.0 ★ <span class="badge">Top</span></div></div>
+      <div class="comp-row top-row"><div class="name">Relaxing Apt · XL Bed · Terrace &amp; Parking</div><div>0.23 km</div><div class="num">£165</div><div class="num">99%</div><div class="num">£54,559</div><div class="num rat">5.0 ★ <span class="badge">Top</span></div></div>
+      <div class="comp-row"><div class="name">Three Bedroom Balcony Sleeps 6</div><div>0.23 km</div><div class="num">£224</div><div class="num">35%</div><div class="num">£7,874</div><div class="num rat">4.0 ★</div></div>
+      <div class="comp-row"><div class="name">Trivara homes</div><div>0.24 km</div><div class="num">£202</div><div class="num">28%</div><div class="num">£7,330</div><div class="num rat">5.0 ★</div></div>
+      <div class="comp-row"><div class="name">Stunning 2BR · Central · River Irwell Views</div><div>0.25 km</div><div class="num">£168</div><div class="num">58%</div><div class="num">£15,890</div><div class="num rat">4.0 ★</div></div>
+    </div>
+
+    <div class="amenity-intel">
+      <div class="ai-col ai-base"><div class="ai-lbl">✅ Market baseline</div><div class="ai-sub">Every listing here has</div><div class="ai-tags"><span class="ai-tag at-base">WiFi</span><span class="ai-tag at-base">Kitchen</span></div></div>
+      <div class="ai-col ai-edge"><div class="ai-lbl">📈 Competitive edge</div><div class="ai-sub">Top earners add these</div><div class="ai-tags"><span class="ai-tag at-edge">Workspace</span><span class="ai-tag at-edge">Smart TV</span><span class="ai-tag at-edge">Free Parking</span></div></div>
+      <div class="ai-col ai-gap"><div class="ai-lbl">🚀 Rate premium gap</div><div class="ai-sub">15–30% higher rate · few offer these</div><div class="ai-tags"><span class="ai-tag at-gap">Hot Tub</span><span class="ai-tag at-gap">EV Charger</span><span class="ai-tag at-gap">Pet Friendly</span><span class="ai-tag at-gap">Smart Lock</span></div></div>
+    </div>
+  </div>
+
+<!-- ═══ SLIDE 5: INVESTMENT RETURNS ═══ -->
+<div class="slide dark" data-name="Investment Returns" data-bg="dark">
+  <div class="fi"><div class="eb">The buyer's view · Long-let vs Short-let</div></div>
+  <h2 class="fi">Long-let earns £1,185/month — £1,315 short of the mortgage.<br>Short-let earns <em>£5,479/month — mortgage covered, £2,979 surplus</em>.</h2>
+  <p class="sh fi">Tim's flat has no mortgage. Long-let puts £1,073/month in the account. Short-let puts £1,926/month — that's £853/month more, every month, for the same property. £10,238 more per year doing nothing differently except who manages it.</p>
+
+  <div class="vs-grid fi">
+    <div class="vs-card vs-ltl">
+      <div class="vs-tag">If you long-let it</div>
+      <div class="vs-rev">£12,874</div>
+      <div class="vs-rev-l">Net annual revenue · £1,073/mo</div>
+      <div class="vs-stack">
+        <div class="vs-row"><span>Annual mortgage</span><span>£30,000</span></div>
+        <div class="vs-row vs-cashflow" style="color:#df2f4a;"><span>Annual shortfall</span><span>-£15,776</span></div>
+      </div>
+      <div class="vs-mo">£1,185/mo vs no mortgage = £1,315/month deficit — Jack pays the difference</div>
+    </div>
+
+    <div class="vs-arrow">→</div>
+
+    <div class="vs-card vs-str">
+      <div class="vs-tag">If Stayful short-lets it</div>
+      <div class="vs-rev">£65,752</div>
+      <div class="vs-rev-l">Net annual revenue · £1,073/mo · cleaning charged to guest</div>
+      <div class="vs-stack">
+        <div class="vs-row"><span>Annual mortgage</span><span>£30,000</span></div>
+        <div class="vs-row vs-cashflow"><span>Annual cash flow</span><span>£35,752</span></div>
+      </div>
+      <div class="vs-mo">£2,979/month surplus after mortgage · £35,752/yr cash flow · mortgage fully self-funding</div>
+    </div>
+  </div>
+
+  <div class="upside-bar fi">
+    <div class="upside-l">The upside of switching model</div>
+    <div class="upside-v">+£51,528 / year</div>
+    <div class="upside-s">+£4,294/month · 362% more than long-let · mortgage covered every month · same property, same asset · the only thing that changes is the management model</div>
+  </div>
+
+  <div class="disclosure fi">
+    <strong>Honest framing:</strong> the £65,752 net is projected from a Stayful STR analysis based on 12 active Airbnb comparables within 0.40 km of Adelphi Wharf 2. Risk score 3/100. By Year 3, direct bookings of 50% eliminate platform fees and add a further £658/month.
+  </div>
+</div>
+
+<!-- ═══ SLIDE 4: WHO BOOKS ═══ -->
+<div class="slide white" data-name="Who Books" data-bg="white">
+  <div class="fi"><div class="eb">Demand intelligence · Salford · M3</div></div>
+  <h2 class="fi">Who actually <em>books</em> properties like this</h2>
+  <p class="sh fi">Built from the demand drivers around Adelphi Wharf 2. Manchester Royal Infirmary, University of Manchester, Salford Crescent transport hub, and 1,248 annual events at Manchester Cathedral create four year-round guest streams.</p>
+
+  <div class="guests-grid fi">
+    <div class="gc">
+      <div class="gc-h"><div class="gc-icon">⊕</div><div class="gc-meta"><div class="gc-tag">Healthcare &amp; NHS staff</div><div class="gc-title">Manchester Royal Infirmary workers</div></div></div>
+      <div class="gc-desc">MRI is 3.68 km away — one of the largest NHS trusts in the UK. Visiting consultants, agency nurses, and specialist contractors on rotation regularly need short-stay accommodation close to the hospital. Reliable mid-week and extended bookings.</div>
+      <div class="gc-loc">📍 Manchester Royal Infirmary · 3.68 km · HIGH demand · 3 facilities</div>
+    </div>
+    <div class="gc">
+      <div class="gc-h"><div class="gc-icon">🎓</div><div class="gc-meta"><div class="gc-tag">Academic &amp; research visitors</div><div class="gc-title">University of Manchester delegates</div></div></div>
+      <div class="gc-desc">The University of Manchester — a Russell Group university — is 2.97 km away. Visiting lecturers, PhD examiners, conference delegates, and postgraduate students attending courses book short stays throughout the academic year.</div>
+      <div class="gc-loc">📍 University of Manchester · 2.97 km · HIGH demand · 3 institutions</div>
+    </div>
+    <div class="gc">
+      <div class="gc-h"><div class="gc-icon">🎪</div><div class="gc-meta"><div class="gc-tag">Events &amp; transport travellers</div><div class="gc-title">1,248 annual events · Manchester Cathedral</div></div></div>
+      <div class="gc-desc">Manchester Cathedral hosts 1,248 events per year — music, cultural, and corporate. Combined with Salford Crescent station (10 transport links, 0.66 km away), this location draws event visitors and business travellers who need central short-stay accommodation.</div>
+      <div class="gc-loc">📍 Manchester Cathedral · 0.88 km · HIGH demand · 1,248 events/yr</div>
+    </div>
+  </div>
+
+<!-- ═══ SLIDE 3: HOW STAYFUL WORKS ═══ -->
+<div class="slide dark" data-name="How Stayful works" data-bg="dark">
+  <div class="fi"><div class="eb">The 60-second version</div></div>
+  <h2 class="fi">How Stayful <em>works</em></h2>
+  <p class="sh fi">Four things to know about the model before we go into the numbers.</p>
+
+  <div class="cards-4 fi">
+    <div class="card">
+      <div class="cs">Fee structure</div>
+      <div class="ct">15% + VAT</div>
+      <div class="cv">Of net booking revenue. No setup fee, no monthly fee, no exit fee. Aligned with you — we earn when you earn.</div>
+    </div>
+    <div class="card">
+      <div class="cs">Cleaning</div>
+      <div class="ct">Charged to guests</div>
+      <div class="cv">Cleaning fees come out of the guest booking, not your income. The "net" figures already strip them out.</div>
+    </div>
+    <div class="card">
+      <div class="cs">What we manage</div>
+      <div class="ct">End-to-end</div>
+      <div class="cv">Listing, pricing, guest comms, check-in, cleaning coordination, repairs handling, monthly reporting. You handle mortgage, insurance, certs.</div>
+    </div>
+    <div class="card">
+      <div class="cs">Term</div>
+      <div class="ct">6-month minimum</div>
+      <div class="cv">Then rolling. Setup takes about 3 weeks before going live — that lead time is part of the 6 months.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 8: MANAGEMENT ═══ -->
+<div class="slide cream" data-name="Management" data-bg="cream">
+  <div class="fi"><div class="eb">Hands-off by design</div></div>
+  <h2 class="fi">What Stayful handles · What stays with the <em>owner</em></h2>
+  <p class="sh fi">If the point of buying for STR is income without the workload, this is the split. Most buyers worry about the operational side — this is the answer.</p>
+
+  <div class="two-col fi">
+    <div>
+      <h3>Stayful handles</h3>
+      <ul class="list-clean">
+        <li>Listing setup on Airbnb, Booking.com, direct site</li>
+        <li>Dynamic pricing — adjusted weekly, often daily</li>
+        <li>Guest screening, ID verification, deposit collection</li>
+        <li>Check-in, key handover, in-stay support</li>
+        <li>Cleaning coordination after every stay</li>
+        <li>Repairs handling up to £300 without consultation</li>
+        <li>Monthly P&amp;L report straight to your inbox</li>
+      </ul>
+    </div>
+    <div>
+      <h3>You handle</h3>
+      <ul class="list-clean">
+        <li>Mortgage payments and lender consent-to-let</li>
+        <li>Buildings &amp; contents insurance</li>
+        <li>Annual safety certificates (gas, electric, EPC)</li>
+        <li>Council tax and utility bills</li>
+      </ul>
+      <div class="card-am" style="padding:14px 18px;margin-top:18px;border-radius:11px;">
+        <div class="cs" style="color:var(--am);">Pre-live</div>
+        <div class="cv">Before going live we coordinate the gas safety certificate, electrical certificate, and confirm landlord insurance is in place. You provide — we organise.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE: HOW WE VET GUESTS ═══ -->
+<div class="slide dark" data-name="Vet Guests" data-bg="dark">
+  <div class="fi"><div class="eb">Protection · Built into every booking</div></div>
+  <h2 class="fi">How we vet guests &amp; protect <em>your</em> property</h2>
+  <p class="sh fi">Five protection layers — every booking, every property, every stay. The reason owners sleep at night is the system, not luck.</p>
+
+  <div class="cards-3 fi" style="margin-top:24px;">
+    <div class="card">
+      <div class="cs">Damage cover</div>
+      <div class="ct">£100,000</div>
+      <div class="cv">Insurance per guest stay through our Plum Guide partnership. Covers accidental damage, theft, and liability claims.</div>
+    </div>
+    <div class="card">
+      <div class="cs">ID verification</div>
+      <div class="ct">100% verified</div>
+      <div class="cv">Government-issued ID checked for every guest, every booking. No exceptions, no anonymous stays.</div>
+    </div>
+    <div class="card">
+      <div class="cs">Security deposit</div>
+      <div class="ct">£200 per stay</div>
+      <div class="cv">Held against any damage or extra cleaning. Returned to the guest after each stay if there's nothing to charge.</div>
+    </div>
+  </div>
+
+  <div class="cards-2 fi" style="margin-top:14px;">
+    <div class="card card-soft">
+      <div class="cs">Inspections</div>
+      <div class="ct">Quarterly walkthrough</div>
+      <div class="cv">Our team visits the property every three months, walks through with a checklist, and reports back to you with photos. You stay informed without lifting a finger.</div>
+    </div>
+    <div class="card card-soft">
+      <div class="cs">Repeat customers</div>
+      <div class="ct">30% direct bookings</div>
+      <div class="cv">Across our portfolio, ~30% of bookings come from previous guests booking direct. These are vetted, lower-friction, and lower-risk than first-time platform guests.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE: WHAT YOU'LL SEE AS A CUSTOMER ═══ -->
+<div class="slide cream" data-name="Your Experience" data-bg="cream">
+  <div class="fi"><div class="eb">What you'll see · Live demo links</div></div>
+  <h2 class="fi">What you actually <em>see</em> as a Stayful customer</h2>
+  <p class="sh fi">Three live tools, every day. Click any of these to see the real experience our owners have — these aren't mockups, they're the actual systems running right now.</p>
+
+  <div class="cards-3 fi" style="margin-top:24px;">
+    <a href="https://app.uplisting.io/calendar/" target="_blank" class="card card-w" style="text-decoration:none;color:inherit;display:block;">
+      <div class="cs">Owner Calendar</div>
+      <div class="ct">Live booking view</div>
+      <div class="cv">See every booking across every platform in one calendar. Block dates for personal use. Powered by Uplisting — the same channel manager we use to sync Airbnb, Booking.com and direct.</div>
+      <div style="margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--green);font-weight:500;letter-spacing:0.04em;">Open live demo →</div>
+    </a>
+    <a href="https://app.slack.com/client/T061GPD7ZB8/C09LDM5GY86" target="_blank" class="card card-w" style="text-decoration:none;color:inherit;display:block;">
+      <div class="cs">Direct Slack channel</div>
+      <div class="ct">Your team, on tap</div>
+      <div class="cv">A dedicated Slack channel for your property. Message the team directly, share photos, get fast answers. No email threads, no ticket queues — just direct access.</div>
+      <div style="margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--green);font-weight:500;letter-spacing:0.04em;">Open live demo →</div>
+    </a>
+    <a href="https://drive.google.com/file/d/1OMLH73P0I4UdsoK8g7kMUDX9u4s46jF2/view?usp=sharing" target="_blank" class="card card-w" style="text-decoration:none;color:inherit;display:block;">
+      <div class="cs">Monthly P&amp;L report</div>
+      <div class="ct">Itemised, every month</div>
+      <div class="cv">Earnings, fees, expenses, occupancy, guest reviews — sent monthly. No spreadsheets to chase, no accountant headaches. Open the example to see the format.</div>
+      <div style="margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--green);font-weight:500;letter-spacing:0.04em;">Open example report →</div>
+    </a>
+  </div>
+
+  <div class="cards-2 fi" style="margin-top:14px;">
+    <div class="card card-soft">
+      <div class="cs">Performance reviews</div>
+      <div class="ct">Quarterly performance call</div>
+      <div class="cv">Every three months we sit down with you to review what's working, what's changed in the market, and what's next. Strategic, not transactional.</div>
+    </div>
+    <div class="card card-soft">
+      <div class="cs">Market intelligence</div>
+      <div class="ct">Monthly newsletter</div>
+      <div class="cv">A short read covering local STR market trends, regulatory changes, pricing shifts, and what's working across our portfolio. The kind of intel a self-managed owner can't easily get.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 9: ONBOARDING ═══ -->
+<div class="slide dark" data-name="Onboarding" data-bg="dark">
+  <div class="fi"><div class="eb">From signature to live</div></div>
+  <h2 class="fi">3 weeks from signature<br>to <em>live</em></h2>
+  <p class="sh fi">Once you sign and the property is ready, the path is short and structured.</p>
+
+  <div class="onb-grid fi">
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot filled">1</div>
+        <div class="tl-content">
+          <div class="tl-title">Management agreement signed</div>
+          <div class="tl-desc">We send the contract by email and walk you through every clause. Plain English, no surprises.</div>
+          <div class="tl-when">Day 1</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot filled">2</div>
+        <div class="tl-content">
+          <div class="tl-title">Kick-off call</div>
+          <div class="tl-desc">We agree your specific property plan, create your dedicated Slack channel, and introduce your management team.</div>
+          <div class="tl-when">Week 1</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">3</div>
+        <div class="tl-content">
+          <div class="tl-title">Photography, staging &amp; setup</div>
+          <div class="tl-desc">Professional photography and listing prep. Full-service or DIY using our free setup guide — your choice.</div>
+          <div class="tl-when">Weeks 1–2</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">4</div>
+        <div class="tl-content">
+          <div class="tl-title">Pre-launch inspection</div>
+          <div class="tl-desc">Our team visits with a detailed snagging checklist. Nothing goes live until we're satisfied.</div>
+          <div class="tl-when">Week 2–3</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot filled">5</div>
+        <div class="tl-content">
+          <div class="tl-title">Live on all platforms</div>
+          <div class="tl-desc">Listed and active on Airbnb, Booking.com and direct. Pricing set. First bookings typically within 72 hours.</div>
+          <div class="tl-when">Week 3</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="onb-side">
+      <div class="onb-card amber">
+        <div class="onb-l">Setup cost</div>
+        <div class="onb-amount">£300 – £600</div>
+        <div class="onb-desc">Photography &amp; staging, depending on property size and what's needed. Precise quote after the kick-off call. Recoverable within the first month of operation for most properties.</div>
+      </div>
+      <div class="onb-card">
+        <div class="onb-l">What you provide</div>
+        <ul class="list-clean" style="margin-top:6px;">
+          <li>Access to the property</li>
+          <li>Basic furnishing (we'll guide you)</li>
+          <li>Mortgage lender consent-to-let, if applicable</li>
+        </ul>
+      </div>
+      <div class="onb-card green">
+        <div class="onb-l">Stayful onboarding fee</div>
+        <div class="onb-amount">£0</div>
+        <div class="onb-desc">No onboarding fee. We earn through management, not setup.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 10: BOOK FOLLOW UP ═══ -->
+<div class="slide cream" data-name="Next Steps" data-bg="cream">
+  <div class="fi"><div class="eb">Where this conversation goes next</div></div>
+  <h2 class="fi">Let's get Adelphi Wharf 2 <em>earning</em></h2>
+  <p class="sh fi">Short-let puts £853/month more in Tim's account than long-let. £10,238 more per year on the same property. No mortgage. No downside. The question is just the start date.</p>
+
+  <div class="bm-grid fi">
+    <div class="bm-steps">
+      <div class="bm-step">
+        <div class="bm-num">1</div>
+        <div class="bm-bd">
+          <div class="bt">Confirm the property timeline</div>
+          <div class="bs">Is the flat currently vacant or tenanted? We can begin onboarding as soon as it's ready — typically live within 3 weeks of signing.</div>
+        </div>
+      </div>
+      <div class="bm-step">
+        <div class="bm-num">2</div>
+        <div class="bm-bd">
+          <div class="bt">Walk through the agreement</div>
+          <div class="bs">6-month minimum, 15% + VAT, what we manage, what stays with you. Plain English, your questions answered live.</div>
+        </div>
+      </div>
+      <div class="bm-step">
+        <div class="bm-num">3</div>
+        <div class="bm-bd">
+          <div class="bt">Agree the go-live timeline</div>
+          <div class="bs">Once a property is purchased and certs are in place, we're typically live within 3 weeks. First booking inside 72 hours of going live.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bm-cta">
+      <div class="ch">Pick a slot that works for you</div>
+      <a href="https://calendly.com/zac-stayful/call" target="_blank" class="bm-btn">Book follow up</a>
+      <div class="bm-contact">0113 479 0251 · zac@stayful.co.uk</div>
+    </div>
+  </div>
+
+  <div class="bm-close fi">"Mortgage covered from day one. £2,979/month clear every month — let's get Adelphi Wharf 2 live."</div>
+</div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="nav">
+  <button class="nav-arr" id="prev" aria-label="Previous">←</button>
+  <div class="dots" id="dots"></div>
+  <div class="nav-counter" id="counter">1 / 11</div>
+  <button class="nav-arr" id="next" aria-label="Next">→</button>
+</div>
+
+<script>
+const FORECAST = [1748, 1563, 1208, 1649, 1771, 1610, 2612, 2127, 2270, 2258, 2217, 2079];
+const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const LTL_MONTHLY = 1073;
+
+const slides = document.querySelectorAll('.slide');
+const TOTAL = slides.length;
+let cur = 0;
+
+const dotsEl = document.getElementById('dots');
+const counterEl = document.getElementById('counter');
+const tbMenu = document.getElementById('tb-menu');
+const tbLbl = document.getElementById('tb-slide-lbl');
+const SLIDE_NAMES = Array.from(slides).map(s => s.getAttribute('data-name'));
+
+SLIDE_NAMES.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => goTo(i);
+  dotsEl.appendChild(d);
+});
+
+SLIDE_NAMES.forEach((n, i) => {
+  const b = document.createElement('button');
+  b.className = 'tb-i' + (i === 0 ? ' active' : '');
+  b.textContent = n;
+  b.onclick = () => goTo(i);
+  tbMenu.appendChild(b);
+});
+
+function update() {
+  slides.forEach((s, i) => {
+    s.classList.remove('active', 'next', 'prev');
+    if (i === cur) s.classList.add('active');
+    else if (i < cur) s.classList.add('prev');
+    else s.classList.add('next');
+  });
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+  document.querySelectorAll('.tb-i').forEach((b, i) => b.classList.toggle('active', i === cur));
+  counterEl.textContent = (cur + 1) + ' / ' + TOTAL;
+  tbLbl.textContent = SLIDE_NAMES[cur];
+  document.getElementById('prev').disabled = (cur === 0);
+  document.getElementById('next').disabled = (cur === TOTAL - 1);
+}
+function goTo(i) {
+  if (i < 0 || i >= TOTAL || i === cur) return;
+  cur = i;
+  update();
+}
+function nav(dir) { goTo(cur + dir); }
+
+document.getElementById('prev').onclick = () => nav(-1);
+document.getElementById('next').onclick = () => nav(1);
+
+document.addEventListener('keydown', e => {
+  const tag = (document.activeElement && document.activeElement.tagName) || '';
+  if (tag === 'TEXTAREA' || tag === 'INPUT') return;
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nav(1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); nav(-1); }
+  if (e.key === 'f' || e.key === 'F') {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+});
+
+let tx = 0;
+document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+document.addEventListener('touchend', e => {
+  const dx = tx - e.changedTouches[0].clientX;
+  if (Math.abs(dx) > 60) nav(dx > 0 ? 1 : -1);
+});
+
+function buildBars() {
+  const bc = document.getElementById('bars');
+  const bn = document.getElementById('bnames');
+  const max = Math.max(...FORECAST);
+  const min = Math.min(...FORECAST);
+
+  const tip = document.createElement('div');
+  tip.id = 'bar-tip';
+  tip.innerHTML = '<div class="tip-month"></div><div class="tip-val"></div><div class="tip-vs"></div>';
+  document.getElementById('chart').appendChild(tip);
+
+  FORECAST.forEach((v, i) => {
+    const bw = document.createElement('div');
+    bw.className = 'bw';
+
+    const b = document.createElement('div');
+    b.className = 'bar' + (v === min ? ' lo' : '');
+    b.style.height = '0';
+
+    bw.addEventListener('mouseenter', function() {
+      tip.querySelector('.tip-month').textContent = MONTH_NAMES[i];
+      tip.querySelector('.tip-val').textContent = '£' + v.toLocaleString('en-GB');
+      const diff = v - LTL_MONTHLY;
+      tip.querySelector('.tip-vs').textContent = (diff >= 0 ? '+' : '') + '£' + diff.toLocaleString('en-GB') + ' vs long-let';
+      const cw = bc.parentElement.getBoundingClientRect();
+      const bRect = bw.getBoundingClientRect();
+      const tipL = (bRect.left + bRect.width / 2) - cw.left - 50;
+      const tipT = (bRect.top - cw.top) - 60;
+      tip.style.left = Math.max(0, tipL) + 'px';
+      tip.style.top = tipT + 'px';
+      tip.classList.add('show');
+    });
+    bw.addEventListener('mouseleave', () => tip.classList.remove('show'));
+
+    bw.appendChild(b);
+    bc.appendChild(bw);
+
+    const l = document.createElement('div');
+    l.className = 'bm';
+    l.textContent = MONTH_NAMES[i];
+    bn.appendChild(l);
+
+    setTimeout(() => { b.style.height = Math.round((v / max) * 110) + 'px'; }, 600 + i * 50);
+  });
+}
+
+const TODAY = new Date();
+const TODAY_STR = TODAY.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+document.getElementById('np-date').textContent = TODAY_STR;
+
+const QUESTION_LABELS = {
+  buying_stage: 'Where are you in the buying process?',
+  property_scope: 'Identified the property/area, or still scoping?',
+  budget_yield: "What's the budget and target yield?",
+  why_str: 'Why STR specifically — vs long-let or property funds?',
+  timeline: "What's your timeline — when do you want to be earning?",
+  think_about: 'Anything you want to think about before the follow-up?',
+  notes: 'Notes',
+};
+
+const NEXTSTEP_LABELS = {
+  'followup-booked': 'Follow-up booked',
+  'followup-date': 'Follow-up date',
+  'send-agreement': 'Send management agreement',
+  'send-cases': 'Send case studies',
+  'run-cranham-analyser': 'Run analyser on Cranham Close',
+};
+
+document.getElementById('np-copy').addEventListener('click', async () => {
+  const lines = [];
+  lines.push('WEB MEETING — Tim — ' + TODAY_STR);
+  lines.push('============================================');
+  lines.push('');
+  lines.push('PROFILE: Existing property looking for higher return');
+  lines.push('ADDRESS (web meeting): Adelphi Wharf 2, Salford M3 4LA');
+  lines.push('PHONE: cameronheslop@gmail.com');
+  lines.push('PROPERTY: Adelphi Wharf 2, Salford M3 4LA');
+  lines.push('STAYFUL NET: £65,752/yr (£5,479/mo) — Stayful STR Analysis');
+  lines.push('MORTGAGE: no mortgage — fully covered by STL net, £2,979/mo surplus');
+  lines.push('');
+  lines.push('PRE-QUALIFIER RESPONSES: None — Fresh mode');
+  lines.push('');
+  lines.push('DISCOVERY:');
+  document.querySelectorAll('[data-q]').forEach(el => {
+    const k = el.getAttribute('data-q');
+    if (k === 'notes') return;
+    const v = (el.value || '').trim();
+    lines.push('• ' + QUESTION_LABELS[k] + ':');
+    lines.push('  ' + (v || '(no answer)'));
+  });
+  lines.push('');
+  lines.push('NOTES:');
+  const notes = (document.querySelector('[data-q="notes"]').value || '').trim();
+  lines.push(notes || '(none)');
+  lines.push('');
+  lines.push('NEXT STEPS:');
+  document.querySelectorAll('[data-ns]').forEach(el => {
+    const k = el.getAttribute('data-ns');
+    let v;
+    if (el.type === 'checkbox') v = el.checked ? 'Yes' : 'No';
+    else v = el.value || '(not set)';
+    lines.push('• ' + NEXTSTEP_LABELS[k] + ': ' + v);
+  });
+  lines.push('');
+  lines.push('============================================');
+  lines.push('Generated ' + new Date().toLocaleString('en-GB'));
+
+  const text = lines.join('\n');
+
+  try {
+    await navigator.clipboard.writeText(text);
+    const status = document.getElementById('np-copy-status');
+    status.classList.add('show');
+    setTimeout(() => status.classList.remove('show'), 2400);
+  } catch (err) {
+    const w = window.open('', '_blank', 'width=600,height=600');
+    w.document.write('<pre style="font-family:monospace;padding:24px;font-size:13px;">' + text.replace(/</g, '&lt;') + '</pre>');
+  }
+});
+
+buildBars();
+update();
+</script>
+</body>
+</html>
