@@ -343,6 +343,20 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
   background:var(--green);color:#fff;
 }
 .gc-impact.MEDIUM{background:var(--am);}
+.db-overview{
+  margin-top:22px;background:var(--green-soft);border:1px solid var(--green-pale);
+  border-left:3px solid var(--green);border-radius:14px;padding:16px 22px;
+  display:flex;flex-direction:column;gap:9px;
+}
+.db-row{display:flex;align-items:center;gap:30px;flex-wrap:wrap;}
+.db-metric{display:flex;flex-direction:column;gap:4px;}
+.db-k{font-size:9.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--green);font-weight:500;}
+.db-val-row{display:flex;align-items:center;gap:10px;}
+.db-v{font-family:var(--serif);font-size:30px;line-height:1;color:var(--green-d);font-weight:400;}
+.db-unit{font-size:13px;color:var(--muted);}
+.db-tag{font-size:9px;font-weight:500;letter-spacing:0.1em;padding:3px 9px;border-radius:99px;background:var(--green);color:#fff;}
+.db-div{width:1px;align-self:stretch;background:var(--line);}
+.db-note{font-size:12px;color:var(--ink2);line-height:1.5;margin:0;}
 
 /* ─── COMPARABLE TABLE ───────────────────────── */
 .comp-table{margin-top:24px;background:var(--white);border-radius:14px;border:1px solid var(--green-pale);overflow:hidden;}
@@ -1029,6 +1043,17 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
   <div class="fi"><div class="eb">Demand intelligence · <!--ST:LEAD_LOCALITY-->Salford<!--/ST:LEAD_LOCALITY--> · <!--ST:LEAD_POSTCODE-->M3<!--/ST:LEAD_POSTCODE--></div></div>
   <h2 class="fi">Who actually <em>books</em> properties like this</h2>
   <p class="sh fi"><!--ST:WHO_BOOKS_SUBTITLE-->Built from the demand drivers around this property — the year-round guest streams that drive bookings.<!--/ST:WHO_BOOKS_SUBTITLE--></p>
+
+  <div class="db-overview fi">
+    <div class="db-row">
+      <div class="db-metric">
+        <span class="db-k">Direct booking potential</span>
+        <span class="db-val-row"><span class="db-v"><!--ST:BOOKING_SCORE-->100/100<!--/ST:BOOKING_SCORE--></span><!--ST:BOOKING_SCORE_TAG--><span class="db-tag">EXCELLENT</span><!--/ST:BOOKING_SCORE_TAG--></span>
+      </div>
+      <!--ST:EVENTS_INTEL--><div class="db-div"></div><div class="db-metric"><span class="db-k">Events nearby</span><span class="db-val-row"><span class="db-v">2,351</span><span class="db-unit">/ yr</span></span></div><!--/ST:EVENTS_INTEL-->
+    </div>
+    <p class="db-note">By Year 3, properties in this area typically reach 30–50% direct bookings — cutting platform fees from 15% toward zero on those stays.</p>
+  </div>
 
   <div class="guests-grid fi">
 <!-- ST:BLOCK_START DEMAND_DRIVER_CARDS -->
