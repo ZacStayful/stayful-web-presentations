@@ -897,6 +897,21 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .hsw-panel[data-panel="management"].active > *:nth-child(5){animation-delay:1.3s;}
 .hsw-panel[data-panel="management"].active > *:nth-child(6){animation-delay:1.55s;}
 
+/* Onboarding panel build-in — spans ~2s */
+.onb-intro{font-size:13px;color:rgba(243,238,224,0.7);font-weight:300;line-height:1.5;margin:-4px 0 4px;}
+.hsw-panel[data-panel="onboarding"] .onb-grid{margin-top:18px;}
+.hsw-panel[data-panel="onboarding"].active .onb-intro{animation:gvIn .5s var(--ease) both .15s;}
+.hsw-panel[data-panel="onboarding"].active .tl-item{animation:gvIn .5s var(--ease) both;}
+.hsw-panel[data-panel="onboarding"].active .tl-item:nth-child(1){animation-delay:.25s;}
+.hsw-panel[data-panel="onboarding"].active .tl-item:nth-child(2){animation-delay:.45s;}
+.hsw-panel[data-panel="onboarding"].active .tl-item:nth-child(3){animation-delay:.65s;}
+.hsw-panel[data-panel="onboarding"].active .tl-item:nth-child(4){animation-delay:.85s;}
+.hsw-panel[data-panel="onboarding"].active .tl-item:nth-child(5){animation-delay:1.05s;}
+.hsw-panel[data-panel="onboarding"].active .onb-card{animation:gvIn .5s var(--ease) both;}
+.hsw-panel[data-panel="onboarding"].active .onb-card:nth-child(1){animation-delay:1.25s;}
+.hsw-panel[data-panel="onboarding"].active .onb-card:nth-child(2){animation-delay:1.45s;}
+.hsw-panel[data-panel="onboarding"].active .onb-card:nth-child(3){animation-delay:1.6s;}
+
 /* staggered build-in when a panel opens */
 .hsw-panel.active .gv-flowhead{animation:gvIn .5s var(--ease) both .05s;}
 .hsw-panel.active .gv-flow > *{animation:gvIn .55s var(--ease) both;}
@@ -912,7 +927,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .hsw-panel.active .gv-card:nth-child(2){animation-delay:1.4s;}
 .hsw-panel.active .gv-card:nth-child(3){animation-delay:1.6s;}
 .hsw-panel.active .hsw-soon{animation:gvIn .6s var(--ease) both;}
-@media(max-width:900px){.gv-flow{flex-direction:column;}.gv-arrow{transform:rotate(90deg);align-self:center;}.gv-net,.hsw-tabs,.model-strip,.mh-tools,.mh-soft,.mh-you-grid{grid-template-columns:1fr;}.model-strip{flex-direction:column;gap:10px;}.ms-item{border-right:none;}}
+@media(max-width:900px){.gv-flow{flex-direction:column;}.gv-arrow{transform:rotate(90deg);align-self:center;}.gv-net,.hsw-tabs,.model-strip,.mh-tools,.mh-soft,.mh-you-grid,.onb-grid{grid-template-columns:1fr;}.model-strip{flex-direction:column;gap:10px;}.ms-item{border-right:none;}}
 
 /* ── Comp table — full width, all rows ───────────────────────── */
 .comp-table{width:100%;border:1px solid var(--bd);border-radius:10px;overflow:hidden;font-size:11.5px;margin-bottom:12px;}
@@ -1377,7 +1392,73 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
       </div>
 
       <div class="hsw-panel" data-panel="onboarding">
-        <div class="hsw-soon">Onboarding &amp; go-live — built out in the next revision.</div>
+        <div class="gv-flowhead">3 weeks from signature to live</div>
+        <p class="onb-intro">Once you sign and the property is ready, the path is short and structured.</p>
+        <div class="onb-grid">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot filled">1</div>
+              <div class="tl-content">
+                <div class="tl-title">Management agreement signed</div>
+                <div class="tl-desc">We send the contract by email and walk you through every clause. Plain English, no surprises.</div>
+                <div class="tl-when">Day 1</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot filled">2</div>
+              <div class="tl-content">
+                <div class="tl-title">Kick-off call</div>
+                <div class="tl-desc">We agree your specific property plan, create your dedicated Slack channel, and introduce your management team.</div>
+                <div class="tl-when">Week 1</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot">3</div>
+              <div class="tl-content">
+                <div class="tl-title">Photography, staging &amp; setup</div>
+                <div class="tl-desc">Professional photography and listing prep. Full-service or DIY using our free setup guide — your choice.</div>
+                <div class="tl-when">Weeks 1–2</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot">4</div>
+              <div class="tl-content">
+                <div class="tl-title">Pre-launch inspection</div>
+                <div class="tl-desc">Our team visits with a detailed snagging checklist. Nothing goes live until we're satisfied.</div>
+                <div class="tl-when">Week 2–3</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot filled">5</div>
+              <div class="tl-content">
+                <div class="tl-title">Live on all platforms</div>
+                <div class="tl-desc">Listed and active on Airbnb, Booking.com and direct. Pricing set. First bookings typically within 72 hours.</div>
+                <div class="tl-when">Week 3</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="onb-side">
+            <div class="onb-card amber">
+              <div class="onb-l">Setup cost</div>
+              <div class="onb-amount">£300 – £600</div>
+              <div class="onb-desc">Photography &amp; staging, depending on property size and what's needed. Precise quote after the kick-off call. Recoverable within the first month of operation for most properties.</div>
+            </div>
+            <div class="onb-card">
+              <div class="onb-l">What you provide</div>
+              <ul class="list-clean" style="margin-top:6px;">
+                <li>Access to the property</li>
+                <li>Basic furnishing (we'll guide you)</li>
+                <li>Mortgage lender consent-to-let, if applicable</li>
+              </ul>
+            </div>
+            <div class="onb-card green">
+              <div class="onb-l">Stayful onboarding fee</div>
+              <div class="onb-amount">£0</div>
+              <div class="onb-desc">No onboarding fee. We earn through management, not setup.</div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="hsw-panel" data-panel="management">
         <div class="gv-flowhead">What Stayful runs — end to end</div>
