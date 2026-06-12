@@ -811,6 +811,69 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .verdict-sub{font-size:12.5px;color:rgba(243,238,224,0.72);font-weight:300;line-height:1.55;max-width:660px;margin-top:10px;}
 @media (max-width:900px){.risk-bar{width:48px;}.risk-num{font-size:19px;}.verdict-a{font-size:46px;}}
 
+/* ── How Stayful works — model strip + 3-button hub ──────────── */
+.model-strip{display:flex;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px 8px;margin-bottom:18px;}
+.ms-item{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:3px;padding:0 14px;border-right:1px solid rgba(255,255,255,0.08);}
+.ms-item:last-child{border-right:none;}
+.ms-v{font-family:var(--serif);font-size:20px;color:#f3eee0;font-weight:400;line-height:1.1;}
+.ms-l{font-size:10.5px;color:rgba(243,238,224,0.6);font-weight:300;line-height:1.35;}
+
+.hsw-tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:18px;}
+.hsw-tab{
+  display:flex;align-items:center;gap:12px;text-align:left;cursor:pointer;font-family:var(--sans);
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:15px 18px;
+  transition:all .2s var(--ease);color:#f3eee0;
+}
+.hsw-tab:hover{background:rgba(122,155,113,0.14);border-color:rgba(122,155,113,0.4);transform:translateY(-1px);}
+.hsw-tab.active{background:linear-gradient(135deg,var(--green),var(--green-d));border-color:var(--green-light);box-shadow:0 10px 30px rgba(0,0,0,0.3);}
+.hsw-tab-ic{font-size:21px;flex-shrink:0;}
+.hsw-tab-t{display:block;font-size:13.5px;font-weight:600;letter-spacing:-0.01em;}
+.hsw-tab-s{display:block;font-size:11px;color:rgba(243,238,224,0.6);font-weight:300;margin-top:2px;}
+.hsw-tab.active .hsw-tab-s{color:rgba(243,238,224,0.82);}
+
+.hsw-stage{position:relative;}
+.hsw-panel{display:none;}
+.hsw-panel.active{display:block;}
+.hsw-panel.collapsing{animation:hswCollapse 3s var(--ease) forwards;}
+@keyframes hswCollapse{0%{opacity:1;transform:translate(0,0) scale(1);}100%{opacity:0;transform:translate(var(--tx,0),var(--ty,0)) scale(0.04);}}
+@keyframes gvIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+
+/* Guest vetting flow */
+.gv-flowhead{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green-light);font-weight:600;margin-bottom:14px;}
+.gv-flow{display:flex;align-items:stretch;gap:8px;}
+.gv-step{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px 14px;display:flex;flex-direction:column;gap:7px;}
+.gv-step.gv-gate{border-color:rgba(217,168,62,0.5);background:rgba(217,168,62,0.08);}
+.gv-step.gv-pass{border-color:rgba(122,155,113,0.5);background:rgba(122,155,113,0.1);}
+.gv-ic{font-size:21px;}
+.gv-st{font-size:13px;font-weight:600;color:#f3eee0;line-height:1.2;}
+.gv-sd{font-size:11px;color:rgba(243,238,224,0.66);font-weight:300;line-height:1.45;}
+.gv-arrow{display:flex;align-items:center;color:var(--green-light);font-size:17px;flex-shrink:0;}
+.gv-net{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px;}
+.gv-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:15px 17px;}
+.gv-card-l{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(243,238,224,0.55);font-weight:600;margin-bottom:6px;}
+.gv-card-v{font-family:var(--serif);font-size:26px;font-weight:300;color:#f3eee0;line-height:1;margin-bottom:8px;}
+.gv-card-d{font-size:11px;color:rgba(243,238,224,0.68);font-weight:300;line-height:1.45;}
+.gv-ins .gv-card-v{color:#9fc295;}
+.gv-trust .gv-card-v{color:var(--green-light);}
+.hsw-soon{padding:48px 40px;text-align:center;color:rgba(243,238,224,0.5);font-size:13px;border:1px dashed rgba(255,255,255,0.14);border-radius:12px;}
+
+/* staggered build-in when a panel opens */
+.hsw-panel.active .gv-flowhead{animation:gvIn .5s var(--ease) both .05s;}
+.hsw-panel.active .gv-flow > *{animation:gvIn .55s var(--ease) both;}
+.hsw-panel.active .gv-flow > *:nth-child(1){animation-delay:.15s;}
+.hsw-panel.active .gv-flow > *:nth-child(2){animation-delay:.3s;}
+.hsw-panel.active .gv-flow > *:nth-child(3){animation-delay:.45s;}
+.hsw-panel.active .gv-flow > *:nth-child(4){animation-delay:.6s;}
+.hsw-panel.active .gv-flow > *:nth-child(5){animation-delay:.75s;}
+.hsw-panel.active .gv-flow > *:nth-child(6){animation-delay:.9s;}
+.hsw-panel.active .gv-flow > *:nth-child(7){animation-delay:1.05s;}
+.hsw-panel.active .gv-card{animation:gvIn .55s var(--ease) both;}
+.hsw-panel.active .gv-card:nth-child(1){animation-delay:1.2s;}
+.hsw-panel.active .gv-card:nth-child(2){animation-delay:1.4s;}
+.hsw-panel.active .gv-card:nth-child(3){animation-delay:1.6s;}
+.hsw-panel.active .hsw-soon{animation:gvIn .6s var(--ease) both;}
+@media(max-width:900px){.gv-flow{flex-direction:column;}.gv-arrow{transform:rotate(90deg);align-self:center;}.gv-net,.hsw-tabs,.model-strip{grid-template-columns:1fr;}.model-strip{flex-direction:column;gap:10px;}.ms-item{border-right:none;}}
+
 /* ── Comp table — full width, all rows ───────────────────────── */
 .comp-table{width:100%;border:1px solid var(--bd);border-radius:10px;overflow:hidden;font-size:11.5px;margin-bottom:12px;}
 .comp-row{display:grid;grid-template-columns:1fr 60px 64px 48px 80px 76px;gap:0;border-bottom:1px solid var(--bd);padding:6px 12px;align-items:center;}
@@ -1201,28 +1264,84 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 <div class="slide dark" data-name="How Stayful works" data-bg="dark">
   <div class="fi"><div class="eb">The 60-second version</div></div>
   <h2 class="fi">How Stayful <em>works</em></h2>
-  <p class="sh fi">Four things to know about the model before we go into the numbers.</p>
+  <p class="sh fi">The model in one line below — then open any area to see exactly how it works.</p>
 
-  <div class="cards-4 fi">
-    <div class="card">
-      <div class="cs">Fee structure</div>
-      <div class="ct">15% + VAT</div>
-      <div class="cv">Of net booking revenue. No setup fee, no monthly fee, no exit fee. Aligned with you — we earn when you earn.</div>
+  <div class="model-strip fi">
+    <div class="ms-item"><span class="ms-v">15% + VAT</span><span class="ms-l">Of net revenue · no setup, monthly or exit fee</span></div>
+    <div class="ms-item"><span class="ms-v">Cleaning</span><span class="ms-l">Charged to guests, not your income</span></div>
+    <div class="ms-item"><span class="ms-v">6-month min</span><span class="ms-l">Then rolling · ~3 weeks to go live</span></div>
+  </div>
+
+  <div class="hsw fi" id="hsw">
+    <div class="hsw-tabs">
+      <button class="hsw-tab" type="button" data-panel="vetting" onclick="hswOpen(this)">
+        <span class="hsw-tab-ic">🛡️</span>
+        <span><span class="hsw-tab-t">Guest vetting</span><span class="hsw-tab-s">How we protect your property</span></span>
+      </button>
+      <button class="hsw-tab" type="button" data-panel="onboarding" onclick="hswOpen(this)">
+        <span class="hsw-tab-ic">🚀</span>
+        <span><span class="hsw-tab-t">Onboarding &amp; go-live</span><span class="hsw-tab-s">Signature to live in ~3 weeks</span></span>
+      </button>
+      <button class="hsw-tab" type="button" data-panel="management" onclick="hswOpen(this)">
+        <span class="hsw-tab-ic">📊</span>
+        <span><span class="hsw-tab-t">Management &amp; your experience</span><span class="hsw-tab-s">What we run · what you see</span></span>
+      </button>
     </div>
-    <div class="card">
-      <div class="cs">Cleaning</div>
-      <div class="ct">Charged to guests</div>
-      <div class="cv">Cleaning fees come out of the guest booking, not your income. The "net" figures already strip them out.</div>
-    </div>
-    <div class="card">
-      <div class="cs">What we manage</div>
-      <div class="ct">End-to-end</div>
-      <div class="cv">Listing, pricing, guest comms, check-in, cleaning coordination, repairs handling, monthly reporting. You handle mortgage, insurance, certs.</div>
-    </div>
-    <div class="card">
-      <div class="cs">Term</div>
-      <div class="ct">6-month minimum</div>
-      <div class="cv">Then rolling. Setup takes about 3 weeks before going live — that lead time is part of the 6 months.</div>
+
+    <div class="hsw-stage" id="hswStage">
+      <div class="hsw-panel" data-panel="vetting">
+        <div class="gv-flowhead">Every booking runs through the same gate</div>
+        <div class="gv-flow">
+          <div class="gv-step">
+            <div class="gv-ic">📩</div>
+            <div class="gv-st">Guest books</div>
+            <div class="gv-sd">A booking comes in via Airbnb, Booking.com or direct.</div>
+          </div>
+          <div class="gv-arrow">→</div>
+          <div class="gv-step gv-gate">
+            <div class="gv-ic">🔒</div>
+            <div class="gv-st">Deposit captured · £200–£400</div>
+            <div class="gv-sd">Check-in details are withheld until the security deposit is paid.</div>
+          </div>
+          <div class="gv-arrow">→</div>
+          <div class="gv-step">
+            <div class="gv-ic">🪪</div>
+            <div class="gv-st">ID &amp; background check</div>
+            <div class="gv-sd">Government-issued ID verified and screened for every guest. No exceptions.</div>
+          </div>
+          <div class="gv-arrow">→</div>
+          <div class="gv-step gv-pass">
+            <div class="gv-ic">✅</div>
+            <div class="gv-st">Check-in released</div>
+            <div class="gv-sd">Only once the deposit and ID clear does the guest receive check-in information.</div>
+          </div>
+        </div>
+
+        <div class="gv-net">
+          <div class="gv-card gv-ins">
+            <div class="gv-card-l">If damage happens</div>
+            <div class="gv-card-v">£100,000</div>
+            <div class="gv-card-d">Insurance is in place for every guest stay, covering major damages.</div>
+          </div>
+          <div class="gv-card">
+            <div class="gv-card-l">If quality slips</div>
+            <div class="gv-card-v">Inspection visit</div>
+            <div class="gv-card-d">A drop in guest reviews or a rise in complaints triggers an on-site visit to assess the property.</div>
+          </div>
+          <div class="gv-card gv-trust">
+            <div class="gv-card-l">Lower-risk demand</div>
+            <div class="gv-card-v">30% direct</div>
+            <div class="gv-card-d">Historically ~30% of bookings are direct from existing, trusted repeat guests.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hsw-panel" data-panel="onboarding">
+        <div class="hsw-soon">Onboarding &amp; go-live — built out in the next revision.</div>
+      </div>
+      <div class="hsw-panel" data-panel="management">
+        <div class="hsw-soon">Management &amp; your experience — built out in the next revision.</div>
+      </div>
     </div>
   </div>
 </div>
@@ -1258,44 +1377,6 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
         <div class="cs" style="color:var(--am);">Pre-live</div>
         <div class="cv">Before going live we coordinate the gas safety certificate, electrical certificate, and confirm landlord insurance is in place. You provide — we organise.</div>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ SLIDE: HOW WE VET GUESTS ═══ -->
-<div class="slide dark" data-name="Vet Guests" data-bg="dark">
-  <div class="fi"><div class="eb">Protection · Built into every booking</div></div>
-  <h2 class="fi">How we vet guests &amp; protect <em>your</em> property</h2>
-  <p class="sh fi">Five protection layers — every booking, every property, every stay. The reason owners sleep at night is the system, not luck.</p>
-
-  <div class="cards-3 fi" style="margin-top:24px;">
-    <div class="card">
-      <div class="cs">Damage cover</div>
-      <div class="ct">£100,000</div>
-      <div class="cv">Insurance per guest stay through our Plum Guide partnership. Covers accidental damage, theft, and liability claims.</div>
-    </div>
-    <div class="card">
-      <div class="cs">ID verification</div>
-      <div class="ct">100% verified</div>
-      <div class="cv">Government-issued ID checked for every guest, every booking. No exceptions, no anonymous stays.</div>
-    </div>
-    <div class="card">
-      <div class="cs">Security deposit</div>
-      <div class="ct">£200 per stay</div>
-      <div class="cv">Held against any damage or extra cleaning. Returned to the guest after each stay if there's nothing to charge.</div>
-    </div>
-  </div>
-
-  <div class="cards-2 fi" style="margin-top:14px;">
-    <div class="card card-soft">
-      <div class="cs">Inspections</div>
-      <div class="ct">Quarterly walkthrough</div>
-      <div class="cv">Our team visits the property every three months, walks through with a checklist, and reports back to you with photos. You stay informed without lifting a finger.</div>
-    </div>
-    <div class="card card-soft">
-      <div class="cs">Repeat customers</div>
-      <div class="ct">30% direct bookings</div>
-      <div class="cv">Across our portfolio, ~30% of bookings come from previous guests booking direct. These are vetted, lower-friction, and lower-risk than first-time platform guests.</div>
     </div>
   </div>
 </div>
@@ -1414,47 +1495,6 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
   </div>
 </div>
 
-<!-- ═══ SLIDE 10: BOOK FOLLOW UP ═══ -->
-<div class="slide cream" data-name="Next Steps" data-bg="cream">
-  <div class="fi"><div class="eb">Where this conversation goes next</div></div>
-  <h2 class="fi">Let's get 43 The Royal Wilton Place Salford M6 3WP M6 3WP <em>earning</em></h2>
-  <p class="sh fi">Short-let puts -£181/month more in Sunil Pal's account than long-let. -£2,167 more per year on the same property.</p>
-
-  <div class="bm-grid fi">
-    <div class="bm-steps">
-      <div class="bm-step">
-        <div class="bm-num">1</div>
-        <div class="bm-bd">
-          <div class="bt">Confirm the property timeline</div>
-          <div class="bs">Is the flat currently vacant or tenanted? We can begin onboarding as soon as it's ready — typically live within 3 weeks of signing.</div>
-        </div>
-      </div>
-      <div class="bm-step">
-        <div class="bm-num">2</div>
-        <div class="bm-bd">
-          <div class="bt">Walk through the agreement</div>
-          <div class="bs">6-month minimum, 15% + VAT, what we manage, what stays with you. Plain English, your questions answered live.</div>
-        </div>
-      </div>
-      <div class="bm-step">
-        <div class="bm-num">3</div>
-        <div class="bm-bd">
-          <div class="bt">Agree the go-live timeline</div>
-          <div class="bs">Once a property is purchased and certs are in place, we're typically live within 3 weeks. First booking inside 72 hours of going live.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="bm-cta">
-      <div class="ch">Pick a slot that works for you</div>
-      <a href="https://calendly.com/zac-stayful/call" target="_blank" class="bm-btn">Book follow up</a>
-      <div class="bm-contact">0113 479 0251 · zac@stayful.co.uk</div>
-    </div>
-  </div>
-
-  <div class="bm-close fi">"Let&apos;s get 43 The Royal Wilton Place Salford M6 3WP M6 3WP live."</div>
-</div>
-
 </div>
 
 <!-- BOTTOM NAV -->
@@ -1557,6 +1597,42 @@ function playRisk(btn) {
       })(start);
     }, delay);
   });
+}
+
+// How Stayful works — 3-button hub. Open a panel; switching panels collapses
+// the current one INTO the clicked button (3s), then populates the new one (2s).
+let hswBusy = false;
+function hswOpen(btn) {
+  const hsw = btn.closest('.hsw');
+  if (!hsw || hswBusy) return;
+  const key = btn.getAttribute('data-panel');
+  const tabs = hsw.querySelectorAll('.hsw-tab');
+  const target = hsw.querySelector('.hsw-panel[data-panel="' + key + '"]');
+  const current = hsw.querySelector('.hsw-panel.active');
+  if (!target || current === target) return;
+
+  const setActiveTab = () => tabs.forEach(t => t.classList.toggle('active', t === btn));
+  const populate = () => {
+    target.classList.add('active');
+    setActiveTab();
+    hswBusy = false;
+  };
+
+  if (!current) { populate(); return; }
+
+  // collapse current panel, regressing toward the clicked button
+  hswBusy = true;
+  const b = btn.getBoundingClientRect();
+  const c = current.getBoundingClientRect();
+  current.style.setProperty('--tx', ((b.left + b.width / 2) - (c.left + c.width / 2)) + 'px');
+  current.style.setProperty('--ty', ((b.top + b.height / 2) - (c.top + c.height / 2)) + 'px');
+  current.classList.add('collapsing');
+  setTimeout(() => {
+    current.classList.remove('active', 'collapsing');
+    current.style.removeProperty('--tx');
+    current.style.removeProperty('--ty');
+    populate(); // panel's own .active build-in runs over ~2s
+  }, 3000);
 }
 
 document.getElementById('prev').onclick = () => nav(-1);
