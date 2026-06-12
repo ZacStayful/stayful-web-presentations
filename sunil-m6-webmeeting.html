@@ -834,7 +834,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .hsw-stage{position:relative;}
 .hsw-panel{display:none;}
 .hsw-panel.active{display:block;}
-.hsw-panel.collapsing{animation:hswCollapse 3s var(--ease) forwards;}
+.hsw-panel.collapsing{animation:hswCollapse 2s var(--ease) forwards;}
 @keyframes hswCollapse{0%{opacity:1;transform:translate(0,0) scale(1);}100%{opacity:0;transform:translate(var(--tx,0),var(--ty,0)) scale(0.04);}}
 @keyframes gvIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
 
@@ -877,21 +877,25 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .mh-scard{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:15px 17px;}
 .mh-scard .mh-ts{color:rgba(243,238,224,0.55);text-transform:uppercase;letter-spacing:0.1em;font-size:9.5px;margin:0 0 5px;}
 .mh-scard .mh-tt{font-size:14px;margin-bottom:6px;}
-.mh-you{background:rgba(217,168,62,0.07);border:1px solid rgba(217,168,62,0.3);border-radius:12px;padding:15px 18px;}
-.mh-you-h{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#d9a83e;font-weight:600;margin-bottom:11px;}
-.mh-you-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 18px;}
-.mh-you-i{display:flex;align-items:flex-start;gap:9px;font-size:12px;color:rgba(243,238,224,0.82);font-weight:300;line-height:1.4;}
-.mh-you-i::before{content:"•";color:#d9a83e;font-weight:700;flex-shrink:0;}
+.mh-you{background:linear-gradient(135deg,rgba(122,155,113,0.14),rgba(122,155,113,0.05));border:1px solid rgba(122,155,113,0.4);border-radius:16px;padding:26px 28px;margin-top:28px;}
+.mh-you-h{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--green-light);font-weight:700;margin-bottom:5px;}
+.mh-you-sub{font-size:15px;color:rgba(243,238,224,0.92);font-weight:300;line-height:1.45;margin-bottom:20px;max-width:680px;}
+.mh-you-sub em{font-style:normal;color:#9fc295;font-weight:500;}
+.mh-you-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.mh-you-card{display:flex;align-items:flex-start;gap:15px;background:rgba(255,255,255,0.045);border:1px solid rgba(122,155,113,0.28);border-radius:13px;padding:18px 20px;}
+.mh-you-ic{font-size:23px;line-height:1;flex-shrink:0;width:46px;height:46px;display:flex;align-items:center;justify-content:center;background:rgba(122,155,113,0.18);border:1px solid rgba(122,155,113,0.3);border-radius:12px;}
+.mh-you-tx .t{font-size:15px;font-weight:600;color:#f3eee0;line-height:1.2;margin-bottom:4px;}
+.mh-you-tx .d{font-size:12px;color:rgba(243,238,224,0.64);font-weight:300;line-height:1.45;}
 .mh-sub{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green-light);font-weight:600;margin:22px 0 12px;}
 
-/* staggered build-in for the management panel */
+/* staggered build-in for the management panel — spans ~2s */
 .hsw-panel[data-panel="management"].active > *{animation:gvIn .5s var(--ease) both;}
-.hsw-panel[data-panel="management"].active > *:nth-child(1){animation-delay:.05s;}
-.hsw-panel[data-panel="management"].active > *:nth-child(2){animation-delay:.2s;}
-.hsw-panel[data-panel="management"].active > *:nth-child(3){animation-delay:.35s;}
-.hsw-panel[data-panel="management"].active > *:nth-child(4){animation-delay:.5s;}
-.hsw-panel[data-panel="management"].active > *:nth-child(5){animation-delay:.65s;}
-.hsw-panel[data-panel="management"].active > *:nth-child(6){animation-delay:.8s;}
+.hsw-panel[data-panel="management"].active > *:nth-child(1){animation-delay:.1s;}
+.hsw-panel[data-panel="management"].active > *:nth-child(2){animation-delay:.4s;}
+.hsw-panel[data-panel="management"].active > *:nth-child(3){animation-delay:.7s;}
+.hsw-panel[data-panel="management"].active > *:nth-child(4){animation-delay:1s;}
+.hsw-panel[data-panel="management"].active > *:nth-child(5){animation-delay:1.3s;}
+.hsw-panel[data-panel="management"].active > *:nth-child(6){animation-delay:1.55s;}
 
 /* staggered build-in when a panel opens */
 .hsw-panel.active .gv-flowhead{animation:gvIn .5s var(--ease) both .05s;}
@@ -908,7 +912,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .hsw-panel.active .gv-card:nth-child(2){animation-delay:1.4s;}
 .hsw-panel.active .gv-card:nth-child(3){animation-delay:1.6s;}
 .hsw-panel.active .hsw-soon{animation:gvIn .6s var(--ease) both;}
-@media(max-width:900px){.gv-flow{flex-direction:column;}.gv-arrow{transform:rotate(90deg);align-self:center;}.gv-net,.hsw-tabs,.model-strip,.mh-tools,.mh-soft{grid-template-columns:1fr;}.model-strip{flex-direction:column;gap:10px;}.ms-item{border-right:none;}}
+@media(max-width:900px){.gv-flow{flex-direction:column;}.gv-arrow{transform:rotate(90deg);align-self:center;}.gv-net,.hsw-tabs,.model-strip,.mh-tools,.mh-soft,.mh-you-grid{grid-template-columns:1fr;}.model-strip{flex-direction:column;gap:10px;}.ms-item{border-right:none;}}
 
 /* ── Comp table — full width, all rows ───────────────────────── */
 .comp-table{width:100%;border:1px solid var(--bd);border-radius:10px;overflow:hidden;font-size:11.5px;margin-bottom:12px;}
@@ -1442,11 +1446,36 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 
         <div class="mh-you">
           <div class="mh-you-h">What stays with you</div>
+          <div class="mh-you-sub">You own the asset — so <em>four things</em> remain the landlord's responsibility. Everything else above, Stayful handles.</div>
           <div class="mh-you-grid">
-            <div class="mh-you-i">Mortgage payments &amp; lender consent-to-let</div>
-            <div class="mh-you-i">Buildings &amp; contents insurance</div>
-            <div class="mh-you-i">Annual safety certificates (gas, electric, EPC)</div>
-            <div class="mh-you-i">Council tax &amp; utility bills</div>
+            <div class="mh-you-card">
+              <div class="mh-you-ic">🏦</div>
+              <div class="mh-you-tx">
+                <div class="t">Mortgage &amp; lender consent</div>
+                <div class="d">Your mortgage payments, and securing consent-to-let from your lender.</div>
+              </div>
+            </div>
+            <div class="mh-you-card">
+              <div class="mh-you-ic">🛡️</div>
+              <div class="mh-you-tx">
+                <div class="t">Insurance</div>
+                <div class="d">Buildings &amp; contents cover suitable for short-let use.</div>
+              </div>
+            </div>
+            <div class="mh-you-card">
+              <div class="mh-you-ic">📋</div>
+              <div class="mh-you-tx">
+                <div class="t">Safety certificates</div>
+                <div class="d">Annual gas, electrical &amp; EPC certificates kept up to date.</div>
+              </div>
+            </div>
+            <div class="mh-you-card">
+              <div class="mh-you-ic">🧾</div>
+              <div class="mh-you-tx">
+                <div class="t">Council tax &amp; utilities</div>
+                <div class="d">Council tax and the standing utility accounts for the property.</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1741,7 +1770,7 @@ function hswOpen(btn) {
     current.style.removeProperty('--tx');
     current.style.removeProperty('--ty');
     populate(); // panel's own .active build-in runs over ~2s
-  }, 3000);
+  }, 2000); // collapse animation duration
 }
 
 document.getElementById('prev').onclick = () => nav(-1);
