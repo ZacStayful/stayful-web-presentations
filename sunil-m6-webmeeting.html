@@ -683,6 +683,26 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .cb-v{font-family:var(--serif);font-size:26px;font-weight:300;color:var(--gc);line-height:1;}
 .cb-div{width:1px;height:40px;background:rgba(255,255,255,0.1);flex-shrink:0;}
 
+/* ── Revenue outlook strip — time-to-competitive + top-tier ──── */
+.rev-outlook{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.ro-card{border-radius:12px;padding:16px 20px;display:flex;flex-direction:column;}
+.ro-catchup{background:var(--green-soft);border:1px solid var(--green-pale);}
+.ro-eb{font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--green);font-weight:600;margin-bottom:9px;}
+.ro-headline{font-family:var(--serif);font-size:21px;font-weight:400;color:var(--green-d);line-height:1.22;letter-spacing:-0.01em;}
+.ro-headline strong{font-weight:600;color:var(--green);}
+.ro-note{font-size:10.5px;color:var(--muted);font-weight:300;line-height:1.45;margin-top:auto;padding-top:10px;font-style:italic;}
+.ro-top{background:linear-gradient(135deg,var(--green-d),var(--green-dd));border:1px solid var(--green-d);position:relative;overflow:hidden;}
+.ro-top::before{content:"";position:absolute;top:-50%;right:-25%;width:70%;height:160%;background:radial-gradient(circle,rgba(122,155,113,0.18),transparent 70%);pointer-events:none;}
+.ro-top>*{position:relative;z-index:1;}
+.ro-top .ro-eb{color:var(--green-light);}
+.ro-top .ro-note{color:rgba(243,238,224,0.55);}
+.ro-figs{display:flex;align-items:center;gap:0;margin-top:2px;}
+.ro-fig{flex:1;display:flex;flex-direction:column;gap:4px;}
+.ro-fig-l{font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(243,238,224,0.6);font-weight:500;}
+.ro-fig-v{font-family:var(--serif);font-size:30px;font-weight:300;color:#f3eee0;line-height:1;}
+.ro-fig-div{width:1px;height:38px;background:rgba(255,255,255,0.14);margin:0 18px;flex-shrink:0;}
+@media (max-width:900px){.rev-outlook{grid-template-columns:1fr;}}
+
 /* ── Comp table — full width, all rows ───────────────────────── */
 .comp-table{width:100%;border:1px solid var(--bd);border-radius:10px;overflow:hidden;font-size:11.5px;margin-bottom:12px;}
 .comp-row{display:grid;grid-template-columns:1fr 60px 64px 48px 80px 76px;gap:0;border-bottom:1px solid var(--bd);padding:6px 12px;align-items:center;}
@@ -926,6 +946,23 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
       <div class="cb-item"><div class="cb-l">Average Occupancy</div><div class="cb-v">56%</div></div>
       <div class="cb-div"></div>
       <div class="cb-item"><div class="cb-l">Average Annual Revenue</div><div class="cb-v">£13,683</div></div>
+    </div>
+
+    <div class="rev-outlook fi">
+      <div class="ro-card ro-catchup">
+        <div class="ro-eb">Time to become competitive</div>
+        <div class="ro-headline"><strong>6–10 months</strong> to reach the market average of 19 reviews</div>
+        <div class="ro-note">You can expect to achieve 85% of the forecast figures from 10 reviews onwards.</div>
+      </div>
+      <div class="ro-card ro-top">
+        <div class="ro-eb">Beat the average → top 10% of listings in this area</div>
+        <div class="ro-figs">
+          <div class="ro-fig"><div class="ro-fig-l">Annual net revenue</div><div class="ro-fig-v">£12,017</div></div>
+          <div class="ro-fig-div"></div>
+          <div class="ro-fig"><div class="ro-fig-l">Monthly net</div><div class="ro-fig-v">£1,001</div></div>
+        </div>
+        <div class="ro-note">Based on the area's top performer — £23,111 gross, less 48% operating costs.</div>
+      </div>
     </div>
 
     <div class="comp-table">
