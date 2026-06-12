@@ -728,6 +728,134 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 
 
 
+/* ── Revenue outlook strip — time-to-competitive + top-tier ──── */
+.rev-outlook{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.ro-card{border-radius:12px;padding:16px 20px;display:flex;flex-direction:column;}
+.ro-catchup{background:var(--green-soft);border:1px solid var(--green-pale);}
+.ro-eb{font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--green);font-weight:600;margin-bottom:9px;}
+.ro-headline{font-family:var(--serif);font-size:21px;font-weight:400;color:var(--green-d);line-height:1.22;letter-spacing:-0.01em;}
+.ro-headline strong{font-weight:600;color:var(--green);}
+.ro-note{font-size:10.5px;color:var(--muted);font-weight:300;line-height:1.45;margin-top:auto;padding-top:10px;font-style:italic;}
+.ro-top{background:linear-gradient(135deg,var(--green-d),var(--green-dd));border:1px solid var(--green-d);position:relative;overflow:hidden;}
+.ro-top::before{content:"";position:absolute;top:-50%;right:-25%;width:70%;height:160%;background:radial-gradient(circle,rgba(122,155,113,0.18),transparent 70%);pointer-events:none;}
+.ro-top>*{position:relative;z-index:1;}
+.ro-top .ro-eb{color:var(--green-light);}
+.ro-top .ro-note{color:rgba(243,238,224,0.55);}
+.ro-figs{display:flex;align-items:center;gap:0;margin-top:2px;}
+.ro-fig{flex:1;display:flex;flex-direction:column;gap:4px;}
+.ro-fig-l{font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(243,238,224,0.6);font-weight:500;}
+.ro-fig-v{font-family:var(--serif);font-size:30px;font-weight:300;color:#f3eee0;line-height:1;}
+.ro-fig-div{width:1px;height:38px;background:rgba(255,255,255,0.14);margin:0 18px;flex-shrink:0;}
+@media (max-width:900px){.rev-outlook{grid-template-columns:1fr;}}
+
+/* ── Scenario range — best / likely / worst monthly net ──────── */
+.scenario-wrap{margin-bottom:12px;}
+.scenario-h{font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--green);font-weight:600;margin-bottom:9px;}
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.sc-card{border-radius:12px;padding:15px 18px;border:1px solid var(--green-pale);background:var(--white);display:flex;flex-direction:column;}
+.sc-tag{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;margin-bottom:7px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+.sc-v{font-family:var(--serif);font-weight:300;font-size:32px;line-height:1;color:var(--green-d);}
+.sc-v span{font-size:13px;font-weight:400;color:var(--muted);}
+.sc-need{font-size:10.5px;color:var(--ink2);font-weight:300;line-height:1.45;margin-top:9px;}
+.sc-need em{font-style:italic;color:var(--green);font-weight:400;}
+.sc-best{background:var(--green-soft);border-color:var(--green-pale);}
+.sc-best .sc-tag{color:var(--green);}
+.sc-likely{border-color:var(--green);box-shadow:0 6px 22px rgba(45,74,53,0.10);}
+.sc-likely .sc-tag{color:var(--green-d);}
+.sc-base-badge{font-size:8px;background:var(--green);color:#fff;padding:2px 7px;border-radius:99px;letter-spacing:0.07em;font-weight:600;}
+.sc-worst{background:var(--cream-d);border-color:var(--cream-d);}
+.sc-worst .sc-tag{color:var(--am);}
+.sc-worst .sc-v{color:var(--ink2);}
+.sc-unlikely{font-size:8px;background:var(--am-pale);color:var(--am);padding:2px 7px;border-radius:99px;letter-spacing:0.05em;font-weight:700;}
+@media (max-width:900px){.scenario-grid{grid-template-columns:1fr;}}
+
+/* Scenario cards on dark slides (Investment Returns) */
+.slide.dark .scenario-h{color:var(--green-light);}
+.slide.dark .sc-card{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.1);}
+.slide.dark .sc-v{color:#f3eee0;}
+.slide.dark .sc-v span{color:rgba(243,238,224,0.55);}
+.slide.dark .sc-need{color:rgba(243,238,224,0.72);}
+.slide.dark .sc-need em{color:var(--green-light);}
+.slide.dark .sc-best{background:linear-gradient(140deg,rgba(122,155,113,0.24),rgba(122,155,113,0.07));border-color:rgba(122,155,113,0.45);}
+.slide.dark .sc-best .sc-tag{color:var(--green-light);}
+.slide.dark .sc-likely{background:rgba(122,155,113,0.12);border-color:var(--green-light);box-shadow:0 10px 32px rgba(0,0,0,0.3);}
+.slide.dark .sc-likely .sc-tag{color:#f3eee0;}
+.slide.dark .sc-base-badge{background:var(--green-light);color:var(--green-dd);}
+.slide.dark .sc-worst{background:rgba(255,255,255,0.03);border-color:rgba(184,132,31,0.4);}
+.slide.dark .sc-worst .sc-tag{color:#d9a83e;}
+.slide.dark .sc-worst .sc-v{color:rgba(243,238,224,0.85);}
+.slide.dark .sc-unlikely{background:rgba(184,132,31,0.18);color:#d9a83e;}
+.vs-intro{font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--green-light);font-weight:600;margin:26px 0 14px;display:flex;align-items:center;gap:10px;}
+.vs-intro::before{content:"";width:24px;height:1px;background:var(--green-light);display:inline-block;}
+
+/* ── Risk profile — button + animated comparison chart ───────── */
+.risk{margin-top:20px;}
+.risk-btn{
+  display:inline-flex;align-items:center;gap:10px;cursor:pointer;
+  font-family:var(--sans);font-size:12.5px;font-weight:500;letter-spacing:0.02em;
+  color:#fff;background:var(--green);border:1px solid var(--green-light);
+  padding:12px 22px;border-radius:99px;transition:all 0.2s var(--ease);
+  box-shadow:0 8px 24px rgba(0,0,0,0.28);
+}
+.risk-btn:hover{background:var(--green-light);transform:translateY(-1px);box-shadow:0 12px 30px rgba(0,0,0,0.34);}
+.risk-btn-ic{font-size:10px;}
+.risk-chart{
+  max-height:0;opacity:0;overflow:hidden;
+  transition:max-height 0.5s var(--ease),opacity 0.5s var(--ease),margin-top 0.5s var(--ease);
+  margin-top:0;
+}
+.risk.open .risk-btn{display:none;}
+.risk.open .risk-chart{max-height:900px;opacity:1;margin-top:4px;}
+.risk-head{font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--green-light);font-weight:600;margin-bottom:16px;}
+.risk-plot{padding:38px 8px 0;}
+.risk-bars{position:relative;display:flex;align-items:flex-end;justify-content:space-around;gap:6px;height:190px;}
+.risk-bcol{flex:1;max-width:150px;display:flex;justify-content:center;align-items:flex-end;}
+.risk-bar{
+  position:relative;width:78px;max-width:80%;height:0;border-radius:8px 8px 0 0;
+  transition:height 1.2s var(--ease);
+  box-shadow:0 -2px 14px rgba(0,0,0,0.18) inset;
+}
+.risk.open .risk-bar{height:var(--h);}
+.bar-worst{background:linear-gradient(180deg,#d9a83e,rgba(184,132,31,0.5));}
+.bar-likely{background:linear-gradient(180deg,var(--green-light),var(--green));}
+.risk.open .bar-likely{transition-delay:0.5s;}
+.bar-best{background:linear-gradient(180deg,#9fc295,var(--green-light));}
+.risk.open .bar-best{transition-delay:1s;}
+.risk-num{
+  position:absolute;bottom:100%;left:50%;transform:translateX(-50%);margin-bottom:8px;
+  font-family:var(--serif);font-size:24px;font-weight:300;color:#f3eee0;line-height:1;white-space:nowrap;
+}
+.risk-labels{display:flex;justify-content:space-around;gap:6px;margin-top:12px;}
+.risk-labels .risk-cl{flex:1;max-width:150px;text-align:center;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(243,238,224,0.6);font-weight:500;}
+/* benchmark line — sits at long-let height, draws across last */
+.risk-bench{
+  position:absolute;left:0;right:0;bottom:var(--b);height:0;
+  border-top:1.5px dashed rgba(243,238,224,0.55);
+  width:0;opacity:0;transition:width 0.7s var(--ease) 1.8s,opacity 0.4s var(--ease) 1.8s;
+  z-index:3;pointer-events:none;
+}
+.risk.open .risk-bench{width:100%;opacity:1;}
+.risk-bench-l{
+  position:absolute;left:0;top:-9px;background:var(--green-d);
+  font-size:9.5px;letter-spacing:0.06em;color:rgba(243,238,224,0.78);font-weight:600;
+  padding:1px 8px;border-radius:99px;border:1px solid rgba(243,238,224,0.2);white-space:nowrap;
+}
+.risk-cap{font-size:11.5px;color:rgba(243,238,224,0.7);font-weight:300;line-height:1.55;margin-top:20px;max-width:640px;}
+.risk-cap strong{color:#f3eee0;font-weight:500;}
+/* verdict — long let vs short let, revealed as the climax of the build */
+.verdict{
+  margin-top:24px;padding-top:22px;border-top:1px solid rgba(255,255,255,0.1);
+  opacity:0;transform:translateY(10px);
+  transition:opacity 0.6s var(--ease) 2.6s,transform 0.6s var(--ease) 2.6s;
+}
+.risk.open .verdict{opacity:1;transform:none;}
+.verdict-q{font-family:var(--serif);font-size:23px;font-weight:400;color:#f3eee0;letter-spacing:-0.01em;margin-bottom:4px;}
+.verdict-a{font-family:var(--serif);font-weight:600;font-size:62px;line-height:1.04;letter-spacing:-0.02em;}
+.verdict-a.is-short{color:#6ee7a0;text-shadow:0 0 32px rgba(110,231,160,0.38);}
+.verdict-a.is-long{color:#ff6b5e;text-shadow:0 0 32px rgba(255,107,94,0.32);}
+.verdict-sub{font-size:12.5px;color:rgba(243,238,224,0.72);font-weight:300;line-height:1.55;max-width:660px;margin-top:10px;}
+@media (max-width:900px){.risk-bar{width:48px;}.risk-num{font-size:19px;}.verdict-a{font-size:46px;}}
+
 /* ── How Stayful works — model strip + 3-button hub ──────────── */
 .model-strip{display:flex;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px 8px;margin-bottom:18px;}
 .ms-item{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:3px;padding:0 14px;border-right:1px solid rgba(255,255,255,0.08);}
@@ -912,7 +1040,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
         </div>
         <div class="np-ctx">
           <div class="np-ctx-l">Web meeting address</div>
-          <div class="np-ctx-v">Palatine Road, Manchester</div>
+          <div class="np-ctx-v">Flat 12, Palatine Place, Palatine Rd, Northenden, Manchester M224ET</div>
         </div>
         <div class="np-ctx">
           <div class="np-ctx-l">Phone</div>
@@ -920,7 +1048,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
         </div>
         <div class="np-ctx">
           <div class="np-ctx-l">Property</div>
-          <div class="np-ctx-v">Palatine Road, Manchester</div>
+          <div class="np-ctx-v">Flat 12, Palatine Place, Palatine Rd, Northenden, Manchester M224ET</div>
         </div>
         <div class="np-ctx">
           <div class="np-ctx-l">Stayful net (annual)</div>
@@ -1090,6 +1218,24 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
       <div class="cb-item"><div class="cb-l">Average Annual Revenue</div><div class="cb-v">£36,849</div></div>
     </div>
 
+
+    <div class="rev-outlook fi">
+      <div class="ro-card ro-catchup">
+        <div class="ro-eb">Time to become competitive</div>
+        <div class="ro-headline"><strong>4–8 months</strong> to reach the market average of 92 reviews</div>
+        <div class="ro-note">You can expect to achieve 85% of the forecast figures from 10 reviews onwards.</div>
+      </div>
+      <div class="ro-card ro-top">
+        <div class="ro-eb">Beat the average → top 10% of listings in this area</div>
+        <div class="ro-figs">
+          <div class="ro-fig"><div class="ro-fig-l">Annual net revenue</div><div class="ro-fig-v">£37,163</div></div>
+          <div class="ro-fig-div"></div>
+          <div class="ro-fig"><div class="ro-fig-l">Monthly net</div><div class="ro-fig-v">£3,097</div></div>
+        </div>
+        <div class="ro-note">Based on the area's top performer — £71,468, less 48% operating costs.</div>
+      </div>
+    </div>
+
     <div class="comp-table">
       <div class="comp-row head"><div>Property</div><div>Dist</div><div>Nightly</div><div>Occ</div><div>Annual</div><div>Rating</div></div>
 <!-- ST:BLOCK_START COMP_ROWS -->
@@ -1121,43 +1267,56 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 <!-- ═══ SLIDE 5: INVESTMENT RETURNS ═══ -->
 <div class="slide dark" data-name="Investment Returns" data-bg="dark">
   <div class="fi"><div class="eb">The buyer's view · Long-let vs Short-let</div></div>
-  <h2 class="fi">Short-let earns £2,007/month — +£1,173 more than long-let.</h2>
-  <p class="sh fi">Short-let nets +£1,173/month more than long-let on the same property — +£14,076 more per year doing nothing differently except who manages it.</p>
+  <h2 class="fi">Best case, likely case, worst case — <em>all compared to a long-term let.</em></h2>
+  <p class="sh fi">Best, likely and worst-case short-let net — measured against what the same property earns as a long-let. Hit <em>Present risk profile</em> for the side-by-side verdict.</p>
 
-  <div class="vs-grid fi">
-    <div class="vs-card vs-ltl">
-      <div class="vs-tag">If you long-let it</div>
-      <div class="vs-rev">£10,012</div>
-      <div class="vs-rev-l">Net annual revenue · £834/mo</div>
-      <div class="vs-stack">
-        <div class="vs-row"><span>Annual mortgage</span><span>£0</span></div>
-        <div class="vs-row vs-cashflow"><span>Annual cash flow</span><span>£10,012</span></div>
+  <div class="ir-scenario fi">
+    <div class="scenario-h">What you can expect · monthly net</div>
+    <div class="scenario-grid">
+      <div class="sc-card sc-best">
+        <div class="sc-tag">Best case</div>
+        <div class="sc-v">£3,097<span>/mo</span></div>
+        <div class="sc-need">Beat the market's average review count <em>and</em> rating — reaching the area's top 10%. We know it takes <em>4–8 months</em> to get there.</div>
       </div>
-      <div class="vs-mo">Long-let nets £834/mo — short-let nets £2,007/mo on the same property.</div>
-    </div>
-
-    <div class="vs-arrow">→</div>
-
-    <div class="vs-card vs-str">
-      <div class="vs-tag">If Stayful short-lets it</div>
-      <div class="vs-rev">£24,088</div>
-      <div class="vs-rev-l">Net annual revenue · £2,007/mo · cleaning charged to guest</div>
-      <div class="vs-stack">
-        <div class="vs-row"><span>Annual mortgage</span><span>£0</span></div>
-        <div class="vs-row vs-cashflow"><span>Annual cash flow</span><span>£24,088</span></div>
+      <div class="sc-card sc-likely">
+        <div class="sc-tag">Likely case <span class="sc-base-badge">Expected</span></div>
+        <div class="sc-v">£2,007<span>/mo</span></div>
+        <div class="sc-need">List with Stayful and achieve a regular return — the average outcome for this property, in line with the market.</div>
       </div>
-      <div class="vs-mo">£24,088/yr cash flow on the same property</div>
+      <div class="sc-card sc-worst">
+        <div class="sc-tag">Worst case <span class="sc-unlikely">Extremely unlikely</span></div>
+        <div class="sc-v">£1,474<span>/mo</span></div>
+        <div class="sc-need">Only if <em>every</em> month performed like January — the quietest month of the year. Realistically this never happens.</div>
+      </div>
     </div>
   </div>
 
-  <div class="upside-bar fi">
-    <div class="upside-l">The upside of switching model</div>
-    <div class="upside-v">+£14,076 / year</div>
-    <div class="upside-s">+£1,173/month · +141% more than long-let · same property, same asset · the only thing that changes is the management model</div>
-  </div>
-
-  <div class="disclosure fi">
-    <strong>Honest framing:</strong> the £24,088 net is projected from a Stayful STR analysis based on 12 active Airbnb comparables within 2.79 km of Palatine Road. Risk score 4 / 100. By Year 3, direct bookings of 50% eliminate platform fees and add a further £241/month.
+  <div class="risk fi">
+    <button class="risk-btn" type="button" onclick="playRisk(this)">
+      <span class="risk-btn-ic">▶</span><span class="risk-btn-tx">Present risk profile</span>
+    </button>
+    <div class="risk-chart" id="riskChart">
+      <div class="risk-head">Monthly net vs the long-let benchmark</div>
+      <div class="risk-plot">
+        <div class="risk-bars">
+          <div class="risk-bench" style="--b:49px"><span class="risk-bench-l">Long-let benchmark · £834/mo</span></div>
+          <div class="risk-bcol"><div class="risk-bar bar-worst" style="--h:86px"><span class="risk-num" data-v="1474">£0</span></div></div>
+          <div class="risk-bcol"><div class="risk-bar bar-likely" style="--h:117px"><span class="risk-num" data-v="2007">£0</span></div></div>
+          <div class="risk-bcol"><div class="risk-bar bar-best" style="--h:181px"><span class="risk-num" data-v="3097">£0</span></div></div>
+        </div>
+        <div class="risk-labels">
+          <div class="risk-cl">Worst case</div>
+          <div class="risk-cl">Likely case</div>
+          <div class="risk-cl">Best case</div>
+        </div>
+      </div>
+      <div class="risk-cap">The long-let nets £834/mo. Short-let likely case clears the long-let benchmark; best case (£3,097) beats it comfortably; only worst-case (£1,474) sits below.</div>
+      <div class="verdict">
+        <div class="verdict-q">Better to long let or short let?</div>
+        <div class="verdict-a" id="verdictA">&nbsp;</div>
+        <div class="verdict-sub" id="verdictSub"></div>
+      </div>
+    </div>
   </div>
 
   <div class="eb fi" style="margin-top:28px;">Proof · forecast vs actual on Stayful-managed properties</div>
@@ -1205,9 +1364,9 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 
   <div class="guests-grid fi">
 <!-- ST:BLOCK_START DEMAND_DRIVER_CARDS -->
-    <div class="gc"><div class="gc-h"><div class="gc-icon">⊕</div><div class="gc-meta"><div class="gc-tag">Healthcare Facilities</div><div class="gc-title">Manchester Royal Infirmary</div></div></div><div class="gc-desc">3</div><div class="gc-loc">📍 <strong>Manchester Royal Infirmary</strong> · 5.94 km · <strong>HIGH</strong> demand</div></div>
-    <div class="gc"><div class="gc-h"><div class="gc-icon">🎓</div><div class="gc-meta"><div class="gc-tag">Educational Institutions</div><div class="gc-title">The Open University</div></div></div><div class="gc-desc">2</div><div class="gc-loc">📍 <strong>The Open University</strong> · 1.57 km · <strong>HIGH</strong> demand</div></div>
-    <div class="gc"><div class="gc-h"><div class="gc-icon">✈</div><div class="gc-meta"><div class="gc-tag">Transport Links</div><div class="gc-title">Britannia Country House Hotel</div></div></div><div class="gc-desc">10</div><div class="gc-loc">📍 <strong>Britannia Country House Hotel</strong> · 0.70 km · <strong>HIGH</strong> demand</div></div>
+    <div class="gc"><div class="gc-h"><div class="gc-icon">⊕</div><div class="gc-meta"><div class="gc-tag">Healthcare Facilities</div><div class="gc-title">Manchester Royal Infirmary</div></div></div><div class="gc-desc">3 facilities</div><div class="gc-loc">📍 <strong>Manchester Royal Infirmary</strong> · 5.94 km · <strong>HIGH</strong> demand</div></div>
+    <div class="gc"><div class="gc-h"><div class="gc-icon">🎓</div><div class="gc-meta"><div class="gc-tag">Educational Institutions</div><div class="gc-title">The Open University</div></div></div><div class="gc-desc">2 facilities</div><div class="gc-loc">📍 <strong>The Open University</strong> · 1.57 km · <strong>HIGH</strong> demand</div></div>
+    <div class="gc"><div class="gc-h"><div class="gc-icon">✈</div><div class="gc-meta"><div class="gc-tag">Transport Links</div><div class="gc-title">Britannia Country House Hotel</div></div></div><div class="gc-desc">10 facilities</div><div class="gc-loc">📍 <strong>Britannia Country House Hotel</strong> · 0.70 km · <strong>HIGH</strong> demand</div></div>
 <!-- ST:BLOCK_END DEMAND_DRIVER_CARDS -->
   </div>
 </div>
@@ -1520,7 +1679,6 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
   <button class="nav-arr" id="next" aria-label="Next">→</button>
 </div>
 
-
 <script>
 const FORECAST = /* ST:FORECAST_START */[1474, 1568, 1678, 1981, 2007, 2077, 2517, 2197, 2232, 2225, 1878, 2255]/* ST:FORECAST_END */;
 const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -1571,6 +1729,52 @@ function goTo(i) {
   update();
 }
 function nav(dir) { goTo(cur + dir); }
+
+
+function playRisk(btn) {
+  const risk = btn.closest('.risk');
+  if (!risk || risk.classList.contains('open')) return;
+  risk.classList.add('open');
+
+  // Verdict — decision rule: short-let wins if its average (likely) case
+  // matches or beats the long-let monthly benchmark.
+  const likelyEl = risk.querySelector('.bar-likely .risk-num');
+  const shortAvg = likelyEl ? (parseInt(likelyEl.getAttribute('data-v'), 10) || 0) : 0;
+  const ltl = (typeof LTL_MONTHLY !== 'undefined') ? LTL_MONTHLY : 0;
+  const isShort = shortAvg >= ltl;
+  const fmt = n => '£' + n.toLocaleString('en-GB');
+  const aEl = risk.querySelector('#verdictA');
+  const subEl = risk.querySelector('#verdictSub');
+  if (aEl) {
+    aEl.textContent = isShort ? 'Short let' : 'Long let';
+    aEl.classList.remove('is-short', 'is-long');
+    aEl.classList.add(isShort ? 'is-short' : 'is-long');
+  }
+  if (subEl) {
+    subEl.textContent = isShort
+      ? `Short-let's likely-case net (${fmt(shortAvg)}/mo) matches or beats the long-let benchmark (${fmt(ltl)}/mo) — so short-letting is the stronger play on the average case.`
+      : `Short-let's likely-case net (${fmt(shortAvg)}/mo) sits below the long-let benchmark (${fmt(ltl)}/mo) — so on the average case a long-term let is the stronger play for this property.`;
+  }
+
+  const nums = risk.querySelectorAll('.risk-num');
+  const delays = [0, 500, 1000]; // matches worst / likely / best bar stagger
+  nums.forEach((el, i) => {
+    const target = parseInt(el.getAttribute('data-v'), 10) || 0;
+    const dur = 1200, delay = delays[i] || 0;
+    setTimeout(() => {
+      const start = performance.now();
+      (function step(now) {
+        const t = Math.min(1, (now - start) / dur);
+        const eased = 1 - Math.pow(1 - t, 3);
+        el.textContent = '£' + Math.round(target * eased).toLocaleString('en-GB');
+        if (t < 1) requestAnimationFrame(step);
+      })(start);
+    }, delay);
+  });
+}
+
+// How Stayful works — 3-button hub. Open a panel; switching panels collapses
+// the current one INTO the clicked button (3s), then populates the new one (2s).
 
 
 let hswBusy = false;
@@ -1703,9 +1907,9 @@ document.getElementById('np-copy').addEventListener('click', async () => {
   lines.push('============================================');
   lines.push('');
   lines.push('PROFILE: Existing property looking for higher return');
-  lines.push('ADDRESS (web meeting): Palatine Road, Manchester');
+  lines.push('ADDRESS (web meeting): Flat 12, Palatine Place, Palatine Rd, Northenden, Manchester M224ET');
   lines.push('PHONE: ');
-  lines.push('PROPERTY: Palatine Road, Manchester');
+  lines.push('PROPERTY: Flat 12, Palatine Place, Palatine Rd, Northenden, Manchester M224ET');
   lines.push('STAYFUL NET: £24,088/yr (£2,007/mo) — Stayful STR Analysis');
   lines.push('MORTGAGE: No mortgage — full STL net is cash flow');
   lines.push('');
