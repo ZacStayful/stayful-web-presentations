@@ -760,7 +760,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
   margin-top:0;
 }
 .risk.open .risk-btn{display:none;}
-.risk.open .risk-chart{max-height:480px;opacity:1;margin-top:4px;}
+.risk.open .risk-chart{max-height:900px;opacity:1;margin-top:4px;}
 .risk-head{font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--green-light);font-weight:600;margin-bottom:16px;}
 .risk-plot{padding:38px 8px 0;}
 .risk-bars{position:relative;display:flex;align-items:flex-end;justify-content:space-around;gap:6px;height:190px;}
@@ -797,7 +797,19 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 }
 .risk-cap{font-size:11.5px;color:rgba(243,238,224,0.7);font-weight:300;line-height:1.55;margin-top:20px;max-width:640px;}
 .risk-cap strong{color:#f3eee0;font-weight:500;}
-@media (max-width:900px){.risk-bar{width:48px;}.risk-num{font-size:19px;}}
+/* verdict — long let vs short let, revealed as the climax of the build */
+.verdict{
+  margin-top:24px;padding-top:22px;border-top:1px solid rgba(255,255,255,0.1);
+  opacity:0;transform:translateY(10px);
+  transition:opacity 0.6s var(--ease) 2.6s,transform 0.6s var(--ease) 2.6s;
+}
+.risk.open .verdict{opacity:1;transform:none;}
+.verdict-q{font-family:var(--serif);font-size:23px;font-weight:400;color:#f3eee0;letter-spacing:-0.01em;margin-bottom:4px;}
+.verdict-a{font-family:var(--serif);font-weight:600;font-size:62px;line-height:1.04;letter-spacing:-0.02em;}
+.verdict-a.is-short{color:#6ee7a0;text-shadow:0 0 32px rgba(110,231,160,0.38);}
+.verdict-a.is-long{color:#ff6b5e;text-shadow:0 0 32px rgba(255,107,94,0.32);}
+.verdict-sub{font-size:12.5px;color:rgba(243,238,224,0.72);font-weight:300;line-height:1.55;max-width:660px;margin-top:10px;}
+@media (max-width:900px){.risk-bar{width:48px;}.risk-num{font-size:19px;}.verdict-a{font-size:46px;}}
 
 /* ── Comp table — full width, all rows ───────────────────────── */
 .comp-table{width:100%;border:1px solid var(--bd);border-radius:10px;overflow:hidden;font-size:11.5px;margin-bottom:12px;}
@@ -1093,7 +1105,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 <div class="slide dark" data-name="Investment Returns" data-bg="dark">
   <div class="fi"><div class="eb">The buyer's view · Long-let vs Short-let</div></div>
   <h2 class="fi">Best case, likely case, worst case — <em>all compared to a long-term let.</em></h2>
-  <p class="sh fi">Short-let nets -£181/month more than long-let on the same property — -£2,167 more per year doing nothing differently except who manages it.</p>
+  <p class="sh fi">Best, likely and worst-case short-let net — measured against what the same property earns as a long-let. Hit <em>Present risk profile</em> for the side-by-side verdict.</p>
 
   <div class="ir-scenario fi">
     <div class="scenario-h">What you can expect · monthly net</div>
@@ -1136,45 +1148,12 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
         </div>
       </div>
       <div class="risk-cap">The long-let nets <strong>£990/mo</strong>. Beat the market's average reviews &amp; rating and short-let clears it (£1,001); the likely case lands just under it (£809); only an extremely unlikely all-December year (£528) sits well below.</div>
-    </div>
-  </div>
-
-  <div class="vs-intro fi">Versus leaving it as a long-let — same property, same asset</div>
-
-  <div class="vs-grid fi">
-    <div class="vs-card vs-ltl">
-      <div class="vs-tag">If you long-let it</div>
-      <div class="vs-rev">£11,880</div>
-      <div class="vs-rev-l">Net annual revenue · £990/mo</div>
-      <div class="vs-stack">
-        <div class="vs-row"><span>Annual mortgage</span><span>£0</span></div>
-        <div class="vs-row vs-cashflow"><span>Annual cash flow</span><span>£11,880</span></div>
+      <div class="verdict">
+        <div class="verdict-q">Better to long let or short let?</div>
+        <div class="verdict-a" id="verdictA">&nbsp;</div>
+        <div class="verdict-sub" id="verdictSub"></div>
       </div>
-      <div class="vs-mo">Long-let nets £990/mo — short-let nets £809/mo on the same property.</div>
     </div>
-
-    <div class="vs-arrow">→</div>
-
-    <div class="vs-card vs-str">
-      <div class="vs-tag">If Stayful short-lets it</div>
-      <div class="vs-rev">£9,713</div>
-      <div class="vs-rev-l">Net annual revenue · £809/mo · cleaning charged to guest</div>
-      <div class="vs-stack">
-        <div class="vs-row"><span>Annual mortgage</span><span>£0</span></div>
-        <div class="vs-row vs-cashflow"><span>Annual cash flow</span><span>£9,713</span></div>
-      </div>
-      <div class="vs-mo">£9,713/yr cash flow on the same property</div>
-    </div>
-  </div>
-
-  <div class="upside-bar fi">
-    <div class="upside-l">The upside of switching model</div>
-    <div class="upside-v">-£2,167 / year</div>
-    <div class="upside-s">-£181/month · +-18% more than long-let · same property, same asset · the only thing that changes is the management model</div>
-  </div>
-
-  <div class="disclosure fi">
-    <strong>Honest framing:</strong> the £9,713 net is projected from a Stayful STR analysis based on 12 active Airbnb comparables within 0.34 km of 43 The Royal Wilton Place Salford M6 3WP M6 3WP. Risk score 4 / 100. By Year 3, direct bookings of 50% eliminate platform fees and add a further £97/month.
   </div>
 
   <div class="eb fi" style="margin-top:28px;">Proof · forecast vs actual on Stayful-managed properties</div>
@@ -1542,6 +1521,27 @@ function playRisk(btn) {
   const risk = btn.closest('.risk');
   if (!risk || risk.classList.contains('open')) return;
   risk.classList.add('open');
+
+  // Verdict — decision rule: short-let wins if its average (likely) case
+  // matches or beats the long-let monthly benchmark.
+  const likelyEl = risk.querySelector('.bar-likely .risk-num');
+  const shortAvg = likelyEl ? (parseInt(likelyEl.getAttribute('data-v'), 10) || 0) : 0;
+  const ltl = (typeof LTL_MONTHLY !== 'undefined') ? LTL_MONTHLY : 0;
+  const isShort = shortAvg >= ltl;
+  const fmt = n => '£' + n.toLocaleString('en-GB');
+  const aEl = risk.querySelector('#verdictA');
+  const subEl = risk.querySelector('#verdictSub');
+  if (aEl) {
+    aEl.textContent = isShort ? 'Short let' : 'Long let';
+    aEl.classList.remove('is-short', 'is-long');
+    aEl.classList.add(isShort ? 'is-short' : 'is-long');
+  }
+  if (subEl) {
+    subEl.textContent = isShort
+      ? `Short-let's likely-case net (${fmt(shortAvg)}/mo) matches or beats the long-let benchmark (${fmt(ltl)}/mo) — so short-letting is the stronger play on the average case.`
+      : `Short-let's likely-case net (${fmt(shortAvg)}/mo) sits below the long-let benchmark (${fmt(ltl)}/mo) — so on the average case a long-term let is the stronger play for this property.`;
+  }
+
   const nums = risk.querySelectorAll('.risk-num');
   const delays = [0, 500, 1000]; // matches worst / likely / best bar stagger
   nums.forEach((el, i) => {
