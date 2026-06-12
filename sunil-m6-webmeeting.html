@@ -743,6 +743,62 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .vs-intro{font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--green-light);font-weight:600;margin:26px 0 14px;display:flex;align-items:center;gap:10px;}
 .vs-intro::before{content:"";width:24px;height:1px;background:var(--green-light);display:inline-block;}
 
+/* ── Risk profile — button + animated comparison chart ───────── */
+.risk{margin-top:20px;}
+.risk-btn{
+  display:inline-flex;align-items:center;gap:10px;cursor:pointer;
+  font-family:var(--sans);font-size:12.5px;font-weight:500;letter-spacing:0.02em;
+  color:#fff;background:var(--green);border:1px solid var(--green-light);
+  padding:12px 22px;border-radius:99px;transition:all 0.2s var(--ease);
+  box-shadow:0 8px 24px rgba(0,0,0,0.28);
+}
+.risk-btn:hover{background:var(--green-light);transform:translateY(-1px);box-shadow:0 12px 30px rgba(0,0,0,0.34);}
+.risk-btn-ic{font-size:10px;}
+.risk-chart{
+  max-height:0;opacity:0;overflow:hidden;
+  transition:max-height 0.5s var(--ease),opacity 0.5s var(--ease),margin-top 0.5s var(--ease);
+  margin-top:0;
+}
+.risk.open .risk-btn{display:none;}
+.risk.open .risk-chart{max-height:480px;opacity:1;margin-top:4px;}
+.risk-head{font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--green-light);font-weight:600;margin-bottom:16px;}
+.risk-plot{padding:38px 8px 0;}
+.risk-bars{position:relative;display:flex;align-items:flex-end;justify-content:space-around;gap:6px;height:190px;}
+.risk-bcol{flex:1;max-width:150px;display:flex;justify-content:center;align-items:flex-end;}
+.risk-bar{
+  position:relative;width:78px;max-width:80%;height:0;border-radius:8px 8px 0 0;
+  transition:height 1.2s var(--ease);
+  box-shadow:0 -2px 14px rgba(0,0,0,0.18) inset;
+}
+.risk.open .risk-bar{height:var(--h);}
+.bar-worst{background:linear-gradient(180deg,#d9a83e,rgba(184,132,31,0.5));}
+.bar-likely{background:linear-gradient(180deg,var(--green-light),var(--green));}
+.risk.open .bar-likely{transition-delay:0.5s;}
+.bar-best{background:linear-gradient(180deg,#9fc295,var(--green-light));}
+.risk.open .bar-best{transition-delay:1s;}
+.risk-num{
+  position:absolute;bottom:100%;left:50%;transform:translateX(-50%);margin-bottom:8px;
+  font-family:var(--serif);font-size:24px;font-weight:300;color:#f3eee0;line-height:1;white-space:nowrap;
+}
+.risk-labels{display:flex;justify-content:space-around;gap:6px;margin-top:12px;}
+.risk-labels .risk-cl{flex:1;max-width:150px;text-align:center;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(243,238,224,0.6);font-weight:500;}
+/* benchmark line — sits at long-let height, draws across last */
+.risk-bench{
+  position:absolute;left:0;right:0;bottom:var(--b);height:0;
+  border-top:1.5px dashed rgba(243,238,224,0.55);
+  width:0;opacity:0;transition:width 0.7s var(--ease) 1.8s,opacity 0.4s var(--ease) 1.8s;
+  z-index:3;pointer-events:none;
+}
+.risk.open .risk-bench{width:100%;opacity:1;}
+.risk-bench-l{
+  position:absolute;left:0;top:-9px;background:var(--green-d);
+  font-size:9.5px;letter-spacing:0.06em;color:rgba(243,238,224,0.78);font-weight:600;
+  padding:1px 8px;border-radius:99px;border:1px solid rgba(243,238,224,0.2);white-space:nowrap;
+}
+.risk-cap{font-size:11.5px;color:rgba(243,238,224,0.7);font-weight:300;line-height:1.55;margin-top:20px;max-width:640px;}
+.risk-cap strong{color:#f3eee0;font-weight:500;}
+@media (max-width:900px){.risk-bar{width:48px;}.risk-num{font-size:19px;}}
+
 /* ── Comp table — full width, all rows ───────────────────────── */
 .comp-table{width:100%;border:1px solid var(--bd);border-radius:10px;overflow:hidden;font-size:11.5px;margin-bottom:12px;}
 .comp-row{display:grid;grid-template-columns:1fr 60px 64px 48px 80px 76px;gap:0;border-bottom:1px solid var(--bd);padding:6px 12px;align-items:center;}
@@ -1036,7 +1092,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 <!-- ═══ SLIDE 5: INVESTMENT RETURNS ═══ -->
 <div class="slide dark" data-name="Investment Returns" data-bg="dark">
   <div class="fi"><div class="eb">The buyer's view · Long-let vs Short-let</div></div>
-  <h2 class="fi">Short-let earns £809/month — -£181 more than long-let.</h2>
+  <h2 class="fi">Best case, likely case, worst case — <em>all compared to a long-term let.</em></h2>
   <p class="sh fi">Short-let nets -£181/month more than long-let on the same property — -£2,167 more per year doing nothing differently except who manages it.</p>
 
   <div class="ir-scenario fi">
@@ -1057,6 +1113,29 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
         <div class="sc-v">£528<span>/mo</span></div>
         <div class="sc-need">Only if <em>every</em> month performed like December — the quietest month of the year. Realistically this never happens.</div>
       </div>
+    </div>
+  </div>
+
+  <div class="risk fi">
+    <button class="risk-btn" type="button" onclick="playRisk(this)">
+      <span class="risk-btn-ic">▶</span><span class="risk-btn-tx">Present risk profile</span>
+    </button>
+    <div class="risk-chart" id="riskChart">
+      <div class="risk-head">Monthly net vs the long-let benchmark</div>
+      <div class="risk-plot">
+        <div class="risk-bars">
+          <div class="risk-bench" style="--b:188px"><span class="risk-bench-l">Long-let benchmark · £990/mo</span></div>
+          <div class="risk-bcol"><div class="risk-bar bar-worst" style="--h:100px"><span class="risk-num" data-v="528">£0</span></div></div>
+          <div class="risk-bcol"><div class="risk-bar bar-likely" style="--h:154px"><span class="risk-num" data-v="809">£0</span></div></div>
+          <div class="risk-bcol"><div class="risk-bar bar-best" style="--h:190px"><span class="risk-num" data-v="1001">£0</span></div></div>
+        </div>
+        <div class="risk-labels">
+          <div class="risk-cl">Worst case</div>
+          <div class="risk-cl">Likely case</div>
+          <div class="risk-cl">Best case</div>
+        </div>
+      </div>
+      <div class="risk-cap">The long-let nets <strong>£990/mo</strong>. Beat the market's average reviews &amp; rating and short-let clears it (£1,001); the likely case lands just under it (£809); only an extremely unlikely all-December year (£528) sits well below.</div>
     </div>
   </div>
 
@@ -1457,6 +1536,28 @@ function goTo(i) {
   update();
 }
 function nav(dir) { goTo(cur + dir); }
+
+// Risk profile — reveal chart and animate bars + counters over ~3s
+function playRisk(btn) {
+  const risk = btn.closest('.risk');
+  if (!risk || risk.classList.contains('open')) return;
+  risk.classList.add('open');
+  const nums = risk.querySelectorAll('.risk-num');
+  const delays = [0, 500, 1000]; // matches worst / likely / best bar stagger
+  nums.forEach((el, i) => {
+    const target = parseInt(el.getAttribute('data-v'), 10) || 0;
+    const dur = 1200, delay = delays[i] || 0;
+    setTimeout(() => {
+      const start = performance.now();
+      (function step(now) {
+        const t = Math.min(1, (now - start) / dur);
+        const eased = 1 - Math.pow(1 - t, 3);
+        el.textContent = '£' + Math.round(target * eased).toLocaleString('en-GB');
+        if (t < 1) requestAnimationFrame(step);
+      })(start);
+    }, delay);
+  });
+}
 
 document.getElementById('prev').onclick = () => nav(-1);
 document.getElementById('next').onclick = () => nav(1);
