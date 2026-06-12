@@ -703,6 +703,27 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .ro-fig-div{width:1px;height:38px;background:rgba(255,255,255,0.14);margin:0 18px;flex-shrink:0;}
 @media (max-width:900px){.rev-outlook{grid-template-columns:1fr;}}
 
+/* ── Scenario range — best / likely / worst monthly net ──────── */
+.scenario-wrap{margin-bottom:12px;}
+.scenario-h{font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--green);font-weight:600;margin-bottom:9px;}
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.sc-card{border-radius:12px;padding:15px 18px;border:1px solid var(--green-pale);background:var(--white);display:flex;flex-direction:column;}
+.sc-tag{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;margin-bottom:7px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+.sc-v{font-family:var(--serif);font-weight:300;font-size:32px;line-height:1;color:var(--green-d);}
+.sc-v span{font-size:13px;font-weight:400;color:var(--muted);}
+.sc-need{font-size:10.5px;color:var(--ink2);font-weight:300;line-height:1.45;margin-top:9px;}
+.sc-need em{font-style:italic;color:var(--green);font-weight:400;}
+.sc-best{background:var(--green-soft);border-color:var(--green-pale);}
+.sc-best .sc-tag{color:var(--green);}
+.sc-likely{border-color:var(--green);box-shadow:0 6px 22px rgba(45,74,53,0.10);}
+.sc-likely .sc-tag{color:var(--green-d);}
+.sc-base-badge{font-size:8px;background:var(--green);color:#fff;padding:2px 7px;border-radius:99px;letter-spacing:0.07em;font-weight:600;}
+.sc-worst{background:var(--cream-d);border-color:var(--cream-d);}
+.sc-worst .sc-tag{color:var(--am);}
+.sc-worst .sc-v{color:var(--ink2);}
+.sc-unlikely{font-size:8px;background:var(--am-pale);color:var(--am);padding:2px 7px;border-radius:99px;letter-spacing:0.05em;font-weight:700;}
+@media (max-width:900px){.scenario-grid{grid-template-columns:1fr;}}
+
 /* ── Comp table — full width, all rows ───────────────────────── */
 .comp-table{width:100%;border:1px solid var(--bd);border-radius:10px;overflow:hidden;font-size:11.5px;margin-bottom:12px;}
 .comp-row{display:grid;grid-template-columns:1fr 60px 64px 48px 80px 76px;gap:0;border-bottom:1px solid var(--bd);padding:6px 12px;align-items:center;}
@@ -962,6 +983,27 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
           <div class="ro-fig"><div class="ro-fig-l">Monthly net</div><div class="ro-fig-v">£1,001</div></div>
         </div>
         <div class="ro-note">Based on the area's top performer — £23,111 gross, less 48% operating costs.</div>
+      </div>
+    </div>
+
+    <div class="scenario-wrap fi">
+      <div class="scenario-h">Monthly net — best, likely &amp; worst case</div>
+      <div class="scenario-grid">
+        <div class="sc-card sc-best">
+          <div class="sc-tag">Best case</div>
+          <div class="sc-v">£1,001<span>/mo</span></div>
+          <div class="sc-need">Beat the market's average review count <em>and</em> rating — reaching the area's top 10%. We know it takes <em>6–10 months</em> to get there.</div>
+        </div>
+        <div class="sc-card sc-likely">
+          <div class="sc-tag">Likely case <span class="sc-base-badge">Expected</span></div>
+          <div class="sc-v">£809<span>/mo</span></div>
+          <div class="sc-need">List with Stayful and achieve a regular return — the average outcome for this property, in line with the market.</div>
+        </div>
+        <div class="sc-card sc-worst">
+          <div class="sc-tag">Worst case <span class="sc-unlikely">Extremely unlikely</span></div>
+          <div class="sc-v">£528<span>/mo</span></div>
+          <div class="sc-need">Only if <em>every</em> month performed like December — the quietest month of the year. Realistically this never happens.</div>
+        </div>
       </div>
     </div>
 
