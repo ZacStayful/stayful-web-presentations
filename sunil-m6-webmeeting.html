@@ -857,6 +857,42 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .gv-trust .gv-card-v{color:var(--green-light);}
 .hsw-soon{padding:48px 40px;text-align:center;color:rgba(243,238,224,0.5);font-size:13px;border:1px dashed rgba(255,255,255,0.14);border-radius:12px;}
 
+/* Management & your experience panel */
+.mh-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px;}
+.mh-do{display:flex;align-items:flex-start;gap:9px;background:rgba(122,155,113,0.08);border:1px solid rgba(122,155,113,0.22);border-radius:10px;padding:11px 13px;font-size:12px;color:#f3eee0;font-weight:400;line-height:1.35;}
+.mh-do::before{content:"✓";color:#9fc295;font-weight:700;font-size:12px;flex-shrink:0;line-height:1.35;}
+.mh-tools{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.mh-tile{display:block;text-decoration:none;color:inherit;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;transition:transform .2s var(--ease),border-color .2s var(--ease),box-shadow .2s var(--ease);}
+.mh-tile:hover{transform:translateY(-2px);border-color:rgba(122,155,113,0.45);box-shadow:0 14px 34px rgba(0,0,0,0.34);}
+.mh-vidwrap{position:relative;}
+.mh-vid{width:100%;height:158px;object-fit:cover;display:block;background:#0c140e;}
+.mh-badge{position:absolute;top:10px;right:10px;background:rgba(15,25,18,0.74);backdrop-filter:blur(4px);color:#f3eee0;font-size:9px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:4px 9px;border-radius:99px;border:1px solid rgba(255,255,255,0.18);display:flex;align-items:center;gap:5px;}
+.mh-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:#ff6b5e;box-shadow:0 0 0 3px rgba(255,107,94,0.25);}
+.mh-tbody{padding:14px 16px 16px;}
+.mh-tt{font-size:13.5px;font-weight:600;color:#f3eee0;}
+.mh-ts{font-size:11px;color:var(--green-light);font-weight:500;margin:2px 0 8px;}
+.mh-td{font-size:11px;color:rgba(243,238,224,0.66);font-weight:300;line-height:1.45;}
+.mh-link{margin-top:11px;display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--green-light);font-weight:500;letter-spacing:0.03em;}
+.mh-soft{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.mh-scard{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:15px 17px;}
+.mh-scard .mh-ts{color:rgba(243,238,224,0.55);text-transform:uppercase;letter-spacing:0.1em;font-size:9.5px;margin:0 0 5px;}
+.mh-scard .mh-tt{font-size:14px;margin-bottom:6px;}
+.mh-you{background:rgba(217,168,62,0.07);border:1px solid rgba(217,168,62,0.3);border-radius:12px;padding:15px 18px;}
+.mh-you-h{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#d9a83e;font-weight:600;margin-bottom:11px;}
+.mh-you-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 18px;}
+.mh-you-i{display:flex;align-items:flex-start;gap:9px;font-size:12px;color:rgba(243,238,224,0.82);font-weight:300;line-height:1.4;}
+.mh-you-i::before{content:"•";color:#d9a83e;font-weight:700;flex-shrink:0;}
+.mh-sub{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green-light);font-weight:600;margin:22px 0 12px;}
+
+/* staggered build-in for the management panel */
+.hsw-panel[data-panel="management"].active > *{animation:gvIn .5s var(--ease) both;}
+.hsw-panel[data-panel="management"].active > *:nth-child(1){animation-delay:.05s;}
+.hsw-panel[data-panel="management"].active > *:nth-child(2){animation-delay:.2s;}
+.hsw-panel[data-panel="management"].active > *:nth-child(3){animation-delay:.35s;}
+.hsw-panel[data-panel="management"].active > *:nth-child(4){animation-delay:.5s;}
+.hsw-panel[data-panel="management"].active > *:nth-child(5){animation-delay:.65s;}
+.hsw-panel[data-panel="management"].active > *:nth-child(6){animation-delay:.8s;}
+
 /* staggered build-in when a panel opens */
 .hsw-panel.active .gv-flowhead{animation:gvIn .5s var(--ease) both .05s;}
 .hsw-panel.active .gv-flow > *{animation:gvIn .55s var(--ease) both;}
@@ -872,7 +908,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .hsw-panel.active .gv-card:nth-child(2){animation-delay:1.4s;}
 .hsw-panel.active .gv-card:nth-child(3){animation-delay:1.6s;}
 .hsw-panel.active .hsw-soon{animation:gvIn .6s var(--ease) both;}
-@media(max-width:900px){.gv-flow{flex-direction:column;}.gv-arrow{transform:rotate(90deg);align-self:center;}.gv-net,.hsw-tabs,.model-strip{grid-template-columns:1fr;}.model-strip{flex-direction:column;gap:10px;}.ms-item{border-right:none;}}
+@media(max-width:900px){.gv-flow{flex-direction:column;}.gv-arrow{transform:rotate(90deg);align-self:center;}.gv-net,.hsw-tabs,.model-strip,.mh-tools,.mh-soft{grid-template-columns:1fr;}.model-strip{flex-direction:column;gap:10px;}.ms-item{border-right:none;}}
 
 /* ── Comp table — full width, all rows ───────────────────────── */
 .comp-table{width:100%;border:1px solid var(--bd);border-radius:10px;overflow:hidden;font-size:11.5px;margin-bottom:12px;}
@@ -1340,7 +1376,79 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
         <div class="hsw-soon">Onboarding &amp; go-live — built out in the next revision.</div>
       </div>
       <div class="hsw-panel" data-panel="management">
-        <div class="hsw-soon">Management &amp; your experience — built out in the next revision.</div>
+        <div class="gv-flowhead">What Stayful runs — end to end</div>
+        <div class="mh-grid">
+          <div class="mh-do">Listing setup on Airbnb, Booking.com &amp; direct site</div>
+          <div class="mh-do">Dynamic pricing — adjusted weekly, often daily</div>
+          <div class="mh-do">Guest screening, ID verification &amp; deposit collection</div>
+          <div class="mh-do">Check-in, key handover &amp; in-stay support</div>
+          <div class="mh-do">Cleaning coordination after every stay</div>
+          <div class="mh-do">Repairs handling up to £300 without consultation</div>
+          <div class="mh-do">Monthly P&amp;L report straight to your inbox</div>
+        </div>
+
+        <div class="mh-sub">What you'll see · live tools, every day</div>
+        <div class="mh-tools">
+          <a class="mh-tile" href="https://app.uplisting.io/calendar?from=2026-06-12" target="_blank" rel="noopener">
+            <div class="mh-vidwrap">
+              <video class="mh-vid" src="media/management-calendar.mp4" muted loop autoplay playsinline preload="metadata"></video>
+              <span class="mh-badge">Live demo</span>
+            </div>
+            <div class="mh-tbody">
+              <div class="mh-tt">Owner Calendar</div>
+              <div class="mh-ts">Live booking view</div>
+              <div class="mh-td">Every booking across every platform in one calendar. Block dates for personal use. Powered by Uplisting — the channel manager syncing Airbnb, Booking.com &amp; direct.</div>
+              <div class="mh-link">Open live demo →</div>
+            </div>
+          </a>
+          <a class="mh-tile" href="https://app.slack.com/client/T061GPD7ZB8/C09LDM5GY86" target="_blank" rel="noopener">
+            <div class="mh-vidwrap">
+              <video class="mh-vid" src="media/management-slack.mp4" muted loop autoplay playsinline preload="metadata"></video>
+              <span class="mh-badge">Live demo</span>
+            </div>
+            <div class="mh-tbody">
+              <div class="mh-tt">Direct Slack channel</div>
+              <div class="mh-ts">Your team, on tap</div>
+              <div class="mh-td">A dedicated Slack channel for your property. Message the team directly, share photos, get fast answers — no email threads, no ticket queues.</div>
+              <div class="mh-link">Open live demo →</div>
+            </div>
+          </a>
+          <a class="mh-tile" href="https://drive.google.com/file/d/1Ja1yEDno_nS-te7y9qh-UcaaHLt0enPR/view" target="_blank" rel="noopener">
+            <div class="mh-vidwrap">
+              <video class="mh-vid" src="media/management-pnl.mp4" muted loop autoplay playsinline preload="metadata"></video>
+              <span class="mh-badge">Example</span>
+            </div>
+            <div class="mh-tbody">
+              <div class="mh-tt">Monthly P&amp;L report</div>
+              <div class="mh-ts">Itemised, every month</div>
+              <div class="mh-td">Earnings, fees, expenses, occupancy &amp; guest reviews — sent monthly. No spreadsheets to chase, no accountant headaches.</div>
+              <div class="mh-link">Open example report →</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="mh-soft">
+          <div class="mh-scard">
+            <div class="mh-ts">Performance reviews</div>
+            <div class="mh-tt">Quarterly performance call</div>
+            <div class="mh-td">Every three months we sit down with you to review what's working, what's changed in the market, and what's next. Strategic, not transactional.</div>
+          </div>
+          <div class="mh-scard">
+            <div class="mh-ts">Market intelligence</div>
+            <div class="mh-tt">Monthly newsletter</div>
+            <div class="mh-td">A short read covering local STR market trends, regulatory changes, pricing shifts, and what's working across our portfolio — intel a self-managed owner can't easily get.</div>
+          </div>
+        </div>
+
+        <div class="mh-you">
+          <div class="mh-you-h">What stays with you</div>
+          <div class="mh-you-grid">
+            <div class="mh-you-i">Mortgage payments &amp; lender consent-to-let</div>
+            <div class="mh-you-i">Buildings &amp; contents insurance</div>
+            <div class="mh-you-i">Annual safety certificates (gas, electric, EPC)</div>
+            <div class="mh-you-i">Council tax &amp; utility bills</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1615,6 +1723,7 @@ function hswOpen(btn) {
   const populate = () => {
     target.classList.add('active');
     setActiveTab();
+    target.querySelectorAll('video').forEach(v => { try { v.currentTime = 0; v.play(); } catch (e) {} });
     hswBusy = false;
   };
 
