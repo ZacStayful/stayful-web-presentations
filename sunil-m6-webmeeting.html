@@ -1215,7 +1215,11 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .slide.spotlight .mh-grid,
 .slide.spotlight .mh-sub,
 .slide.spotlight .mh-soft,
-.slide.spotlight .gv-flowhead{opacity:0.16;filter:blur(1.5px);transition:opacity .55s var(--ease),filter .55s var(--ease);}
+.slide.spotlight .gv-flowhead,
+.slide.spotlight .model-strip,
+.slide.spotlight .gv-flow{opacity:0.16;filter:blur(1.5px);transition:opacity .55s var(--ease),filter .55s var(--ease);}
+.ms-cta-ic{display:inline-block;transition:transform .3s var(--ease);}
+.ms-item-btn.open .ms-cta-ic{transform:rotate(180deg);}
 .mh-tile.cue-block{transition:opacity .55s var(--ease),filter .55s var(--ease),box-shadow .35s var(--ease);}
 .slide.spotlight .mh-tile.lit{box-shadow:0 0 0 2px var(--green-light),0 16px 50px rgba(0,0,0,0.5);}
 .cue-bar{
@@ -1952,8 +1956,31 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 
   <div class="model-strip fi">
     <div class="ms-item"><span class="ms-v">15% + VAT</span><span class="ms-l">Of net revenue · no setup, monthly or exit fee</span></div>
-    <button class="ms-item ms-item-btn" type="button" onclick="openCleaning()"><span class="ms-v">Cleaning</span><span class="ms-l">Charged to guests, not your income</span><span class="ms-cta">See how it works →</span></button>
+    <button class="ms-item ms-item-btn" type="button" data-cue="how stayful cleaning works|how cleaning works|cleaning works|how does cleaning work|cleaning fee|the cleaning|cleaning explained" data-cue-label="Cleaning" data-cue-target="#cleaning-reveal" data-cue-class="open" onclick="toggleReveal(this,'cleaning-reveal')"><span class="ms-v">Cleaning</span><span class="ms-l">Charged to guests, not your income</span><span class="ms-cta">See how it works <span class="ms-cta-ic">▾</span></span></button>
     <div class="ms-item"><span class="ms-v">6-month min</span><span class="ms-l">Then rolling · ~3 weeks to go live</span></div>
+  </div>
+
+  <div class="reveal-panel fi" id="cleaning-reveal">
+   <div class="rp-inner"><div class="rp-pad">
+    <div class="clean-box">
+      <div class="clean-eb">How cleaning works</div>
+      <h4 class="clean-h">Cleaning is charged to the guest — <em>not deducted from you</em></h4>
+      <p class="clean-intro">In your income estimate, cleaning shows as a cost because we forecast <strong>total revenue</strong> — which already includes the cleaning fee guests pay. In reality the guest pays that fee <strong>on top of</strong> the nightly rate, so it washes through and never comes out of your earnings.</p>
+      <div class="clean-eg">
+        <div class="clean-eg-h">Example · a 3-night stay</div>
+        <div class="clean-flow">
+          <div class="clean-chip"><div class="clean-v">£100</div><div class="clean-l">× 3 nights</div></div>
+          <div class="clean-op">=</div>
+          <div class="clean-chip stay"><div class="clean-v">£300</div><div class="clean-l">accommodation</div></div>
+          <div class="clean-op">+</div>
+          <div class="clean-chip fee"><div class="clean-v">£100</div><div class="clean-l">cleaning fee</div></div>
+          <div class="clean-op">=</div>
+          <div class="clean-chip total"><div class="clean-v">£400</div><div class="clean-l">guest pays</div></div>
+        </div>
+      </div>
+      <div class="clean-note">The guest pays <strong>£400</strong> in total. The <strong>£100 cleaning</strong> is theirs to cover — your <strong>£300</strong> accommodation revenue is untouched.</div>
+    </div>
+   </div></div>
   </div>
 
   <div class="hsw fi" id="hsw">
@@ -2096,32 +2123,9 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
           <div class="mh-do">Dynamic pricing — adjusted weekly, often daily</div>
           <div class="mh-do">Guest screening, ID verification &amp; deposit collection</div>
           <div class="mh-do">Check-in, key handover &amp; in-stay support</div>
-          <button class="mh-do mh-do-btn" type="button" data-cue="how stayful cleaning works|how cleaning works|cleaning works|how does cleaning work|cleaning fee|the cleaning|cleaning explained" data-cue-label="Cleaning" data-cue-target="#cleaning-reveal" data-cue-class="open" onclick="toggleReveal(this,'cleaning-reveal')"><span class="mh-do-tx">Cleaning coordination after every stay</span><span class="mh-do-ic">▾</span></button>
+          <div class="mh-do">Cleaning coordination after every stay</div>
           <div class="mh-do">Repairs handling up to £300 without consultation</div>
           <div class="mh-do">Monthly P&amp;L report straight to your inbox</div>
-        </div>
-
-        <div class="reveal-panel" id="cleaning-reveal">
-         <div class="rp-inner"><div class="rp-pad">
-          <div class="clean-box">
-            <div class="clean-eb">How cleaning works</div>
-            <h4 class="clean-h">Cleaning is charged to the guest — <em>not deducted from you</em></h4>
-            <p class="clean-intro">In your income estimate, cleaning shows as a cost because we forecast <strong>total revenue</strong> — which already includes the cleaning fee guests pay. In reality the guest pays that fee <strong>on top of</strong> the nightly rate, so it washes through and never comes out of your earnings.</p>
-            <div class="clean-eg">
-              <div class="clean-eg-h">Example · a 3-night stay</div>
-              <div class="clean-flow">
-                <div class="clean-chip"><div class="clean-v">£100</div><div class="clean-l">× 3 nights</div></div>
-                <div class="clean-op">=</div>
-                <div class="clean-chip stay"><div class="clean-v">£300</div><div class="clean-l">accommodation</div></div>
-                <div class="clean-op">+</div>
-                <div class="clean-chip fee"><div class="clean-v">£100</div><div class="clean-l">cleaning fee</div></div>
-                <div class="clean-op">=</div>
-                <div class="clean-chip total"><div class="clean-v">£400</div><div class="clean-l">guest pays</div></div>
-              </div>
-            </div>
-            <div class="clean-note">The guest pays <strong>£400</strong> in total. The <strong>£100 cleaning</strong> is theirs to cover — your <strong>£300</strong> accommodation revenue is untouched.</div>
-          </div>
-         </div></div>
         </div>
 
         <div class="mh-sub">What you'll see · live tools, every day</div>
@@ -2270,22 +2274,6 @@ window.stOpenPdf = stOpenPdf;
 window.stClosePdf = stClosePdf;
 document.getElementById('pdfOvClose').onclick = stClosePdf;
 document.getElementById('pdfOvBd').onclick = stClosePdf;
-
-// Open the cleaning explainer from anywhere on the slide (opens Management tab first)
-function openCleaning(){
-  if(window.stClearDim) window.stClearDim();
-  const mgmtTab = document.querySelector('.hsw-tab[data-panel="management"]');
-  const mgmtPanel = document.querySelector('.hsw-panel[data-panel="management"]');
-  const switching = !!(mgmtPanel && !mgmtPanel.classList.contains('active') && document.querySelector('.hsw-panel.active'));
-  if(mgmtPanel && !mgmtPanel.classList.contains('active') && mgmtTab && typeof hswOpen === 'function') hswOpen(mgmtTab);
-  const panel = document.getElementById('cleaning-reveal');
-  if(!panel) return;
-  panel.classList.add('open');
-  const btn = document.querySelector('[onclick*="cleaning-reveal"]');
-  if(btn) btn.classList.add('open');
-  const centre = () => panel.scrollIntoView({behavior:'smooth', block:'center'});
-  if(switching){ setTimeout(centre, 2300); setTimeout(centre, 2800); } else { setTimeout(centre, 150); }
-}
 
 function toggleReveal(btn, panelId){
   if(window.stClearDim) window.stClearDim();   // manual click = plain open, no spotlight
