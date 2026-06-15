@@ -900,7 +900,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .risk-cap strong{color:#f3eee0;font-weight:500;}
 /* verdict — long let vs short let, revealed as the climax of the build */
 .verdict{
-  margin-top:24px;padding-top:22px;border-top:1px solid rgba(255,255,255,0.1);
+  margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid rgba(255,255,255,0.1);
   opacity:0;transform:translateY(10px);
   transition:opacity 0.6s var(--ease) 2.6s,transform 0.6s var(--ease) 2.6s;
 }
@@ -1889,6 +1889,11 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
       <span class="risk-btn-ic">▶</span><span class="risk-btn-tx">Present risk profile</span>
     </button>
     <div class="risk-chart" id="riskChart">
+      <div class="verdict">
+        <div class="verdict-q">Better to long let or short let?</div>
+        <div class="verdict-a" id="verdictA">&nbsp;</div>
+        <div class="verdict-sub" id="verdictSub"></div>
+      </div>
       <div class="risk-head">Monthly net vs the long-let benchmark<button class="risk-collapse" type="button" onclick="collapseRisk(this)">Collapse ✕</button></div>
       <div class="risk-plot">
         <div class="risk-bars">
@@ -1904,11 +1909,6 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
         </div>
       </div>
       <div class="risk-cap">The long-let nets <strong>£990/mo</strong>. Beat the market's average reviews &amp; rating and short-let clears it (£1,001); the likely case lands just under it (£809); only an extremely unlikely all-December year (£528) sits well below.</div>
-      <div class="verdict">
-        <div class="verdict-q">Better to long let or short let?</div>
-        <div class="verdict-a" id="verdictA">&nbsp;</div>
-        <div class="verdict-sub" id="verdictSub"></div>
-      </div>
     </div>
   </div>
 
