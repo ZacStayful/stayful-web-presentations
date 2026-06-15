@@ -1058,11 +1058,11 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .at-gap{background:white;color:var(--am);border:1px solid rgba(196,124,26,0.25);}
 
 /* ═══ NUMBERS SLIDE · centred + progressive reveal ═══ */
-.num-head{text-align:center;max-width:840px;margin:0 auto;}
+.num-head{text-align:center;max-width:none;margin:0 auto;}
 .num-head .eb{justify-content:center;}
 .num-head h2,.num-head .sh{margin-left:auto;margin-right:auto;}
-.num-head .sh{text-align:center;}
-.num-body{max-width:840px;margin:0 auto;width:100%;}
+.num-head .sh{text-align:center;max-width:920px;}
+.num-body{max-width:none;margin:0 auto;width:100%;}
 .num-body .chart-wrap{margin-top:24px;}
 
 /* Reveal buttons + collapsible panels */
@@ -1091,13 +1091,13 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 
 /* Journey framing */
 .journey-intro{
-  max-width:760px;margin:0 auto 8px;text-align:center;
+  max-width:1040px;margin:0 auto 8px;text-align:center;
   font-size:13.5px;color:var(--ink2);line-height:1.6;font-weight:400;
 }
 .journey-intro strong{color:var(--green-d);font-weight:600;}
 
 /* Journey timeline + progress meter */
-.jt{max-width:820px;margin:18px auto 4px;}
+.jt{max-width:none;margin:18px auto 4px;}
 .jt-track{position:relative;height:7px;border-radius:99px;background:var(--green-soft);
   border:1px solid var(--line);margin:74px 46px 96px;}
 .jt-fill{position:absolute;left:0;top:-1px;bottom:-1px;width:0;border-radius:99px;
@@ -1120,15 +1120,42 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .jt-badge{display:inline-block;margin-top:5px;font-size:8.5px;letter-spacing:0.08em;text-transform:uppercase;
   background:var(--green-d);color:#fff;padding:2px 8px;border-radius:99px;font-weight:600;}
 
-/* What speeds it up — Stayful expertise */
-.speed-head{text-align:center;margin:24px 0 14px;}
-.speed-eb{font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--green);font-weight:600;}
-.speed-h{font-family:var(--serif);font-size:23px;color:var(--green-d);font-weight:400;margin-top:5px;line-height:1.15;}
-.speed-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
-.speed-card{padding:16px 16px;border-radius:12px;background:var(--green-soft);border:1px solid var(--line);text-align:center;}
-.speed-ic{font-size:20px;line-height:1;margin-bottom:8px;}
-.speed-t{font-size:12.5px;font-weight:600;color:var(--green-d);margin-bottom:4px;}
-.speed-d{font-size:10.5px;color:var(--muted);font-weight:300;line-height:1.45;}
+/* What gets you there faster — review velocity, our differentiator */
+.rv-head{text-align:center;margin:26px 0 16px;}
+.rv-eb{font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--green);font-weight:600;}
+.rv-h{font-family:var(--serif);font-size:25px;color:var(--green-d);font-weight:400;margin-top:5px;line-height:1.15;}
+.rv-h em{font-style:italic;color:var(--green);}
+.rv-sub{max-width:1000px;margin:9px auto 0;font-size:12.5px;color:var(--ink2);line-height:1.55;font-weight:400;}
+.rv-compare{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:stretch;}
+.rv-card{padding:22px 24px;border-radius:14px;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;text-align:center;}
+.rv-us{background:linear-gradient(135deg,var(--green-d),var(--green-dd));border-color:var(--green-d);color:#f3eee0;}
+.rv-them{background:var(--green-soft);}
+.rv-tag{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;margin-bottom:12px;}
+.rv-us .rv-tag{color:var(--green-light);}
+.rv-them .rv-tag{color:var(--muted);}
+.rv-ratio{font-family:var(--serif);font-size:50px;line-height:1;font-weight:300;}
+.rv-us .rv-ratio{color:#fff;}
+.rv-them .rv-ratio{color:var(--green-d);}
+.rv-ratio-l{font-size:11.5px;font-weight:400;margin-top:6px;}
+.rv-us .rv-ratio-l{color:rgba(243,238,224,0.72);}
+.rv-them .rv-ratio-l{color:var(--muted);}
+.rv-dots{display:flex;gap:6px;margin:16px 0 6px;flex-wrap:wrap;justify-content:center;max-width:180px;}
+.rv-dot{width:12px;height:12px;border-radius:50%;}
+.rv-us .rv-dot.on{background:var(--green-light);}
+.rv-us .rv-dot.off{background:rgba(255,255,255,0.14);}
+.rv-them .rv-dot.on{background:var(--green);}
+.rv-them .rv-dot.off{background:rgba(45,74,53,0.1);}
+.rv-dcap{font-size:10px;letter-spacing:0.04em;margin-bottom:14px;}
+.rv-us .rv-dcap{color:rgba(243,238,224,0.55);}
+.rv-them .rv-dcap{color:var(--muted-l);}
+.rv-out{font-size:12.5px;font-weight:500;margin-top:auto;padding-top:6px;line-height:1.4;}
+.rv-us .rv-out{color:#fff;}
+.rv-them .rv-out{color:var(--am);}
+.rv-vs{align-self:center;font-family:var(--serif);font-size:22px;font-style:italic;color:var(--muted);}
+.rv-note{max-width:1000px;margin:16px auto 0;text-align:center;font-size:12.5px;color:var(--ink2);line-height:1.55;
+  padding:13px 20px;background:var(--am-pale);border-radius:10px;border:1px solid rgba(184,132,31,0.18);}
+.rv-note strong{color:var(--am);font-weight:600;}
+@media(max-width:900px){.rv-compare{grid-template-columns:1fr;}.rv-vs{transform:rotate(90deg);}}
 
 /* Amenity reframe — complementary, at the end */
 .amenity-block{margin-top:26px;}
@@ -1136,13 +1163,13 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .amenity-eb{font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--am);font-weight:600;}
 .amenity-h{font-family:var(--serif);font-size:23px;color:var(--green-d);font-weight:400;margin-top:5px;line-height:1.15;}
 .amenity-note{
-  max-width:720px;margin:8px auto 16px;text-align:center;
+  max-width:940px;margin:8px auto 16px;text-align:center;
   font-size:11.5px;color:var(--ink2);line-height:1.55;font-weight:400;
   padding:11px 18px;background:var(--am-pale);border-radius:10px;border:1px solid rgba(184,132,31,0.18);
 }
 .amenity-note strong{color:var(--am);font-weight:600;}
 
-@media(max-width:900px){.speed-grid,.amenity-intel{grid-template-columns:1fr;}}
+@media(max-width:900px){.amenity-intel{grid-template-columns:1fr;}}
 
 </style>
 </head>
@@ -1513,16 +1540,35 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
           </div>
         </div>
 
-        <div class="speed-head">
-          <div class="speed-eb">Our expertise · the guiding hand</div>
-          <div class="speed-h">How Stayful gets you there faster</div>
+        <div class="rv-head">
+          <div class="rv-eb">Our expertise · the guiding hand</div>
+          <div class="rv-h">It comes down to one thing — <em>consistent, quality reviews</em></div>
+          <p class="rv-sub">Reviews are what lift a new listing up the rankings. Our entire focus is turning stays into reviews — the single biggest driver of how fast you reach the figures above. Most management companies don't, and it's why their listings stall.</p>
         </div>
-        <div class="speed-grid">
-          <div class="speed-card"><div class="speed-ic">📸</div><div class="speed-t">Professional listing</div><div class="speed-d">Pro photography &amp; copy so you get booked — and reviewed — from day one.</div></div>
-          <div class="speed-card"><div class="speed-ic">📊</div><div class="speed-t">Dynamic pricing</div><div class="speed-d">Smart rates fill early dates, driving the review velocity that builds rank.</div></div>
-          <div class="speed-card"><div class="speed-ic">🌐</div><div class="speed-t">Multi-platform reach</div><div class="speed-d">Airbnb + Booking.com exposure means more stays, faster review growth.</div></div>
-          <div class="speed-card"><div class="speed-ic">⭐</div><div class="speed-t">5-star experience</div><div class="speed-d">Guest vetting, fast comms &amp; spotless turnarounds earn the reviews that count.</div></div>
+        <div class="rv-compare">
+          <div class="rv-card rv-us">
+            <div class="rv-tag">Stayful</div>
+            <div class="rv-ratio">1 in 2–3</div>
+            <div class="rv-ratio-l">stays becomes a review</div>
+            <div class="rv-dots">
+              <span class="rv-dot on"></span><span class="rv-dot on"></span><span class="rv-dot on"></span><span class="rv-dot off"></span><span class="rv-dot off"></span><span class="rv-dot off"></span><span class="rv-dot off"></span><span class="rv-dot off"></span>
+            </div>
+            <div class="rv-dcap">≈ 3 reviews from the same 8 stays</div>
+            <div class="rv-out">Competitive in ~6–10 months</div>
+          </div>
+          <div class="rv-vs">vs</div>
+          <div class="rv-card rv-them">
+            <div class="rv-tag">Typical management company</div>
+            <div class="rv-ratio">1 in 4–8</div>
+            <div class="rv-ratio-l">stays becomes a review</div>
+            <div class="rv-dots">
+              <span class="rv-dot on"></span><span class="rv-dot off"></span><span class="rv-dot off"></span><span class="rv-dot off"></span><span class="rv-dot off"></span><span class="rv-dot off"></span><span class="rv-dot off"></span><span class="rv-dot off"></span>
+            </div>
+            <div class="rv-dcap">≈ 1 review from the same 8 stays</div>
+            <div class="rv-out">2–3× slower to compete</div>
+          </div>
         </div>
+        <div class="rv-note">This is the gap most owners never see — slow review growth is <strong>why most management companies miss the returns they quoted</strong>. We obsess over review conversion so your listing climbs to the top far faster.</div>
 
         <div class="amenity-block">
           <div class="amenity-head">
