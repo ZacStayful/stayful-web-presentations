@@ -1289,6 +1289,25 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .cue-pill.reset{background:transparent;border-color:rgba(255,255,255,0.18);color:rgba(243,238,224,0.7);}
 .cue-pill.reset:hover{background:rgba(255,255,255,0.1);}
 
+/* ── Voice command reference (Notes slide) ── */
+.vc-intro{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:12px;}
+.vc-intro code{background:var(--green-soft);padding:1px 6px;border-radius:5px;font-size:11px;color:var(--green-d);}
+.vc-group{margin-bottom:14px;}
+.vc-group-h{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);font-weight:700;margin:0 0 8px;}
+.vc-item{border:1px solid var(--line);border-radius:10px;margin-bottom:6px;overflow:hidden;background:var(--white);}
+.vc-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;background:transparent;border:none;cursor:pointer;font-family:var(--sans);text-align:left;}
+.vc-btn:hover{background:var(--green-soft);}
+.vc-label{font-size:13px;color:var(--ink);font-weight:600;}
+.vc-meta{font-size:10.5px;color:var(--muted);display:flex;align-items:center;gap:8px;white-space:nowrap;}
+.vc-ic{display:inline-block;transition:transform .25s var(--ease);}
+.vc-item.open .vc-ic{transform:rotate(180deg);}
+.vc-drop{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s var(--ease);}
+.vc-item.open .vc-drop{grid-template-rows:1fr;}
+.vc-drop-inner{overflow:hidden;min-height:0;}
+.vc-chips-wrap{display:flex;flex-wrap:wrap;gap:6px;padding:2px 14px 13px;}
+.vc-chip{font-size:11px;padding:4px 11px;border-radius:99px;background:var(--green-soft);border:1px solid var(--line);color:var(--ink2);}
+.vc-cmd-note{font-size:10.5px;color:var(--am);padding:0 14px 11px;font-style:italic;}
+
 /* ── Case study PDF overlay ── */
 .pdf-ov{position:fixed;inset:0;z-index:200;display:none;}
 .pdf-ov.show{display:block;}
@@ -1518,6 +1537,12 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
           <label for="ns-ib">Send detailed income breakdown</label>
         </div>
       </div>
+    </div>
+
+    <div class="np-section">
+      <div class="np-section-h">Voice commands</div>
+      <div class="vc-intro">Mic is live in presenter mode (<code>?present=1</code>). Say a phrase below to jump to or open that section. Tap a command to see all its variations.</div>
+      <div class="vc-ref" id="voiceRef"></div>
     </div>
 
     <div class="np-copy-row">
@@ -2003,7 +2028,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 
   <div class="model-strip fi">
     <button class="ms-item ms-item-btn" type="button" data-cue="stayful management charges|management charges|how stayful charges|how does stayful charge|how do you charge|where do you charge|your management fee|how the fee works" data-cue-label="Management charges" data-cue-target="#charges-reveal" data-cue-class="open" onclick="toggleReveal(this,'charges-reveal')"><span class="ms-v">15% + VAT</span><span class="ms-l">Of net revenue · no setup, monthly or exit fee</span><span class="ms-cta">See how it works <span class="ms-cta-ic">▾</span></span></button>
-    <button class="ms-item ms-item-btn" type="button" data-cue="how stayful cleaning works|how cleaning works|cleaning works|how does cleaning work|cleaning fee|the cleaning|cleaning explained" data-cue-label="Cleaning" data-cue-target="#cleaning-reveal" data-cue-class="open" onclick="toggleReveal(this,'cleaning-reveal')"><span class="ms-v">Cleaning</span><span class="ms-l">Charged to guests, not your income</span><span class="ms-cta">See how it works <span class="ms-cta-ic">▾</span></span></button>
+    <button class="ms-item ms-item-btn" type="button" data-cue="stayful cleaning|how stayful cleaning works|how cleaning works|cleaning works|how does cleaning work|cleaning fee|the cleaning|cleaning explained|cleaning" data-cue-label="Cleaning" data-cue-target="#cleaning-reveal" data-cue-class="open" onclick="toggleReveal(this,'cleaning-reveal')"><span class="ms-v">Cleaning</span><span class="ms-l">Charged to guests, not your income</span><span class="ms-cta">See how it works <span class="ms-cta-ic">▾</span></span></button>
     <button class="ms-item ms-item-btn" type="button" data-cue="contract information|contract terms|the contract|contract details|tell me about the contract|what is the contract|terms of the contract|contract" data-cue-label="Contract" data-cue-target="#contract-reveal" data-cue-class="open" onclick="toggleReveal(this,'contract-reveal')"><span class="ms-v">Contract</span><span class="ms-l">6-month term · key things to know</span><span class="ms-cta">See how it works <span class="ms-cta-ic">▾</span></span></button>
     <button class="ms-item ms-item-btn" type="button" data-cue="short letting compliance information|short letting compliance|short let compliance|compliance information|safety checks|is short letting regulated|short term let regulation|short letting regulation|compliance" data-cue-label="Compliance" data-cue-target="#compliance-reveal" data-cue-class="open" onclick="toggleReveal(this,'compliance-reveal')"><span class="ms-v">Compliance</span><span class="ms-l">Short-letting safety &amp; regulation</span><span class="ms-cta">See how it works <span class="ms-cta-ic">▾</span></span></button>
   </div>
@@ -2999,6 +3024,60 @@ document.getElementById('np-copy').addEventListener('click', async () => {
   } else {
     play();
   }
+})();
+
+// Build the voice-command reference in the Notes slide from the deck's actual cues
+(function(){
+  const ref = document.getElementById('voiceRef');
+  if(!ref) return;
+  const groups = [];
+  document.querySelectorAll('.slide').forEach(s => {
+    const name = s.getAttribute('data-name');
+    if(name === 'Notes') return;
+    const items = [];
+    // navigation (title + data-cue-nav aliases)
+    const navPhrases = [];
+    if(name) navPhrases.push(name.toLowerCase());
+    const nav = s.getAttribute('data-cue-nav');
+    if(nav) nav.split('|').forEach(p => { const t = p.trim(); if(t && navPhrases.indexOf(t) < 0) navPhrases.push(t); });
+    const sensitive = ['notes','property'].includes((name || '').toLowerCase());
+    items.push({ label: 'Go to “' + name + '”', phrases: navPhrases, note: sensitive ? 'Say with a verb, e.g. “go to ' + (name||'').toLowerCase() + '”' : '' });
+    // section cues
+    s.querySelectorAll('[data-cue]').forEach(el => {
+      const label = el.getAttribute('data-cue-label') || (el.getAttribute('data-cue') || '').split('|')[0];
+      const phrases = (el.getAttribute('data-cue') || '').split('|').map(x => x.trim()).filter(Boolean);
+      if(phrases.length) items.push({ label, phrases, note: '' });
+    });
+    if(items.length) groups.push({ section: name, items });
+  });
+  groups.push({ section: 'Controls', items: [
+    { label: 'Close / reset', phrases: ['close', 'reset', 'show all', 'clear', 'hide'], note: 'Closes the open dropdown / overlay' },
+    { label: 'Move slides', phrases: ['next slide', 'previous slide', 'go back'], note: '' }
+  ]});
+
+  groups.forEach(group => {
+    const sec = document.createElement('div'); sec.className = 'vc-group';
+    const h = document.createElement('div'); h.className = 'vc-group-h'; h.textContent = group.section; sec.appendChild(h);
+    group.items.forEach(item => {
+      const row = document.createElement('div'); row.className = 'vc-item';
+      const btn = document.createElement('button'); btn.className = 'vc-btn'; btn.type = 'button';
+      const lab = document.createElement('span'); lab.className = 'vc-label'; lab.textContent = item.label;
+      const meta = document.createElement('span'); meta.className = 'vc-meta';
+      meta.innerHTML = item.phrases.length + ' phrase' + (item.phrases.length === 1 ? '' : 's') + ' <span class="vc-ic">▾</span>';
+      btn.appendChild(lab); btn.appendChild(meta);
+      const drop = document.createElement('div'); drop.className = 'vc-drop';
+      const inner = document.createElement('div'); inner.className = 'vc-drop-inner';
+      const wrap = document.createElement('div'); wrap.className = 'vc-chips-wrap';
+      item.phrases.forEach(p => { const c = document.createElement('span'); c.className = 'vc-chip'; c.textContent = '“' + p + '”'; wrap.appendChild(c); });
+      inner.appendChild(wrap);
+      if(item.note){ const n = document.createElement('div'); n.className = 'vc-cmd-note'; n.textContent = item.note; inner.appendChild(n); }
+      drop.appendChild(inner);
+      btn.onclick = () => row.classList.toggle('open');
+      row.appendChild(btn); row.appendChild(drop);
+      sec.appendChild(row);
+    });
+    ref.appendChild(sec);
+  });
 })();
 
 buildBars();
