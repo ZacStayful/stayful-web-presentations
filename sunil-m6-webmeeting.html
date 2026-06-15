@@ -2652,7 +2652,7 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     const p = (phrase || '').toLowerCase(); if(!p) return false;
     // 1) explicit slide-title navigation
     const nidx = navIndex(p);
-    if(nidx >= 0 && nidx !== cur){ goTo(nidx); return true; }
+    if(nidx >= 0 && nidx !== cur){ if(window.stClosePdf) window.stClosePdf(); goTo(nidx); return true; }
     // 2) reset / clear on the current slide
     let resetIdx = -1;
     ['reset','show all','clear','everything','zoom out','hide','close'].forEach(w => { const i = p.lastIndexOf(w); if(i > resetIdx) resetIdx = i; });
@@ -2671,6 +2671,8 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     });
     if(resetIdx > bestIdx){ if(window.stClosePdf) window.stClosePdf(); clearSpotlight(activeSlide()); return true; }
     if(best){
+      // any command other than opening another case-study PDF closes the overlay first
+      if(!best.hasAttribute('data-cue-pdf') && window.stClosePdf) window.stClosePdf();
       if(bestSlide && bestSlide !== activeSlide()){
         const ti = [...slides].indexOf(bestSlide);
         if(ti >= 0) goTo(ti);   // navigate first (synchronous — slide is active right after)
