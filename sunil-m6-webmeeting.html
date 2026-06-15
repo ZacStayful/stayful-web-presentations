@@ -2821,9 +2821,9 @@ document.getElementById('np-copy').addEventListener('click', async () => {
   const NAV_VERBS = ['go to','goto','show me','show the','take me to','let us look at','lets look at','move to','jump to','navigate to','bring up','open the'];
   const NAV_SENSITIVE = ['notes','property'];
   function navInfo(p){
-    if(/\bnext slide\b/.test(p)) return {idx: Math.min(cur + 1, TOTAL - 1), pos: p.lastIndexOf('next slide')};
+    if(/\bnext slide\b/.test(p)) return {idx: Math.min(cur + 1, TOTAL - 1), pos: p.lastIndexOf('next slide'), rel: 'next'};
     const bm = p.match(/previous slide|last slide|go back/);
-    if(bm) return {idx: Math.max(cur - 1, 0), pos: p.lastIndexOf(bm[0])};
+    if(bm) return {idx: Math.max(cur - 1, 0), pos: p.lastIndexOf(bm[0]), rel: 'prev'};
     let idx = -1, pos = -1, len = 0;
     // explicit per-slide spoken aliases: data-cue-nav="phrase|phrase"
     slides.forEach((s, i) => {
@@ -2888,7 +2888,9 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     const cands = [];
     const nav = navInfo(p);
     if(nav.idx >= 0 && nav.idx !== cur){
-      cands.push({pos: nav.pos, key: 'nav:' + nav.idx, run: () => { if(window.stClosePdf) window.stClosePdf(); goTo(nav.idx); }});
+      // relative moves use a stable key so repeated interim partials only move once
+      const navKey = nav.rel ? ('nav:' + nav.rel) : ('nav:' + nav.idx);
+      cands.push({pos: nav.pos, key: navKey, run: () => { if(window.stClosePdf) window.stClosePdf(); goTo(nav.idx); }});
     }
     let resetIdx = -1;
     ['reset','show all','clear','everything','zoom out','hide','close'].forEach(w => { const i = p.lastIndexOf(w); if(i > resetIdx) resetIdx = i; });
