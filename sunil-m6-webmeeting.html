@@ -1654,7 +1654,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
   </div>
 
   <div class="risk fi">
-    <button class="risk-btn" type="button" onclick="playRisk(this)">
+    <button class="risk-btn" type="button" data-cue="risk profile|risk|present risk|risk and reward|best case|worst case" data-cue-label="Risk profile" data-cue-click="1" onclick="playRisk(this)">
       <span class="risk-btn-ic">▶</span><span class="risk-btn-tx">Present risk profile</span>
     </button>
     <div class="risk-chart" id="riskChart">
@@ -2353,9 +2353,14 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     return best;
   }
 
-  // Reveal a matched cue: action cues open their target, block cues spotlight.
+  // Reveal a matched cue: open-a-target cues, click-a-button cues, or spotlight blocks.
   function dispatchCue(block){
     if(block.hasAttribute('data-cue-target')) doAction(block, true);
+    else if(block.hasAttribute('data-cue-click')){
+      block.click();   // run the button's own handler (idempotent — handlers guard re-runs)
+      document.querySelectorAll('.cue-pill').forEach(p => p.classList.toggle('active', p.__block === block));
+      block.scrollIntoView({behavior:'smooth', block:'center'});
+    }
     else revealBlock(block);
   }
 
@@ -2415,6 +2420,7 @@ document.getElementById('np-copy').addEventListener('click', async () => {
       pill.__block = b;
       pill.onclick = () => {
         if(b.hasAttribute('data-cue-target')) doAction(b, false);
+        else if(b.hasAttribute('data-cue-click')) b.click();
         else revealBlock(b);
       };
       bar.appendChild(pill);
