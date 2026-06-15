@@ -2274,10 +2274,12 @@ document.getElementById('np-copy').addEventListener('click', async () => {
   const activeSlide = () => document.querySelector('.slide.active');
 
   function openAncestors(el){
+    const opened = [];
     let p = el.parentElement;
     while(p && p !== document.body){
       if(p.classList && p.classList.contains('reveal-panel') && !p.classList.contains('open')){
         p.classList.add('open');
+        opened.push(p);
         const btn = document.querySelector('[onclick*="' + p.id + '"]');
         if(btn){
           btn.classList.add('open');
@@ -2287,6 +2289,7 @@ document.getElementById('np-copy').addEventListener('click', async () => {
       }
       p = p.parentElement;
     }
+    return opened;
   }
 
   function clearSpotlight(slide){
@@ -2306,12 +2309,17 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     const slide = block.closest('.slide') || activeSlide();
     if(!slide) return;
     const already = slide.classList.contains('spotlight') && block.classList.contains('lit');
-    openAncestors(block);
+    const opened = openAncestors(block);
     slide.classList.add('spotlight');
     slide.querySelectorAll('.cue-block.lit').forEach(b => { if(b !== block) b.classList.remove('lit'); });
     block.classList.add('lit');
     document.querySelectorAll('.cue-pill').forEach(p => p.classList.toggle('active', p.__block === block));
-    if(!already) setTimeout(() => { block.scrollIntoView({behavior:'smooth', block:'center'}); }, 380);
+    const centre = () => block.scrollIntoView({behavior:'smooth', block:'center'});
+    if(!already){
+      requestAnimationFrame(() => requestAnimationFrame(centre));
+      // panels expand over ~2s — re-centre as the layout settles so deep blocks land correctly
+      if(opened.length){ setTimeout(centre, 1000); setTimeout(centre, 2150); }
+    }
   }
   window.stReveal = revealBlock;
 
