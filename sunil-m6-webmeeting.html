@@ -1176,6 +1176,10 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .slide.spotlight .cue-block{opacity:0.16;filter:blur(1.5px);}
 .slide.spotlight .cue-block.lit{opacity:1;filter:none;}
 .slide.spotlight .reveal-row{opacity:0.16;transition:opacity .55s var(--ease);}
+/* Who Books spotlight — dim header & demand grid, keep the lit panel bright */
+.slide.spotlight .wb-head,
+.slide.spotlight .guests-grid{opacity:0.16;filter:blur(1.5px);transition:opacity .55s var(--ease),filter .55s var(--ease);}
+.slide.spotlight .reveal-panel.lit{opacity:1;filter:none;}
 .cue-bar{
   position:fixed;left:50%;bottom:66px;transform:translateX(-50%);z-index:70;
   display:flex;align-items:center;gap:7px;max-width:92vw;flex-wrap:wrap;justify-content:center;
@@ -2152,6 +2156,7 @@ const LTL_MONTHLY = /* ST:LTL_MONTHLY_START */990/* ST:LTL_MONTHLY_END */;
 
 /* Progressive reveal — toggles a collapsible panel + swaps the button label */
 function toggleReveal(btn, panelId){
+  if(window.stClearDim) window.stClearDim();   // manual click = plain open, no spotlight
   const panel = document.getElementById(panelId);
   if(!panel) return;
   const open = panel.classList.toggle('open');
@@ -2457,16 +2462,46 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     return opened;
   }
 
-  function clearSpotlight(slide){
+  // dim-only clear — removes the spotlight/lit state but leaves panels open
+  function clearDim(slide){
     slide = slide || activeSlide();
     if(!slide) return;
     slide.classList.remove('spotlight');
-    slide.querySelectorAll('.cue-block.lit').forEach(b => b.classList.remove('lit'));
+    slide.querySelectorAll('.lit').forEach(b => b.classList.remove('lit'));
+    document.querySelectorAll('.cue-pill.active').forEach(p => p.classList.remove('active'));
+  }
+  window.stClearDim = clearDim;
+
+  // full reset — clears the dim AND closes any voice-opened panels on the slide
+  function clearSpotlight(slide){
+    slide = slide || activeSlide();
+    if(!slide) return;
+    clearDim(slide);
     slide.querySelectorAll('[data-cue-target]').forEach(el => {
       const tgt = document.querySelector(el.getAttribute('data-cue-target'));
-      if(tgt) tgt.classList.remove(el.getAttribute('data-cue-class'));
+      if(!tgt) return;
+      tgt.classList.remove(el.getAttribute('data-cue-class'));
+      if(tgt.classList.contains('reveal-panel') && tgt.id){
+        const b = document.querySelector('[onclick*="' + tgt.id + '"]');
+        if(b){ b.classList.remove('open'); const l = b.querySelector('.rb-label'); if(l && b.dataset.shut) l.textContent = b.dataset.shut; }
+      }
     });
-    document.querySelectorAll('.cue-pill.active').forEach(p => p.classList.remove('active'));
+  }
+
+  // Spotlight an opened reveal panel (voice/cue path): show it alone, dim the rest, centre it
+  function spotlightPanel(panel){
+    const slide = panel.closest('.slide'); if(!slide) return;
+    slide.querySelectorAll('.reveal-panel.open').forEach(p => {
+      if(p === panel) return;
+      p.classList.remove('open', 'lit');
+      if(p.id){ const b = document.querySelector('[onclick*="' + p.id + '"]'); if(b){ b.classList.remove('open'); const l = b.querySelector('.rb-label'); if(l && b.dataset.shut) l.textContent = b.dataset.shut; } }
+    });
+    slide.classList.add('spotlight');
+    slide.querySelectorAll('.lit').forEach(b => { if(b !== panel) b.classList.remove('lit'); });
+    panel.classList.add('lit');
+    const centre = () => panel.scrollIntoView({behavior:'smooth', block:'center'});
+    requestAnimationFrame(() => requestAnimationFrame(centre));
+    setTimeout(centre, 1000); setTimeout(centre, 2150);
   }
 
   function revealBlock(block){
@@ -2529,7 +2564,12 @@ document.getElementById('np-copy').addEventListener('click', async () => {
 
   // Reveal a matched cue: open-a-target cues, click-a-button cues, or spotlight blocks.
   function dispatchCue(block){
-    if(block.hasAttribute('data-cue-target')) doAction(block, true);
+    if(block.hasAttribute('data-cue-target')){
+      doAction(block, true);
+      const tgt = document.querySelector(block.getAttribute('data-cue-target'));
+      // a reveal panel opened by voice gets the full Numbers-style spotlight + centre
+      if(tgt && tgt.classList.contains('reveal-panel') && tgt.classList.contains('open')) spotlightPanel(tgt);
+    }
     else if(block.hasAttribute('data-cue-click')){
       block.click();   // run the button's own handler (idempotent — handlers guard re-runs)
       document.querySelectorAll('.cue-pill').forEach(p => p.classList.toggle('active', p.__block === block));
