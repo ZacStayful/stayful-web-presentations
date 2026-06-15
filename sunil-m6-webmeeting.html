@@ -1180,6 +1180,14 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .slide.spotlight .wb-head,
 .slide.spotlight .guests-grid{opacity:0.16;filter:blur(1.5px);transition:opacity .55s var(--ease),filter .55s var(--ease);}
 .slide.spotlight .reveal-panel.lit{opacity:1;filter:none;}
+/* How Stayful works spotlight — dim the hub, highlight the lit tile */
+.slide.spotlight .hsw-tabs,
+.slide.spotlight .mh-grid,
+.slide.spotlight .mh-sub,
+.slide.spotlight .mh-soft,
+.slide.spotlight .gv-flowhead{opacity:0.16;filter:blur(1.5px);transition:opacity .55s var(--ease),filter .55s var(--ease);}
+.mh-tile.cue-block{transition:opacity .55s var(--ease),filter .55s var(--ease),box-shadow .35s var(--ease);}
+.slide.spotlight .mh-tile.lit{box-shadow:0 0 0 2px var(--green-light),0 16px 50px rgba(0,0,0,0.5);}
 .cue-bar{
   position:fixed;left:50%;bottom:66px;transform:translateX(-50%);z-index:70;
   display:flex;align-items:center;gap:7px;max-width:92vw;flex-wrap:wrap;justify-content:center;
@@ -1928,7 +1936,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
         <span class="hsw-tab-ic">🚀</span>
         <span><span class="hsw-tab-t">Onboarding &amp; go-live</span><span class="hsw-tab-s">Signature to live in ~3 weeks</span></span>
       </button>
-      <button class="hsw-tab" type="button" data-panel="management" onclick="hswOpen(this)">
+      <button class="hsw-tab" type="button" data-panel="management" data-cue="how our management works|how the management works|how our service works|how your service works|management and your experience|your experience|how you manage|how management works|the management section|how does it work from your perspective" data-cue-label="Management" data-cue-click="1" onclick="hswOpen(this)">
         <span class="hsw-tab-ic">📊</span>
         <span><span class="hsw-tab-t">Management &amp; your experience</span><span class="hsw-tab-s">What we run · what you see</span></span>
       </button>
@@ -2065,7 +2073,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 
         <div class="mh-sub">What you'll see · live tools, every day</div>
         <div class="mh-tools">
-          <a class="mh-tile" href="https://app.uplisting.io/calendar?from=2026-06-12" target="_blank" rel="noopener">
+          <a class="mh-tile cue-block" data-cue="centralised booking calendar|central booking calendar|booking calendar|central calendar|owner calendar|the calendar|uplisting calendar|calendar|centralised|central" data-cue-label="Owner calendar" href="https://app.uplisting.io/calendar?from=2026-06-12" target="_blank" rel="noopener">
             <div class="mh-vidwrap">
               <video class="mh-vid" src="media/management-calendar.mp4" muted loop autoplay playsinline preload="metadata"></video>
               <span class="mh-badge">Live demo</span>
@@ -2077,7 +2085,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
               <div class="mh-link">Open live demo →</div>
             </div>
           </a>
-          <a class="mh-tile" href="https://app.slack.com/client/T061GPD7ZB8/C09LDM5GY86" target="_blank" rel="noopener">
+          <a class="mh-tile cue-block" data-cue="our instant messaging app|instant messaging app|instant messaging|messaging app|the slack channel|slack channel|slack" data-cue-label="Slack channel" href="https://app.slack.com/client/T061GPD7ZB8/C09LDM5GY86" target="_blank" rel="noopener">
             <div class="mh-vidwrap">
               <video class="mh-vid" src="media/management-slack.mp4" muted loop autoplay playsinline preload="metadata"></video>
               <span class="mh-badge">Live demo</span>
@@ -2089,7 +2097,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
               <div class="mh-link">Open live demo →</div>
             </div>
           </a>
-          <a class="mh-tile" href="https://drive.google.com/file/d/1Ja1yEDno_nS-te7y9qh-UcaaHLt0enPR/view" target="_blank" rel="noopener">
+          <a class="mh-tile cue-block" data-cue="income statement|profit and loss|p and l|p and l report|monthly p and l|monthly report|the income statement|p n l" data-cue-label="P&amp;L report" href="https://drive.google.com/file/d/1Ja1yEDno_nS-te7y9qh-UcaaHLt0enPR/view" target="_blank" rel="noopener">
             <div class="mh-vidwrap">
               <video class="mh-vid" src="media/management-pnl.mp4" muted loop autoplay playsinline preload="metadata"></video>
               <span class="mh-badge">Example</span>
@@ -2564,6 +2572,14 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     const slide = block.closest('.slide') || activeSlide();
     if(!slide) return;
     const already = slide.classList.contains('spotlight') && block.classList.contains('lit');
+    // if the block lives in an inactive tab panel (How Stayful works hub), open that tab first
+    let tabSwitching = false;
+    const hp = block.closest('.hsw-panel');
+    if(hp && !hp.classList.contains('active')){
+      const hub = hp.closest('.hsw');
+      const tabBtn = hub && hub.querySelector('.hsw-tab[data-panel="' + hp.getAttribute('data-panel') + '"]');
+      if(tabBtn && typeof hswOpen === 'function'){ tabSwitching = !!hub.querySelector('.hsw-panel.active'); hswOpen(tabBtn); }
+    }
     const opened = openAncestors(block);
     slide.classList.add('spotlight');
     slide.querySelectorAll('.cue-block.lit').forEach(b => { if(b !== block) b.classList.remove('lit'); });
@@ -2574,6 +2590,7 @@ document.getElementById('np-copy').addEventListener('click', async () => {
       requestAnimationFrame(() => requestAnimationFrame(centre));
       // panels expand over ~2s — re-centre as the layout settles so deep blocks land correctly
       if(opened.length){ setTimeout(centre, 1000); setTimeout(centre, 2150); }
+      if(tabSwitching){ setTimeout(centre, 2200); setTimeout(centre, 2700); }   // wait for tab collapse + populate
     }
   }
   window.stReveal = revealBlock;
