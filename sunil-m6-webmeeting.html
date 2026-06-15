@@ -1433,7 +1433,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
     </div>
 
     <div class="pf-btn-row">
-      <button class="pf-btn" type="button" onclick="this.closest('.prop-figures').classList.toggle('show-breakdown')">
+      <button class="pf-btn" type="button" data-cue="cost breakdown|breakdown|the costs|cost" data-cue-label="Cost breakdown" data-cue-target=".prop-figures" data-cue-class="show-breakdown" onclick="this.closest('.prop-figures').classList.toggle('show-breakdown')">
         <span class="pf-btn-ic">+</span>Cost breakdown
       </button>
     </div>
@@ -2294,6 +2294,10 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     if(!slide) return;
     slide.classList.remove('spotlight');
     slide.querySelectorAll('.cue-block.lit').forEach(b => b.classList.remove('lit'));
+    slide.querySelectorAll('[data-cue-target]').forEach(el => {
+      const tgt = document.querySelector(el.getAttribute('data-cue-target'));
+      if(tgt) tgt.classList.remove(el.getAttribute('data-cue-class'));
+    });
     document.querySelectorAll('.cue-pill.active').forEach(p => p.classList.remove('active'));
   }
 
@@ -2311,12 +2315,46 @@ document.getElementById('np-copy').addEventListener('click', async () => {
   }
   window.stReveal = revealBlock;
 
+  // Action cues — open a target (e.g. the cost breakdown). ensureOpen=add, else toggle.
+  function doAction(el, ensureOpen){
+    const tgt = document.querySelector(el.getAttribute('data-cue-target'));
+    const cls = el.getAttribute('data-cue-class');
+    if(!tgt || !cls) return;
+    if(ensureOpen) tgt.classList.add(cls); else tgt.classList.toggle(cls);
+    const on = tgt.classList.contains(cls);
+    document.querySelectorAll('.cue-pill').forEach(p => p.classList.toggle('active', p.__block === el && on));
+  }
+
+  // Slide-title navigation (from any slide). Multi-word titles fire on the title
+  // alone; single-word / sensitive titles (Notes, Property) require a nav verb.
+  const NAV_VERBS = ['go to','goto','show me','show the','take me to','let us look at','lets look at','move to','jump to','navigate to','bring up','open the'];
+  const NAV_SENSITIVE = ['notes','property'];
+  function navIndex(p){
+    if(/\bnext slide\b/.test(p)) return Math.min(cur + 1, TOTAL - 1);
+    if(/\b(previous slide|last slide|go back)\b/.test(p)) return Math.max(cur - 1, 0);
+    const hasVerb = NAV_VERBS.some(v => p.includes(v));
+    let best = -1, bestIdx = -1;
+    SLIDE_NAMES.forEach((name, i) => {
+      const n = (name || '').toLowerCase();
+      const at = p.lastIndexOf(n);
+      if(at < 0) return;
+      const distinctive = n.includes(' ');
+      const sensitive = NAV_SENSITIVE.includes(n);
+      if(((distinctive && !sensitive) || hasVerb) && at > bestIdx){ bestIdx = at; best = i; }
+    });
+    return best;
+  }
+
   // Match the MOST RECENTLY spoken cue in the phrase (natural speech friendly)
   function stCue(phrase){
-    const slide = activeSlide(); if(!slide) return false;
     const p = (phrase || '').toLowerCase(); if(!p) return false;
+    // 1) navigate to another slide by its title
+    const nidx = navIndex(p);
+    if(nidx >= 0 && nidx !== cur){ goTo(nidx); return true; }
+    // 2) within-slide cues on the active slide
+    const slide = activeSlide(); if(!slide) return false;
     let resetIdx = -1;
-    ['reset','show all','clear','everything','zoom out'].forEach(w => { const i = p.lastIndexOf(w); if(i > resetIdx) resetIdx = i; });
+    ['reset','show all','clear','everything','zoom out','hide'].forEach(w => { const i = p.lastIndexOf(w); if(i > resetIdx) resetIdx = i; });
     let best = null, bestIdx = -1;
     slide.querySelectorAll('[data-cue]').forEach(b => {
       (b.dataset.cue || '').split('|').forEach(c => {
@@ -2326,7 +2364,11 @@ document.getElementById('np-copy').addEventListener('click', async () => {
       });
     });
     if(resetIdx > bestIdx){ clearSpotlight(slide); return true; }
-    if(best){ revealBlock(best); return true; }
+    if(best){
+      if(best.hasAttribute('data-cue-target')) doAction(best, true);
+      else revealBlock(best);
+      return true;
+    }
     return false;
   }
   window.stCue = stCue;
@@ -2350,7 +2392,10 @@ document.getElementById('np-copy').addEventListener('click', async () => {
       pill.className = 'cue-pill';
       pill.textContent = b.dataset.cueLabel || (b.dataset.cue || '').split('|')[0];
       pill.__block = b;
-      pill.onclick = () => revealBlock(b);
+      pill.onclick = () => {
+        if(b.hasAttribute('data-cue-target')) doAction(b, false);
+        else revealBlock(b);
+      };
       bar.appendChild(pill);
     });
     const reset = document.createElement('button');
