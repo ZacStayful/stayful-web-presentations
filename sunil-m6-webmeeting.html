@@ -180,6 +180,16 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 /* Long-let — muted comparison */
 .pf-ll{background:rgba(255,255,255,0.03);border-style:dashed;}
 .pf-ll .pf-v{font-size:30px;color:rgba(243,238,224,0.82);}
+/* Verdict — short-let net vs long-let. Green when short-let wins, amber when it trails */
+.pf-verdict{border-width:1.5px;}
+.pf-verdict-up{background:rgba(122,155,113,0.18);border-color:rgba(122,155,113,0.5);}
+.pf-verdict-up .pf-l{color:#cfe0c7;}
+.pf-verdict-up .pf-v{color:#bcd1b3;}
+.pf-verdict-up .pf-s{color:rgba(188,209,179,0.8);}
+.pf-verdict-down{background:rgba(184,132,31,0.12);border-color:rgba(184,132,31,0.4);}
+.pf-verdict-down .pf-l{color:rgba(225,182,108,0.9);}
+.pf-verdict-down .pf-v{color:#e1b66c;}
+.pf-verdict-down .pf-s{color:rgba(225,182,108,0.72);}
 
 /* Cost breakdown — expands between gross & net */
 .pf-breakdown{
@@ -1257,6 +1267,20 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
       <div class="pf-box pf-ll">
         <div class="pf-l">Long-let · monthly</div>
         <div class="pf-v">£990</div>
+      </div>
+    </div>
+
+    <!-- Short-let net vs long-let — the upside verdict -->
+    <div class="pf-row">
+      <div class="pf-box pf-verdict pf-verdict-down">
+        <div class="pf-l">Short-let net vs long-let · annual</div>
+        <div class="pf-v">−£2,167</div>
+        <div class="pf-s">−18% vs long-let</div>
+      </div>
+      <div class="pf-box pf-verdict pf-verdict-down">
+        <div class="pf-l">Short-let net vs long-let · monthly</div>
+        <div class="pf-v">−£181</div>
+        <div class="pf-s">net short-let £809 vs long-let £990</div>
       </div>
     </div>
 
