@@ -1171,6 +1171,31 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 
 @media(max-width:900px){.amenity-intel{grid-template-columns:1fr;}}
 
+/* ── Spotlight cue reveal (voice / click driven) ── */
+.cue-block{transition:opacity .55s var(--ease),filter .55s var(--ease);}
+.slide.spotlight .cue-block{opacity:0.16;filter:blur(1.5px);}
+.slide.spotlight .cue-block.lit{opacity:1;filter:none;}
+.slide.spotlight .reveal-row{opacity:0.16;transition:opacity .55s var(--ease);}
+.cue-bar{
+  position:fixed;left:50%;bottom:66px;transform:translateX(-50%);z-index:70;
+  display:flex;align-items:center;gap:7px;max-width:92vw;flex-wrap:wrap;justify-content:center;
+  background:rgba(26,36,24,0.92);backdrop-filter:blur(12px);
+  padding:8px 10px;border-radius:99px;border:1px solid rgba(255,255,255,0.1);
+  box-shadow:0 10px 34px rgba(0,0,0,0.32);
+  opacity:0;pointer-events:none;transition:opacity .3s var(--ease);
+}
+.cue-bar.show{opacity:1;pointer-events:auto;}
+.cue-bar-lbl{font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(243,238,224,0.42);font-weight:600;padding:0 4px;}
+.cue-pill{
+  font-size:11px;color:#f3eee0;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);
+  border-radius:99px;padding:6px 13px;cursor:pointer;font-weight:500;letter-spacing:0.02em;white-space:nowrap;
+  transition:all .16s var(--ease);
+}
+.cue-pill:hover{background:rgba(255,255,255,0.16);}
+.cue-pill.active{background:var(--green);border-color:var(--green);color:#fff;}
+.cue-pill.reset{background:transparent;border-color:rgba(255,255,255,0.18);color:rgba(243,238,224,0.7);}
+.cue-pill.reset:hover{background:rgba(255,255,255,0.1);}
+
 </style>
 </head>
 <body>
@@ -1426,6 +1451,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
   </div>
 
   <div class="num-body fi">
+    <div class="cue-block" data-cue="the numbers|income|monthly income|earnings|how much" data-cue-label="Income">
     <div class="chart-wrap" id="chart">
       <div class="chart-h">Net monthly income · 43 The Royal Wilton Place Salford M6 3WP M6 3WP · Dashed line = long-let net £990</div>
       <div class="bars" id="bars"></div>
@@ -1446,6 +1472,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
         <div class="is-n">-£36 above long-let</div>
       </div>
     </div>
+    </div><!-- /cue Income -->
 
     <!-- View competition → reveals the comparables first -->
     <div class="reveal-row">
@@ -1456,6 +1483,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 
     <div class="reveal-panel" id="comp-reveal">
      <div class="rp-inner"><div class="rp-pad">
+      <div class="cue-block" data-cue="competition|the competition|comparable|comparables|the market|competitor|view competition" data-cue-label="Competition">
       <div class="eb">12 active Airbnb listings within 0.34 km · 43 The Royal Wilton Place Salford M6 3WP M6 3WP</div>
       <h3 class="comp-h">The market your listing enters — <em>all active comparables</em></h3>
 
@@ -1488,6 +1516,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
       <div class="comp-row"><div class="name">11B PLAB Only, Mixed, Shared Single</div><div>0.18 km</div><div class="num">£92</div><div class="num">48%</div><div class="num">£15,842</div><div class="num rat">5.0 ★</div></div>
 <!-- ST:BLOCK_END COMP_ROWS -->
       </div>
+      </div><!-- /cue Competition -->
 
       <!-- Your path to the top → reveals the journey -->
       <div class="reveal-row">
@@ -1502,6 +1531,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
         <h3 class="comp-h">Your listing starts <em>brand-new</em> — here's the path to the top</h3>
         <p class="journey-intro">Every comparable above is an <strong>established listing</strong> with reviews and a rating history. Yours starts fresh. Most listings turn <strong>competitive after ~10 strong reviews</strong> — but to reach the <strong>top of the market</strong> you need to match or beat the area average of <strong>19 reviews</strong> and <strong>4.5★</strong>. Here's how long that takes — and how we get you there faster.</p>
 
+        <div class="cue-block" data-cue="how long|how long does it take|timeline|become competitive|time to|the journey|path to the top|how long will it take" data-cue-label="How long">
         <div class="jt">
           <div class="jt-track">
             <div class="jt-fill"></div>
@@ -1539,7 +1569,9 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
             <div class="ro-note">Based on the area's top performer — £23,111 gross, less 48% operating costs.</div>
           </div>
         </div>
+        </div><!-- /cue How long -->
 
+        <div class="cue-block" data-cue="reviews|review|review velocity|quality reviews|getting reviews" data-cue-label="Reviews">
         <div class="rv-head">
           <div class="rv-eb">Our expertise · the guiding hand</div>
           <div class="rv-h">It comes down to one thing — <em>consistent, quality reviews</em></div>
@@ -1569,8 +1601,9 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
           </div>
         </div>
         <div class="rv-note">This is the gap most owners never see — slow review growth is <strong>why most management companies miss the returns they quoted</strong>. We obsess over review conversion so your listing climbs to the top far faster.</div>
+        </div><!-- /cue Reviews -->
 
-        <div class="amenity-block">
+        <div class="amenity-block cue-block" data-cue="amenities|amenity|hot tub|premium|rate premium|extras" data-cue-label="Amenities">
           <div class="amenity-head">
             <div class="amenity-eb">Once you're established</div>
             <div class="amenity-h">Amenities that unlock a rate premium</div>
@@ -2000,6 +2033,7 @@ function update() {
   tbLbl.textContent = SLIDE_NAMES[cur];
   document.getElementById('prev').disabled = (cur === 0);
   document.getElementById('next').disabled = (cur === TOTAL - 1);
+  if (window.__onSlideChange) window.__onSlideChange();
 }
 function goTo(i) {
   if (i < 0 || i >= TOTAL || i === cur) return;
@@ -2228,6 +2262,133 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     w.document.write('<pre style="font-family:monospace;padding:24px;font-size:13px;">' + text.replace(/</g, '&lt;') + '</pre>');
   }
 });
+
+/* ─── Spotlight cue reveal controller (voice + click) ───
+   Tag any block with data-cue="phrase one|phrase two" data-cue-label="Name".
+   Voice layer (or built-in mic with ?present=1) calls window.stCue("spoken text");
+   the matching block opens its parent panels, the rest of the slide dims, and it
+   scrolls to centre. Clickable cue bar gives a manual fallback ('c' toggles it). */
+(function(){
+  const params = new URLSearchParams(location.search);
+  const PRESENT = params.get('present') === '1' || params.get('presenter') === '1';
+  const activeSlide = () => document.querySelector('.slide.active');
+
+  function openAncestors(el){
+    let p = el.parentElement;
+    while(p && p !== document.body){
+      if(p.classList && p.classList.contains('reveal-panel') && !p.classList.contains('open')){
+        p.classList.add('open');
+        const btn = document.querySelector('[onclick*="' + p.id + '"]');
+        if(btn){
+          btn.classList.add('open');
+          const lbl = btn.querySelector('.rb-label');
+          if(lbl && btn.dataset.open) lbl.textContent = btn.dataset.open;
+        }
+      }
+      p = p.parentElement;
+    }
+  }
+
+  function clearSpotlight(slide){
+    slide = slide || activeSlide();
+    if(!slide) return;
+    slide.classList.remove('spotlight');
+    slide.querySelectorAll('.cue-block.lit').forEach(b => b.classList.remove('lit'));
+    document.querySelectorAll('.cue-pill.active').forEach(p => p.classList.remove('active'));
+  }
+
+  function revealBlock(block){
+    if(!block) return;
+    const slide = block.closest('.slide') || activeSlide();
+    if(!slide) return;
+    const already = slide.classList.contains('spotlight') && block.classList.contains('lit');
+    openAncestors(block);
+    slide.classList.add('spotlight');
+    slide.querySelectorAll('.cue-block.lit').forEach(b => { if(b !== block) b.classList.remove('lit'); });
+    block.classList.add('lit');
+    document.querySelectorAll('.cue-pill').forEach(p => p.classList.toggle('active', p.__block === block));
+    if(!already) setTimeout(() => { block.scrollIntoView({behavior:'smooth', block:'center'}); }, 380);
+  }
+  window.stReveal = revealBlock;
+
+  // Match the MOST RECENTLY spoken cue in the phrase (natural speech friendly)
+  function stCue(phrase){
+    const slide = activeSlide(); if(!slide) return false;
+    const p = (phrase || '').toLowerCase(); if(!p) return false;
+    let resetIdx = -1;
+    ['reset','show all','clear','everything','zoom out'].forEach(w => { const i = p.lastIndexOf(w); if(i > resetIdx) resetIdx = i; });
+    let best = null, bestIdx = -1;
+    slide.querySelectorAll('[data-cue]').forEach(b => {
+      (b.dataset.cue || '').split('|').forEach(c => {
+        c = c.trim().toLowerCase(); if(!c) return;
+        const i = p.lastIndexOf(c);
+        if(i > bestIdx){ bestIdx = i; best = b; }
+      });
+    });
+    if(resetIdx > bestIdx){ clearSpotlight(slide); return true; }
+    if(best){ revealBlock(best); return true; }
+    return false;
+  }
+  window.stCue = stCue;
+
+  // Cue bar — manual fallback + review aid
+  const bar = document.createElement('div');
+  bar.className = 'cue-bar';
+  document.body.appendChild(bar);
+  let barPinned = PRESENT;
+
+  function refresh(){
+    const slide = activeSlide();
+    const blocks = slide ? [...slide.querySelectorAll('[data-cue]')] : [];
+    bar.innerHTML = '';
+    if(!blocks.length){ bar.classList.remove('show'); return; }
+    const lbl = document.createElement('span');
+    lbl.className = 'cue-bar-lbl'; lbl.textContent = 'Cue';
+    bar.appendChild(lbl);
+    blocks.forEach(b => {
+      const pill = document.createElement('button');
+      pill.className = 'cue-pill';
+      pill.textContent = b.dataset.cueLabel || (b.dataset.cue || '').split('|')[0];
+      pill.__block = b;
+      pill.onclick = () => revealBlock(b);
+      bar.appendChild(pill);
+    });
+    const reset = document.createElement('button');
+    reset.className = 'cue-pill reset'; reset.textContent = 'Show all';
+    reset.onclick = () => clearSpotlight(slide);
+    bar.appendChild(reset);
+    bar.classList.toggle('show', barPinned);
+  }
+
+  window.__onSlideChange = function(){ clearSpotlight(); refresh(); };
+
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape'){ clearSpotlight(); }
+    else if((e.key === 'c' || e.key === 'C') && !e.metaKey && !e.ctrlKey && !e.altKey){
+      barPinned = !barPinned; refresh();
+    }
+  });
+
+  // Built-in mic (opt-in via ?present=1) — drives stCue directly
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(PRESENT && SR){
+    let last = 0;
+    const recog = new SR();
+    recog.continuous = true; recog.interimResults = true; recog.lang = 'en-GB';
+    recog.onresult = e => {
+      let t = '';
+      for(let i = e.resultIndex; i < e.results.length; i++) t += e.results[i][0].transcript;
+      const now = Date.now();
+      if(now - last < 1100) return;
+      if(stCue(t)) last = now;
+    };
+    recog.onerror = () => {};
+    recog.onend = () => { try{ recog.start(); }catch(_){} };
+    try{ recog.start(); }catch(_){}
+  }
+
+  refresh();
+})();
 
 buildBars();
 update();
