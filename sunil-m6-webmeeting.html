@@ -1015,6 +1015,23 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .ct-note{padding:11px 16px;border-radius:10px;background:rgba(122,155,113,0.1);border:1px solid rgba(122,155,113,0.24);font-size:12px;color:rgba(243,238,224,0.85);line-height:1.5;}
 .ct-note strong{color:var(--green-light);font-weight:600;}
 @media(max-width:760px){.ct-grid{grid-template-columns:1fr 1fr;}}
+.cmp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:840px;margin:18px auto 0;text-align:left;}
+.cmp-card{padding:16px 18px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);}
+.cmp-region{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(243,238,224,0.5);font-weight:600;}
+.cmp-status{font-family:var(--serif);font-size:22px;color:#f3eee0;margin-top:5px;line-height:1.1;}
+.cmp-d{font-size:11px;color:rgba(243,238,224,0.62);margin-top:8px;line-height:1.45;}
+.cmp-d strong{color:#f3eee0;font-weight:600;}
+.cmp-card.ok{background:rgba(122,155,113,0.14);border-color:rgba(122,155,113,0.35);}
+.cmp-card.ok .cmp-status{color:var(--green-light);}
+.cmp-card.warn{background:rgba(184,132,31,0.1);border-color:rgba(184,132,31,0.3);}
+.cmp-card.warn .cmp-status{color:#e1b66c;}
+.cmp-sub{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(243,238,224,0.5);font-weight:600;margin:22px 0 12px;}
+.cmp-fire{max-width:840px;margin:0 auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;}
+.cmp-fire-h{font-size:14px;color:#f3eee0;font-weight:600;}
+.cmp-chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
+.cmp-chip{font-size:12px;padding:7px 14px;border-radius:99px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);color:#f3eee0;}
+.cmp-chip.extra{background:rgba(122,155,113,0.12);border-color:rgba(122,155,113,0.3);color:var(--green-light);}
+@media(max-width:760px){.cmp-grid{grid-template-columns:1fr;}}
 .ms-item-btn{font-family:var(--sans);cursor:pointer;background:transparent;border:none;border-right:1px solid rgba(255,255,255,0.08);transition:background .18s var(--ease);border-radius:8px;}
 .ms-item-btn:last-child{border-right:none;}
 .ms-item-btn:hover{background:rgba(122,155,113,0.12);}
@@ -1988,6 +2005,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
     <button class="ms-item ms-item-btn" type="button" data-cue="stayful management charges|management charges|how stayful charges|how does stayful charge|how do you charge|where do you charge|your management fee|how the fee works" data-cue-label="Management charges" data-cue-target="#charges-reveal" data-cue-class="open" onclick="toggleReveal(this,'charges-reveal')"><span class="ms-v">15% + VAT</span><span class="ms-l">Of net revenue · no setup, monthly or exit fee</span><span class="ms-cta">See how it works <span class="ms-cta-ic">▾</span></span></button>
     <button class="ms-item ms-item-btn" type="button" data-cue="how stayful cleaning works|how cleaning works|cleaning works|how does cleaning work|cleaning fee|the cleaning|cleaning explained" data-cue-label="Cleaning" data-cue-target="#cleaning-reveal" data-cue-class="open" onclick="toggleReveal(this,'cleaning-reveal')"><span class="ms-v">Cleaning</span><span class="ms-l">Charged to guests, not your income</span><span class="ms-cta">See how it works <span class="ms-cta-ic">▾</span></span></button>
     <button class="ms-item ms-item-btn" type="button" data-cue="contract information|contract terms|the contract|contract details|tell me about the contract|what is the contract|terms of the contract|contract" data-cue-label="Contract" data-cue-target="#contract-reveal" data-cue-class="open" onclick="toggleReveal(this,'contract-reveal')"><span class="ms-v">Contract</span><span class="ms-l">6-month term · key things to know</span><span class="ms-cta">See how it works <span class="ms-cta-ic">▾</span></span></button>
+    <button class="ms-item ms-item-btn" type="button" data-cue="short letting compliance information|short letting compliance|short let compliance|compliance information|safety checks|is short letting regulated|short term let regulation|short letting regulation|compliance" data-cue-label="Compliance" data-cue-target="#compliance-reveal" data-cue-class="open" onclick="toggleReveal(this,'compliance-reveal')"><span class="ms-v">Compliance</span><span class="ms-l">Short-letting safety &amp; regulation</span><span class="ms-cta">See how it works <span class="ms-cta-ic">▾</span></span></button>
   </div>
 
   <div class="reveal-panel fi" id="charges-reveal">
@@ -2049,6 +2067,32 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
         <div class="ct-note"><strong>Why the notice period?</strong> It protects your guests. If you give notice but guests have already booked, we honour those stays first, then hand the property — and all your short-let details — back to you smoothly.</div>
         <div class="ct-note"><strong>Signed before viewings.</strong> The contract is signed before property viewings &amp; inspections take place — so we both know you're committed to working with us.</div>
       </div>
+    </div>
+   </div></div>
+  </div>
+
+  <div class="reveal-panel fi" id="compliance-reveal">
+   <div class="rp-inner"><div class="rp-pad">
+    <div class="clean-box compliance-box">
+      <div class="clean-eb">Short-letting compliance</div>
+      <h4 class="clean-h">Short-term letting <em>isn't a regulated industry</em></h4>
+      <p class="clean-intro">There's no mandatory regulation around short-term letting across most of the UK. That doesn't mean you should skip safety — the checks below are sensible <strong>advisory best practice: nice to have, not essential</strong>. There are just two exceptions:</p>
+      <div class="cmp-grid">
+        <div class="cmp-card ok"><div class="cmp-region">Most of the UK</div><div class="cmp-status">No regulation</div><div class="cmp-d">The safety checks below are advisory only — not mandatory.</div></div>
+        <div class="cmp-card warn"><div class="cmp-region">London</div><div class="cmp-status">90-day rule</div><div class="cmp-d">A 90-night annual cap applies. <strong>Stayful works around it</strong> and helps you stay compliant.</div></div>
+        <div class="cmp-card warn"><div class="cmp-region">Scotland</div><div class="cmp-status">Licence required</div><div class="cmp-d">A short-term let licence is needed — we guide you through it.</div></div>
+      </div>
+      <div class="cmp-sub">Advisory safety checks · nice to do, not required</div>
+      <div class="cmp-fire">
+        <div class="cmp-fire-h">🔥 Fire safety</div>
+        <div class="cmp-chips">
+          <span class="cmp-chip">Smoke alarms</span>
+          <span class="cmp-chip">Fire blankets</span>
+          <span class="cmp-chip">Fire extinguishers</span>
+          <span class="cmp-chip extra">Fire doors · nice extra</span>
+        </div>
+      </div>
+      <div class="clean-note">Outside London &amp; Scotland, none of these are legal requirements for short-term letting — they're sensible safety steps we'd recommend, and we'll advise you on what's worth doing.</div>
     </div>
    </div></div>
   </div>
