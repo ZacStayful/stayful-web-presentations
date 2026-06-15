@@ -151,6 +151,86 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .pill.live{background:rgba(122,155,113,0.16);border-color:rgba(122,155,113,0.32);color:#bcd1b3;}
 .cover-foot{margin-top:18px;font-size:10.5px;color:rgba(243,238,224,0.4);font-weight:300;letter-spacing:0.04em;}
 
+/* ─── PROPERTY SLIDE · centred yield figures ──── */
+.prop-head{text-align:center;}
+.prop-head .eb{justify-content:center;}
+.prop-head h1{margin-left:auto;margin-right:auto;}
+.prop-head .sh{margin-left:auto;margin-right:auto;text-align:center;}
+.prop-figures{
+  width:100%;max-width:720px;margin:30px auto 0;
+  display:flex;flex-direction:column;gap:12px;
+}
+.pf-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.pf-box{
+  padding:18px 22px;border-radius:14px;
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+  backdrop-filter:blur(8px);
+  display:flex;flex-direction:column;gap:6px;text-align:center;align-items:center;
+}
+.pf-l{font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(243,238,224,0.5);font-weight:500;}
+.pf-v{font-family:var(--serif);font-size:36px;line-height:1;font-weight:400;color:#fff;letter-spacing:-0.01em;}
+.pf-s{font-size:10.5px;color:rgba(243,238,224,0.55);font-weight:300;}
+/* Gross — gold accent */
+.pf-gross{background:rgba(184,132,31,0.1);border-color:rgba(184,132,31,0.28);}
+.pf-gross .pf-l{color:rgba(225,182,108,0.85);}
+/* Net — the headline figures, brightest */
+.pf-net{background:rgba(122,155,113,0.16);border-color:rgba(122,155,113,0.4);}
+.pf-net .pf-l{color:#bcd1b3;}
+.pf-net .pf-v{color:#fff;font-size:40px;}
+/* Long-let — muted comparison */
+.pf-ll{background:rgba(255,255,255,0.03);border-style:dashed;}
+.pf-ll .pf-v{font-size:30px;color:rgba(243,238,224,0.82);}
+
+/* Cost breakdown — expands between gross & net */
+.pf-breakdown{
+  display:grid;grid-template-rows:0fr;opacity:0;
+  transition:grid-template-rows 2s var(--ease),opacity 2s var(--ease),margin 2s var(--ease);
+  margin:-6px 0;
+}
+.prop-figures.show-breakdown .pf-breakdown{grid-template-rows:1fr;opacity:1;margin:0;}
+.pf-bd-inner{overflow:hidden;}
+.pf-bd-card{
+  padding:18px 22px;border-radius:14px;
+  background:rgba(0,0,0,0.18);border:1px solid rgba(255,255,255,0.08);
+}
+.pf-bd-head{
+  font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(243,238,224,0.5);font-weight:500;margin-bottom:14px;text-align:center;
+}
+.pf-bd-item{
+  display:flex;justify-content:space-between;align-items:center;gap:14px;
+  padding:11px 0;border-top:1px solid rgba(255,255,255,0.07);
+}
+.pf-bd-item:first-of-type{border-top:none;}
+.pf-bd-name{font-size:12.5px;color:rgba(243,238,224,0.88);font-weight:400;}
+.pf-bd-pct{
+  display:inline-block;margin-left:8px;padding:2px 8px;border-radius:99px;
+  font-size:10.5px;font-weight:500;color:#e1b66c;
+  background:rgba(184,132,31,0.14);border:1px solid rgba(184,132,31,0.3);
+}
+.pf-bd-figs{display:flex;gap:18px;text-align:right;}
+.pf-bd-fig{display:flex;flex-direction:column;gap:2px;min-width:78px;}
+.pf-bd-fig .pf-bd-fl{font-size:8.5px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(243,238,224,0.4);}
+.pf-bd-fig .pf-bd-fv{font-family:var(--serif);font-size:19px;color:#fff;font-weight:400;line-height:1;}
+.pf-bd-total{
+  display:flex;justify-content:space-between;align-items:center;gap:14px;
+  margin-top:12px;padding-top:13px;border-top:1px solid rgba(255,255,255,0.16);
+}
+.pf-bd-total .pf-bd-name{font-weight:500;color:#fff;}
+.pf-bd-total .pf-bd-fv{color:#e1b66c;}
+
+.pf-btn-row{display:flex;justify-content:center;margin-top:6px;}
+.pf-btn{
+  font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:0.03em;
+  color:#f3eee0;background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.18);border-radius:99px;
+  padding:11px 24px;cursor:pointer;display:inline-flex;align-items:center;gap:9px;
+  transition:all 0.2s var(--ease);
+}
+.pf-btn:hover{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.32);}
+.pf-btn .pf-btn-ic{transition:transform 0.3s var(--ease);font-size:14px;line-height:1;}
+.prop-figures.show-breakdown .pf-btn .pf-btn-ic{transform:rotate(45deg);}
+
 /* Honest disclosure box */
 .disclosure{
   margin-top:18px;padding:14px 18px;background:rgba(184,132,31,0.12);
@@ -1088,44 +1168,106 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 
 <!-- ═══ SLIDE 2: COVER ═══ -->
 <div class="slide dark" data-name="Property" data-bg="dark">
-  <div class="fi"><div class="eb">Stayful · Airbnb Management Company</div></div>
-  <h1 class="fi">What 43 The Royal Wilton Place Salford M6 3WP M6 3WP<br>could yield as a managed <em>short let</em></h1>
-  <p class="sh fi" style="margin-top:14px;">Income analysis for Sunil Pal's property at 43 The Royal Wilton Place Salford M6 3WP M6 3WP. Based on 12 active Airbnb comparables — this market is proven.</p>
+  <div class="prop-head fi">
+    <div class="eb">Stayful · Airbnb Management Company</div>
+    <h1>What 43 The Royal Wilton Place Salford M6 3WP M6 3WP<br>could yield as a managed <em>short let</em></h1>
+    <p class="sh" style="margin-top:14px;">Income analysis for Sunil Pal's property at 43 The Royal Wilton Place Salford M6 3WP M6 3WP. Based on 12 active Airbnb comparables — this market is proven.</p>
+  </div>
 
-  <div class="cover-grid fi">
-    <div>
-      <div class="stat-row">
-        <div class="stat">
-          <div class="stat-l">Net per month</div>
-          <div class="stat-v">£809</div>
-          <div class="stat-s">£9,713 / year, after all fees</div>
-        </div>
-        <div class="stat">
-          <div class="stat-l">Uplift over long-let</div>
-          <div class="stat-v">-£181</div>
-          <div class="stat-s">+-18% / -£2,167 per year vs long-let</div>
-        </div>
-        <div class="stat">
-          <div class="stat-l">Investment risk</div>
-          <div class="stat-v">4 / 100</div>
-          <div class="stat-s">Low risk · direct booking score 100/100</div>
-        </div>
+  <div class="prop-figures fi" id="prop-figures">
+    <!-- Gross revenue -->
+    <div class="pf-row">
+      <div class="pf-box pf-gross">
+        <div class="pf-l">Gross revenue · annual</div>
+        <div class="pf-v">£18,672</div>
       </div>
-      <div class="cover-pills">
-        <span class="pill">12 active comparables · 0.34 km</span>
-        <span class="pill">Median annual revenue £13,683</span>
-        <span class="pill live">Listed on Airbnb · Booking.com</span>
+      <div class="pf-box pf-gross">
+        <div class="pf-l">Gross revenue · monthly</div>
+        <div class="pf-v">£1,556</div>
       </div>
     </div>
-    <div class="cover-side">
-      <div class="cs-row"><div class="cs-l">Avg nightly rate</div><div class="cs-v">£100</div></div>
-      <div class="cs-row"><div class="cs-l">Occupancy</div><div class="cs-v">51%</div></div>
-      <div class="cs-row"><div class="cs-l">Market avg occupancy</div><div class="cs-v">56%</div></div>
-      <div class="cs-row"><div class="cs-l">Bedrooms · Sleeps</div><div class="cs-v">1 · 2</div></div>
+
+    <!-- Cost breakdown — appears between gross & net -->
+    <div class="pf-breakdown">
+      <div class="pf-bd-inner">
+        <div class="pf-bd-card">
+          <div class="pf-bd-head">From gross to net — operating costs</div>
+          <div class="pf-bd-item">
+            <div class="pf-bd-name">Booking platform commissions<span class="pf-bd-pct">15%</span></div>
+            <div class="pf-bd-figs">
+              <div class="pf-bd-fig"><div class="pf-bd-fl">Annual</div><div class="pf-bd-fv">−£2,801</div></div>
+              <div class="pf-bd-fig"><div class="pf-bd-fl">Monthly</div><div class="pf-bd-fv">−£233</div></div>
+            </div>
+          </div>
+          <div class="pf-bd-item">
+            <div class="pf-bd-name">Cleaning &amp; laundry <em style="font-style:italic;opacity:0.6;">(estimated)</em><span class="pf-bd-pct">18%</span></div>
+            <div class="pf-bd-figs">
+              <div class="pf-bd-fig"><div class="pf-bd-fl">Annual</div><div class="pf-bd-fv">−£3,361</div></div>
+              <div class="pf-bd-fig"><div class="pf-bd-fl">Monthly</div><div class="pf-bd-fv">−£280</div></div>
+            </div>
+          </div>
+          <div class="pf-bd-item">
+            <div class="pf-bd-name">Property management<span class="pf-bd-pct">15%</span></div>
+            <div class="pf-bd-figs">
+              <div class="pf-bd-fig"><div class="pf-bd-fl">Annual</div><div class="pf-bd-fv">−£2,801</div></div>
+              <div class="pf-bd-fig"><div class="pf-bd-fl">Monthly</div><div class="pf-bd-fv">−£233</div></div>
+            </div>
+          </div>
+          <div class="pf-bd-total">
+            <div class="pf-bd-name">Total operating costs <span class="pf-bd-pct">48%</span></div>
+            <div class="pf-bd-figs">
+              <div class="pf-bd-fig"><div class="pf-bd-fl">Annual</div><div class="pf-bd-fv">−£8,963</div></div>
+              <div class="pf-bd-fig"><div class="pf-bd-fl">Monthly</div><div class="pf-bd-fv">−£747</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Net revenue -->
+    <div class="pf-row">
+      <div class="pf-box pf-net">
+        <div class="pf-l">Net revenue · annual</div>
+        <div class="pf-v">£9,713</div>
+      </div>
+      <div class="pf-box pf-net">
+        <div class="pf-l">Net revenue · monthly</div>
+        <div class="pf-v">£809</div>
+      </div>
+    </div>
+
+    <!-- Nightly rate / occupancy -->
+    <div class="pf-row">
+      <div class="pf-box">
+        <div class="pf-l">Average nightly rate</div>
+        <div class="pf-v">£100</div>
+      </div>
+      <div class="pf-box">
+        <div class="pf-l">Occupancy rate</div>
+        <div class="pf-v">51%</div>
+      </div>
+    </div>
+
+    <!-- Long-let comparison -->
+    <div class="pf-row">
+      <div class="pf-box pf-ll">
+        <div class="pf-l">Long-let · annual</div>
+        <div class="pf-v">£11,880</div>
+      </div>
+      <div class="pf-box pf-ll">
+        <div class="pf-l">Long-let · monthly</div>
+        <div class="pf-v">£990</div>
+      </div>
+    </div>
+
+    <div class="pf-btn-row">
+      <button class="pf-btn" type="button" onclick="this.closest('.prop-figures').classList.toggle('show-breakdown')">
+        <span class="pf-btn-ic">+</span>Cost breakdown
+      </button>
     </div>
   </div>
 
-  <div class="cover-foot fi">Source: Stayful Property Income Analysis · 19 May 2026 · Data via Airbtics</div>
+  <div class="cover-foot fi" style="text-align:center;">Source: Stayful Property Income Analysis · 19 May 2026 · Data via Airbtics</div>
 </div>
 
 <!-- ═══ SLIDE 6: NUMBERS ═══ -->
