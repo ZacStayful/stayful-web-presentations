@@ -2660,19 +2660,22 @@ document.getElementById('np-copy').addEventListener('click', async () => {
   // Built-in mic (opt-in via ?present=1) — drives stCue directly
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if(PRESENT && SR){
-    let last = 0;
+    let last = 0, running = false, dead = false;
     const recog = new SR();
     recog.continuous = true; recog.interimResults = true; recog.lang = 'en-GB';
+    recog.onstart = () => { running = true; };
     recog.onresult = e => {
       let t = '';
       for(let i = e.resultIndex; i < e.results.length; i++) t += e.results[i][0].transcript;
       const now = Date.now();
       if(now - last < 1100) return;
-      if(stCue(t)) last = now;
+      try { if(stCue(t)) last = now; } catch(_) {}   // a command error never kills the loop
     };
-    recog.onerror = () => {};
-    recog.onend = () => { try{ recog.start(); }catch(_){} };
-    try{ recog.start(); }catch(_){}
+    recog.onerror = ev => { if(ev && (ev.error === 'not-allowed' || ev.error === 'service-not-allowed')) dead = true; };
+    recog.onend = () => { running = false; if(!dead) setTimeout(() => { try{ recog.start(); }catch(_){} }, 300); };
+    const kick = () => { if(running || dead) return; try{ recog.start(); }catch(_){} };
+    kick();
+    window.addEventListener('pointerdown', () => { dead = false; kick(); });   // a tap re-arms a dropped mic
   }
 
   refresh();
