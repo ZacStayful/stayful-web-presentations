@@ -2353,28 +2353,41 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     return best;
   }
 
-  // Match the MOST RECENTLY spoken cue in the phrase (natural speech friendly)
+  // Reveal a matched cue: action cues open their target, block cues spotlight.
+  function dispatchCue(block){
+    if(block.hasAttribute('data-cue-target')) doAction(block, true);
+    else revealBlock(block);
+  }
+
+  // Match the MOST RECENTLY spoken cue in the phrase (natural speech friendly).
+  // Cues are searched across ALL slides — saying a section name from any slide
+  // navigates to its slide first, then reveals it.
   function stCue(phrase){
     const p = (phrase || '').toLowerCase(); if(!p) return false;
-    // 1) navigate to another slide by its title
+    // 1) explicit slide-title navigation
     const nidx = navIndex(p);
     if(nidx >= 0 && nidx !== cur){ goTo(nidx); return true; }
-    // 2) within-slide cues on the active slide
-    const slide = activeSlide(); if(!slide) return false;
+    // 2) reset / clear on the current slide
     let resetIdx = -1;
     ['reset','show all','clear','everything','zoom out','hide'].forEach(w => { const i = p.lastIndexOf(w); if(i > resetIdx) resetIdx = i; });
-    let best = null, bestIdx = -1;
-    slide.querySelectorAll('[data-cue]').forEach(b => {
-      (b.dataset.cue || '').split('|').forEach(c => {
-        c = c.trim().toLowerCase(); if(!c) return;
-        const i = p.lastIndexOf(c);
-        if(i > bestIdx){ bestIdx = i; best = b; }
+    // 3) match a section cue across every slide (most recently spoken wins)
+    let best = null, bestIdx = -1, bestSlide = null;
+    slides.forEach(s => {
+      s.querySelectorAll('[data-cue]').forEach(b => {
+        (b.dataset.cue || '').split('|').forEach(c => {
+          c = c.trim().toLowerCase(); if(!c) return;
+          const i = p.lastIndexOf(c);
+          if(i > bestIdx){ bestIdx = i; best = b; bestSlide = s; }
+        });
       });
     });
-    if(resetIdx > bestIdx){ clearSpotlight(slide); return true; }
+    if(resetIdx > bestIdx){ clearSpotlight(activeSlide()); return true; }
     if(best){
-      if(best.hasAttribute('data-cue-target')) doAction(best, true);
-      else revealBlock(best);
+      if(bestSlide && bestSlide !== activeSlide()){
+        const ti = [...slides].indexOf(bestSlide);
+        if(ti >= 0) goTo(ti);   // navigate first (synchronous — slide is active right after)
+      }
+      dispatchCue(best);
       return true;
     }
     return false;
