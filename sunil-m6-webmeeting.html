@@ -2437,24 +2437,41 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     }
   });
 
-  // Built-in mic (opt-in via ?present=1) — drives stCue directly
+  // Built-in mic (opt-in via ?present=1) — drives stCue directly, with visible status
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(PRESENT && SR){
-    let last = 0;
-    const recog = new SR();
-    recog.continuous = true; recog.interimResults = true; recog.lang = 'en-GB';
-    recog.onresult = e => {
-      let t = '';
-      for(let i = e.resultIndex; i < e.results.length; i++) t += e.results[i][0].transcript;
-      const trimmed = t.trim();
-      if(heardEl){ heardEl.textContent = '🎙 ' + trimmed; heardEl.classList.add('show'); heardEl.classList.remove('hit'); }
-      const now = Date.now();
-      if(now - last < 1100) return;
-      if(stCue(t)){ last = now; if(heardEl) heardEl.classList.add('hit'); }
-    };
-    recog.onerror = () => {};
-    recog.onend = () => { try{ recog.start(); }catch(_){} };
-    try{ recog.start(); }catch(_){}
+  if(PRESENT){
+    const say = (txt, hit) => { heardEl.textContent = txt; heardEl.classList.add('show'); heardEl.classList.toggle('hit', !!hit); };
+    if(!SR){
+      say('⚠️ No speech recognition in this browser — use Chrome');
+    } else {
+      say('🎙 Starting…');
+      let last = 0, started = false, stopped = false;
+      const recog = new SR();
+      recog.continuous = true; recog.interimResults = true; recog.lang = 'en-GB';
+      recog.onstart = () => { started = true; say('🎙 Listening…'); };
+      recog.onresult = e => {
+        let t = '';
+        for(let i = e.resultIndex; i < e.results.length; i++) t += e.results[i][0].transcript;
+        const trimmed = t.trim();
+        say('🎙 ' + (trimmed || 'Listening…'));
+        const now = Date.now();
+        if(now - last < 1100) return;
+        if(stCue(t)){ last = now; heardEl.classList.add('hit'); }
+      };
+      recog.onerror = ev => {
+        if(ev.error === 'not-allowed' || ev.error === 'service-not-allowed'){
+          stopped = true; say('⚠️ Mic blocked — allow the microphone, then reload');
+        } else if(ev.error !== 'no-speech' && ev.error !== 'aborted' && ev.error !== 'network'){
+          say('⚠️ mic: ' + ev.error);
+        }
+      };
+      recog.onend = () => { started = false; if(!stopped) setTimeout(() => { try{ recog.start(); }catch(_){} }, 350); };
+      const kick = () => { if(!started && !stopped){ try{ recog.start(); }catch(_){} } };
+      kick();
+      // Some setups only grant the mic after a user gesture — retry on first interaction
+      window.addEventListener('click', kick);
+      window.addEventListener('keydown', kick);
+    }
   }
 
   refresh();
