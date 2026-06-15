@@ -1196,6 +1196,41 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .cue-pill.reset{background:transparent;border-color:rgba(255,255,255,0.18);color:rgba(243,238,224,0.7);}
 .cue-pill.reset:hover{background:rgba(255,255,255,0.1);}
 
+/* ═══ WHO BOOKS · centred + direct-booking score & nearby events ═══ */
+.wb-head{text-align:center;}
+.wb-head .eb{justify-content:center;}
+.wb-head .sh{margin:14px auto 0;text-align:center;max-width:900px;}
+.wb-metrics{display:flex;justify-content:center;gap:16px;margin:28px auto 6px;flex-wrap:wrap;}
+.wb-metric{
+  flex:1 1 0;min-width:240px;max-width:380px;padding:24px 30px;border-radius:16px;
+  background:var(--green-soft);border:1px solid var(--line);text-align:center;
+}
+.wb-metric.score{
+  background:linear-gradient(135deg,var(--green-d),var(--green-dd));border-color:var(--green-d);
+  color:#f3eee0;position:relative;overflow:hidden;
+}
+.wb-metric.score::before{
+  content:"";position:absolute;top:-50%;right:-25%;width:70%;height:170%;
+  background:radial-gradient(circle,rgba(122,155,113,0.18),transparent 70%);pointer-events:none;
+}
+.wb-metric>*{position:relative;z-index:1;}
+.wb-m-l{font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;font-weight:600;margin-bottom:10px;}
+.wb-metric .wb-m-l{color:var(--green);}
+.wb-metric.score .wb-m-l{color:var(--green-light);}
+.wb-m-v{font-family:var(--serif);font-weight:300;line-height:1;letter-spacing:-0.01em;}
+.wb-metric .wb-m-v{font-size:46px;color:var(--green-d);}
+.wb-metric.score .wb-m-v{font-size:56px;color:#fff;}
+.wb-m-u{font-size:24px;font-weight:400;}
+.wb-metric .wb-m-u{color:var(--muted-l);}
+.wb-metric.score .wb-m-u{color:rgba(243,238,224,0.5);}
+.wb-m-s{font-size:11.5px;margin-top:9px;font-weight:300;line-height:1.45;}
+.wb-metric .wb-m-s{color:var(--muted);}
+.wb-metric.score .wb-m-s{color:rgba(243,238,224,0.66);}
+.wb-score-bar{height:6px;border-radius:99px;background:rgba(255,255,255,0.16);margin-top:16px;overflow:hidden;}
+.wb-score-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--green-light),#fff);width:0;transition:width 1.4s var(--ease);}
+.wb-head + .wb-metrics{margin-top:24px;}
+.guests-grid{max-width:1000px;margin-left:auto;margin-right:auto;}
+
 </style>
 </head>
 <body>
@@ -1709,9 +1744,25 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 
 <!-- ═══ SLIDE 4: WHO BOOKS ═══ -->
 <div class="slide white" data-name="Who Books" data-bg="white">
-  <div class="fi"><div class="eb">Demand intelligence · Salford · M6</div></div>
-  <h2 class="fi">Who actually <em>books</em> properties like this</h2>
-  <p class="sh fi">Built from the demand drivers around 43 The Royal Wilton Place Salford M6 3WP M6 3WP. The places, employers, and events that drive year-round bookings.</p>
+  <div class="wb-head fi">
+    <div class="eb">Demand intelligence · Salford · M6</div>
+    <h2>Who actually <em>books</em> properties like this</h2>
+    <p class="sh">Built from the demand drivers around 43 The Royal Wilton Place Salford M6 3WP M6 3WP. The places, employers, and events that drive year-round bookings.</p>
+  </div>
+
+  <div class="wb-metrics fi">
+    <div class="wb-metric score">
+      <div class="wb-m-l">Direct booking score</div>
+      <div class="wb-m-v" id="dbScoreVal"><!-- ST:DBSCORE_START -->100<!-- ST:DBSCORE_END --><span class="wb-m-u">/100</span></div>
+      <div class="wb-score-bar"><div class="wb-score-fill" id="dbScoreFill"></div></div>
+      <div class="wb-m-s">Exceptional standalone demand — this area can sustain direct bookings, not just platform traffic.</div>
+    </div>
+    <div class="wb-metric">
+      <div class="wb-m-l">Events nearby</div>
+      <div class="wb-m-v"><!-- ST:EVENTS_NEARBY_START -->18<!-- ST:EVENTS_NEARBY_END --></div>
+      <div class="wb-m-s">Venues &amp; event spaces within 5&nbsp;km that drive year-round, peak-rate booking demand.</div>
+    </div>
+  </div>
 
   <div class="guests-grid fi">
 <!-- ST:BLOCK_START DEMAND_DRIVER_CARDS -->
@@ -2460,6 +2511,16 @@ document.getElementById('np-copy').addEventListener('click', async () => {
   }
 
   refresh();
+})();
+
+// Direct-booking score meter — fill width follows the score value
+(function(){
+  const el = document.getElementById('dbScoreVal');
+  const fill = document.getElementById('dbScoreFill');
+  if(el && fill){
+    const v = Math.max(0, Math.min(100, parseInt(el.textContent, 10) || 0));
+    requestAnimationFrame(() => requestAnimationFrame(() => { fill.style.width = v + '%'; }));
+  }
 })();
 
 buildBars();
