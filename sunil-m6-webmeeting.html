@@ -1939,7 +1939,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 </div>
 
 <!-- ═══ SLIDE 4: WHO BOOKS ═══ -->
-<div class="slide white" data-name="Who Books" data-bg="white" data-cue-nav="who books|who book|who actually books|who stays|who is booking|who's booking|who would book|demand intelligence">
+<div class="slide white" data-name="Who Books" data-bg="white" data-cue-nav="who books|who book|whose books|who's book|who's books|who books here|who actually books|who stays|who stays here|who is booking|who's booking|who would book|who's staying|demand intelligence">
   <div class="wb-head fi">
     <div class="eb">Demand intelligence · Salford · M6</div>
     <h2>Who actually <em>books</em> properties like this</h2>
@@ -2410,7 +2410,7 @@ function stClosePdf(){
   const fr = document.getElementById('pdfOvFrame');
   if(!ov) return;
   ov.classList.remove('show'); ov.setAttribute('aria-hidden', 'true');
-  if(fr) fr.src = '';
+  if(fr) fr.src = 'about:blank';   // empty string makes the iframe reload the whole deck
 }
 window.stOpenPdf = stOpenPdf;
 window.stClosePdf = stClosePdf;
