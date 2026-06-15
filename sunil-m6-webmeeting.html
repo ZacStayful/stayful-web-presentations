@@ -2590,13 +2590,15 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     let resetIdx = -1;
     ['reset','show all','clear','everything','zoom out','hide'].forEach(w => { const i = p.lastIndexOf(w); if(i > resetIdx) resetIdx = i; });
     // 3) match a section cue across every slide (most recently spoken wins)
-    let best = null, bestIdx = -1, bestSlide = null;
+    let best = null, bestIdx = -1, bestLen = 0, bestSlide = null;
     slides.forEach(s => {
       s.querySelectorAll('[data-cue]').forEach(b => {
         (b.dataset.cue || '').split('|').forEach(c => {
           c = c.trim().toLowerCase(); if(!c) return;
           const i = p.lastIndexOf(c);
-          if(i > bestIdx){ bestIdx = i; best = b; bestSlide = s; }
+          if(i < 0) return;
+          // later position wins (most recently spoken); on a tie, the longer/more specific cue wins
+          if(i > bestIdx || (i === bestIdx && c.length > bestLen)){ bestIdx = i; bestLen = c.length; best = b; bestSlide = s; }
         });
       });
     });
