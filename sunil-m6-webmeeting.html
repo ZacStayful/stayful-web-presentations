@@ -2190,7 +2190,9 @@ function stOpenPdf(fileId, title, viewUrl){
   const ov = document.getElementById('pdfOv');
   const fr = document.getElementById('pdfOvFrame');
   if(!ov || !fr) return;
-  fr.src = 'https://drive.google.com/file/d/' + fileId + '/preview';
+  const src = 'https://drive.google.com/file/d/' + fileId + '/preview';
+  if(ov.classList.contains('show') && fr.src === src) return;   // already showing this file
+  fr.src = src;
   document.getElementById('pdfOvTitle').textContent = title || 'Case study';
   const tab = document.getElementById('pdfOvTab');
   if(tab) tab.href = viewUrl || ('https://drive.google.com/file/d/' + fileId + '/view');
@@ -2599,16 +2601,17 @@ document.getElementById('np-copy').addEventListener('click', async () => {
   // alone; single-word / sensitive titles (Notes, Property) require a nav verb.
   const NAV_VERBS = ['go to','goto','show me','show the','take me to','let us look at','lets look at','move to','jump to','navigate to','bring up','open the'];
   const NAV_SENSITIVE = ['notes','property'];
-  function navIndex(p){
-    if(/\bnext slide\b/.test(p)) return Math.min(cur + 1, TOTAL - 1);
-    if(/\b(previous slide|last slide|go back)\b/.test(p)) return Math.max(cur - 1, 0);
-    let best = -1, bestIdx = -1, bestLen = 0;
+  function navInfo(p){
+    if(/\bnext slide\b/.test(p)) return {idx: Math.min(cur + 1, TOTAL - 1), pos: p.lastIndexOf('next slide')};
+    const bm = p.match(/previous slide|last slide|go back/);
+    if(bm) return {idx: Math.max(cur - 1, 0), pos: p.lastIndexOf(bm[0])};
+    let idx = -1, pos = -1, len = 0;
     // explicit per-slide spoken aliases: data-cue-nav="phrase|phrase"
     slides.forEach((s, i) => {
       (s.getAttribute('data-cue-nav') || '').split('|').forEach(c => {
         c = c.trim().toLowerCase(); if(!c) return;
         const at = p.lastIndexOf(c);
-        if(at >= 0 && (at > bestIdx || (at === bestIdx && c.length > bestLen))){ bestIdx = at; bestLen = c.length; best = i; }
+        if(at >= 0 && (at > pos || (at === pos && c.length > len))){ pos = at; len = c.length; idx = i; }
       });
     });
     // slide titles (multi-word fire on the title alone; single-word/sensitive need a nav verb)
@@ -2619,9 +2622,9 @@ document.getElementById('np-copy').addEventListener('click', async () => {
       if(at < 0) return;
       const distinctive = n.includes(' ');
       const sensitive = NAV_SENSITIVE.includes(n);
-      if(((distinctive && !sensitive) || hasVerb) && (at > bestIdx || (at === bestIdx && n.length > bestLen))){ bestIdx = at; bestLen = n.length; best = i; }
+      if(((distinctive && !sensitive) || hasVerb) && (at > pos || (at === pos && n.length > len))){ pos = at; len = n.length; idx = i; }
     });
-    return best;
+    return {idx, pos};
   }
 
   // Reveal a matched cue: open-a-target cues, click-a-button cues, or spotlight blocks.
@@ -2645,42 +2648,62 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     else revealBlock(block);
   }
 
-  // Match the MOST RECENTLY spoken cue in the phrase (natural speech friendly).
-  // Cues are searched across ALL slides — saying a section name from any slide
-  // navigates to its slide first, then reveals it.
-  function stCue(phrase){
-    const p = (phrase || '').toLowerCase(); if(!p) return false;
-    // 1) explicit slide-title navigation
-    const nidx = navIndex(p);
-    if(nidx >= 0 && nidx !== cur){ if(window.stClosePdf) window.stClosePdf(); goTo(nidx); return true; }
-    // 2) reset / clear on the current slide
+  // Decide what a phrase should do — NO side effects — picking the MOST RECENTLY
+  // spoken intent across navigation, reset, case-study PDFs and section cues.
+  function decideCue(p){
+    const cands = [];
+    const nav = navInfo(p);
+    if(nav.idx >= 0 && nav.idx !== cur){
+      cands.push({pos: nav.pos, key: 'nav:' + nav.idx, run: () => { if(window.stClosePdf) window.stClosePdf(); goTo(nav.idx); }});
+    }
     let resetIdx = -1;
     ['reset','show all','clear','everything','zoom out','hide','close'].forEach(w => { const i = p.lastIndexOf(w); if(i > resetIdx) resetIdx = i; });
-    // 3) match a section cue across every slide (most recently spoken wins)
-    let best = null, bestIdx = -1, bestLen = 0, bestSlide = null;
-    slides.forEach(s => {
-      s.querySelectorAll('[data-cue]').forEach(b => {
-        (b.dataset.cue || '').split('|').forEach(c => {
-          c = c.trim().toLowerCase(); if(!c) return;
-          const i = p.lastIndexOf(c);
-          if(i < 0) return;
-          // later position wins (most recently spoken); on a tie, the longer/more specific cue wins
-          if(i > bestIdx || (i === bestIdx && c.length > bestLen)){ bestIdx = i; bestLen = c.length; best = b; bestSlide = s; }
-        });
-      });
-    });
-    if(resetIdx > bestIdx){ if(window.stClosePdf) window.stClosePdf(); clearSpotlight(activeSlide()); return true; }
-    if(best){
-      // any command other than opening another case-study PDF closes the overlay first
-      if(!best.hasAttribute('data-cue-pdf') && window.stClosePdf) window.stClosePdf();
-      if(bestSlide && bestSlide !== activeSlide()){
-        const ti = [...slides].indexOf(bestSlide);
-        if(ti >= 0) goTo(ti);   // navigate first (synchronous — slide is active right after)
-      }
-      dispatchCue(best);
-      return true;
+    if(resetIdx >= 0) cands.push({pos: resetIdx, key: 'reset', run: () => { if(window.stClosePdf) window.stClosePdf(); clearSpotlight(activeSlide()); }});
+    // case-study quick-match — a city + "case study" in any order / with words between
+    if(/case stud/.test(p)){
+      let pe = null, pIdx = -1;
+      slides.forEach(s => s.querySelectorAll('[data-cue-pdf]').forEach(el => {
+        const city = (el.getAttribute('data-cue-city') || (el.getAttribute('data-cue-label') || '').trim().split(' ')[0]).toLowerCase();
+        if(!city) return;
+        const at = p.lastIndexOf(city);
+        if(at >= 0 && at > pIdx){ pIdx = at; pe = el; }
+      }));
+      if(pe) cands.push({pos: pIdx, key: 'pdf:' + pe.getAttribute('data-cue-pdf'), run: () => {
+        const sl = pe.closest('.slide'); if(sl && sl !== activeSlide()){ const ti = [...slides].indexOf(sl); if(ti >= 0) goTo(ti); }
+        dispatchCue(pe);
+      }});
     }
-    return false;
+    // section cues across every slide
+    let best = null, bestIdx = -1, bestLen = 0, bestSlide = null;
+    slides.forEach(s => s.querySelectorAll('[data-cue]').forEach(b => {
+      (b.dataset.cue || '').split('|').forEach(c => {
+        c = c.trim().toLowerCase(); if(!c) return;
+        const i = p.lastIndexOf(c); if(i < 0) return;
+        if(i > bestIdx || (i === bestIdx && c.length > bestLen)){ bestIdx = i; bestLen = c.length; best = b; bestSlide = s; }
+      });
+    }));
+    if(best) cands.push({pos: bestIdx, key: 'cue:' + (best.getAttribute('data-cue-label') || best.getAttribute('data-cue') || ''), run: () => {
+      if(!best.hasAttribute('data-cue-pdf') && window.stClosePdf) window.stClosePdf();
+      if(bestSlide && bestSlide !== activeSlide()){ const ti = [...slides].indexOf(bestSlide); if(ti >= 0) goTo(ti); }
+      dispatchCue(best);
+    }});
+    if(!cands.length) return null;
+    cands.sort((a, b) => b.pos - a.pos);   // most recently spoken intent wins
+    return cands[0];
+  }
+
+  // Public entry — interim-friendly: de-dupes so a command fires once per utterance,
+  // letting it run on every partial result (low latency, react to keywords mid-sentence).
+  let lastKey = '', lastTime = 0;
+  function stCue(phrase){
+    const p = (phrase || '').toLowerCase(); if(!p) return false;
+    const d = decideCue(p);
+    if(!d) return false;
+    const now = Date.now();
+    if(d.key === lastKey && now - lastTime < 1800) return false;
+    lastKey = d.key; lastTime = now;
+    d.run();
+    return true;
   }
   window.stCue = stCue;
 
@@ -2730,23 +2753,16 @@ document.getElementById('np-copy').addEventListener('click', async () => {
   // Built-in mic (opt-in via ?present=1) — drives stCue directly
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if(PRESENT && SR){
-    let running = false, dead = false, phrase = '', settle = null;
+    let running = false, dead = false;
     const recog = new SR();
-    recog.continuous = true; recog.interimResults = false; recog.lang = 'en-GB';
+    recog.continuous = true; recog.interimResults = true; recog.lang = 'en-GB';
     recog.onstart = () => { running = true; };
     recog.onresult = e => {
+      // react to keywords as they're spoken (interim) for low latency; stCue de-dupes
+      // so a command only fires once per utterance even as the partial grows
       let t = '';
-      for(let i = e.resultIndex; i < e.results.length; i++){ if(e.results[i].isFinal) t += e.results[i][0].transcript; }
-      t = t.trim();
-      if(!t) return;
-      // Chrome can split one phrase into separate finals ("direct booking" + "process").
-      // Stitch fragments that arrive close together, then match the whole phrase once it settles.
-      phrase = (phrase ? phrase + ' ' + t : t).slice(-160);
-      clearTimeout(settle);
-      settle = setTimeout(() => {
-        const said = phrase; phrase = '';
-        try { stCue(said); } catch(_) {}
-      }, 450);
+      for(let i = e.resultIndex; i < e.results.length; i++) t += e.results[i][0].transcript;
+      try { stCue(t); } catch(_) {}
     };
     recog.onerror = ev => { if(ev && (ev.error === 'not-allowed' || ev.error === 'service-not-allowed')) dead = true; };
     recog.onend = () => { running = false; if(!dead) setTimeout(() => { try{ recog.start(); }catch(_){} }, 300); };
