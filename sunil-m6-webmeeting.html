@@ -1229,6 +1229,8 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .wb-score-bar{height:6px;border-radius:99px;background:rgba(255,255,255,0.16);margin-top:16px;overflow:hidden;}
 .wb-score-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--green-light),#fff);width:0;transition:width 1.4s var(--ease);}
 .wb-head + .wb-metrics{margin-top:24px;}
+.db-score-wrap{display:flex;justify-content:center;}
+.db-score-wrap .wb-metric{max-width:560px;width:100%;}
 
 </style>
 </head>
@@ -1749,18 +1751,23 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
     <p class="sh">Built from the demand drivers around 43 The Royal Wilton Place Salford M6 3WP M6 3WP. The places, employers, and events that drive year-round bookings.</p>
   </div>
 
-  <div class="wb-metrics fi">
-    <div class="wb-metric score">
-      <div class="wb-m-l">Direct booking score</div>
-      <div class="wb-m-v" id="dbScoreVal"><!-- ST:DBSCORE_START -->100<!-- ST:DBSCORE_END --><span class="wb-m-u">/100</span></div>
-      <div class="wb-score-bar"><div class="wb-score-fill" id="dbScoreFill"></div></div>
-      <div class="wb-m-s">Exceptional standalone demand — this area can sustain direct bookings, not just platform traffic.</div>
-    </div>
-    <div class="wb-metric">
-      <div class="wb-m-l">Events nearby</div>
-      <div class="wb-m-v"><!-- ST:EVENTS_NEARBY_START -->18<!-- ST:EVENTS_NEARBY_END --></div>
-      <div class="wb-m-s">Venues &amp; event spaces within 5&nbsp;km that drive year-round, peak-rate booking demand.</div>
-    </div>
+  <div class="reveal-row fi">
+    <button class="reveal-btn" type="button" data-shut="View direct booking score" data-open="Hide direct booking score" data-cue="direct booking score|direct booking|booking score" data-cue-label="Direct booking" data-cue-click="1" onclick="toggleReveal(this,'db-reveal')">
+      <span class="rb-ic">+</span><span class="rb-label">View direct booking score</span>
+    </button>
+  </div>
+
+  <div class="reveal-panel fi" id="db-reveal">
+    <div class="rp-inner"><div class="rp-pad">
+      <div class="db-score-wrap">
+        <div class="wb-metric score">
+          <div class="wb-m-l">Direct booking score</div>
+          <div class="wb-m-v" id="dbScoreVal"><!-- ST:DBSCORE_START -->100<!-- ST:DBSCORE_END --><span class="wb-m-u">/100</span></div>
+          <div class="wb-score-bar"><div class="wb-score-fill" id="dbScoreFill"></div></div>
+          <div class="wb-m-s">Exceptional standalone demand — this area can sustain direct bookings, not just platform traffic.</div>
+        </div>
+      </div>
+    </div></div>
   </div>
 
   <div class="guests-grid fi">
@@ -1769,6 +1776,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
     <div class="gc"><div class="gc-h"><div class="gc-icon">🎓</div><div class="gc-meta"><div class="gc-tag">Educational Institutions</div><div class="gc-title">The University of Manchester</div></div></div><div class="gc-desc">3 nearby institutions</div><div class="gc-loc">📍 <strong>The University of Manchester</strong> · 4.63 km · <strong>HIGH</strong> demand</div></div>
     <div class="gc"><div class="gc-h"><div class="gc-icon">✈</div><div class="gc-meta"><div class="gc-tag">Transport Links</div><div class="gc-title">Salford Crescent</div></div></div><div class="gc-desc">10 nearby transport links</div><div class="gc-loc">📍 <strong>Salford Crescent</strong> · 1.08 km · <strong>HIGH</strong> demand</div></div>
 <!-- ST:BLOCK_END DEMAND_DRIVER_CARDS -->
+    <div class="gc"><div class="gc-h"><div class="gc-icon">🎟️</div><div class="gc-meta"><div class="gc-tag">Events &amp; Venues</div><div class="gc-title">Year-round event demand</div></div></div><div class="gc-desc"><!-- ST:EVENTS_NEARBY_START -->18<!-- ST:EVENTS_NEARBY_END --> nearby venues &amp; event spaces</div><div class="gc-loc">📍 <strong>Within 5 km</strong> · peak-rate weekends · <strong>HIGH</strong> demand</div></div>
   </div>
 </div>
 
@@ -2512,13 +2520,21 @@ document.getElementById('np-copy').addEventListener('click', async () => {
   refresh();
 })();
 
-// Direct-booking score meter — fill width follows the score value
+// Direct-booking score meter — fills to the score value each time it's revealed
 (function(){
   const el = document.getElementById('dbScoreVal');
   const fill = document.getElementById('dbScoreFill');
-  if(el && fill){
-    const v = Math.max(0, Math.min(100, parseInt(el.textContent, 10) || 0));
-    requestAnimationFrame(() => requestAnimationFrame(() => { fill.style.width = v + '%'; }));
+  const panel = document.getElementById('db-reveal');
+  if(!el || !fill) return;
+  const v = Math.max(0, Math.min(100, parseInt(el.textContent, 10) || 0));
+  const play = () => { fill.style.width = '0'; requestAnimationFrame(() => requestAnimationFrame(() => { fill.style.width = v + '%'; })); };
+  if(panel){
+    new MutationObserver(() => {
+      if(panel.classList.contains('open')) play();
+      else fill.style.width = '0';
+    }).observe(panel, {attributes:true, attributeFilter:['class']});
+  } else {
+    play();
   }
 })();
 
