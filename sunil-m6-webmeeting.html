@@ -31,6 +31,15 @@
   --serif:'Cormorant Garamond',Georgia,serif;
   --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
   --ease:cubic-bezier(0.4,0,0.2,1);
+  /* Aliases used by the folded-in comparables / amenity blocks */
+  --bd:var(--line);
+  --gp:var(--green-soft);
+  --ch:var(--green-d);
+  --mid:var(--ink2);
+  --mu:var(--muted);
+  --gd:var(--green-d);
+  --gc:#f3eee0;
+  --amp:var(--am-pale);
 }
 html,body{width:100%;height:100%;overflow:hidden;background:var(--cream);font-family:var(--sans);color:var(--ink);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased;}
 
@@ -150,6 +159,96 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 }
 .pill.live{background:rgba(122,155,113,0.16);border-color:rgba(122,155,113,0.32);color:#bcd1b3;}
 .cover-foot{margin-top:18px;font-size:10.5px;color:rgba(243,238,224,0.4);font-weight:300;letter-spacing:0.04em;}
+
+/* ─── PROPERTY SLIDE · centred yield figures ──── */
+.prop-head{text-align:center;}
+.prop-head .eb{justify-content:center;}
+.prop-head h1{margin-left:auto;margin-right:auto;}
+.prop-head .sh{margin-left:auto;margin-right:auto;text-align:center;}
+.prop-figures{
+  width:100%;max-width:720px;margin:30px auto 0;
+  display:flex;flex-direction:column;gap:12px;
+}
+.pf-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.pf-box{
+  padding:18px 22px;border-radius:14px;
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+  backdrop-filter:blur(8px);
+  display:flex;flex-direction:column;gap:6px;text-align:center;align-items:center;
+}
+.pf-l{font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(243,238,224,0.5);font-weight:500;}
+.pf-v{font-family:var(--serif);font-size:36px;line-height:1;font-weight:400;color:#fff;letter-spacing:-0.01em;}
+.pf-s{font-size:10.5px;color:rgba(243,238,224,0.55);font-weight:300;}
+/* Gross — gold accent */
+.pf-gross{background:rgba(184,132,31,0.1);border-color:rgba(184,132,31,0.28);}
+.pf-gross .pf-l{color:rgba(225,182,108,0.85);}
+/* Net — the headline figures, brightest */
+.pf-net{background:rgba(122,155,113,0.16);border-color:rgba(122,155,113,0.4);}
+.pf-net .pf-l{color:#bcd1b3;}
+.pf-net .pf-v{color:#fff;font-size:40px;}
+/* Long-let — muted comparison */
+.pf-ll{background:rgba(255,255,255,0.03);border-style:dashed;}
+.pf-ll .pf-v{font-size:30px;color:rgba(243,238,224,0.82);}
+/* Verdict — short-let net vs long-let. Green when short-let wins, amber when it trails */
+.pf-verdict{border-width:1.5px;}
+.pf-verdict-up{background:rgba(122,155,113,0.18);border-color:rgba(122,155,113,0.5);}
+.pf-verdict-up .pf-l{color:#cfe0c7;}
+.pf-verdict-up .pf-v{color:#bcd1b3;}
+.pf-verdict-up .pf-s{color:rgba(188,209,179,0.8);}
+.pf-verdict-down{background:rgba(184,132,31,0.12);border-color:rgba(184,132,31,0.4);}
+.pf-verdict-down .pf-l{color:rgba(225,182,108,0.9);}
+.pf-verdict-down .pf-v{color:#e1b66c;}
+.pf-verdict-down .pf-s{color:rgba(225,182,108,0.72);}
+
+/* Cost breakdown — expands between gross & net */
+.pf-breakdown{
+  display:grid;grid-template-rows:0fr;opacity:0;
+  transition:grid-template-rows 2s var(--ease),opacity 2s var(--ease),margin 2s var(--ease);
+  margin:-6px 0;
+}
+.prop-figures.show-breakdown .pf-breakdown{grid-template-rows:1fr;opacity:1;margin:0;}
+.pf-bd-inner{overflow:hidden;}
+.pf-bd-card{
+  padding:18px 22px;border-radius:14px;
+  background:rgba(0,0,0,0.18);border:1px solid rgba(255,255,255,0.08);
+}
+.pf-bd-head{
+  font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(243,238,224,0.5);font-weight:500;margin-bottom:14px;text-align:center;
+}
+.pf-bd-item{
+  display:flex;justify-content:space-between;align-items:center;gap:14px;
+  padding:11px 0;border-top:1px solid rgba(255,255,255,0.07);
+}
+.pf-bd-item:first-of-type{border-top:none;}
+.pf-bd-name{font-size:12.5px;color:rgba(243,238,224,0.88);font-weight:400;}
+.pf-bd-pct{
+  display:inline-block;margin-left:8px;padding:2px 8px;border-radius:99px;
+  font-size:10.5px;font-weight:500;color:#e1b66c;
+  background:rgba(184,132,31,0.14);border:1px solid rgba(184,132,31,0.3);
+}
+.pf-bd-figs{display:flex;gap:18px;text-align:right;}
+.pf-bd-fig{display:flex;flex-direction:column;gap:2px;min-width:78px;}
+.pf-bd-fig .pf-bd-fl{font-size:8.5px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(243,238,224,0.4);}
+.pf-bd-fig .pf-bd-fv{font-family:var(--serif);font-size:19px;color:#fff;font-weight:400;line-height:1;}
+.pf-bd-total{
+  display:flex;justify-content:space-between;align-items:center;gap:14px;
+  margin-top:12px;padding-top:13px;border-top:1px solid rgba(255,255,255,0.16);
+}
+.pf-bd-total .pf-bd-name{font-weight:500;color:#fff;}
+.pf-bd-total .pf-bd-fv{color:#e1b66c;}
+
+.pf-btn-row{display:flex;justify-content:center;margin-top:6px;}
+.pf-btn{
+  font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:0.03em;
+  color:#f3eee0;background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.18);border-radius:99px;
+  padding:11px 24px;cursor:pointer;display:inline-flex;align-items:center;gap:9px;
+  transition:all 0.2s var(--ease);
+}
+.pf-btn:hover{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.32);}
+.pf-btn .pf-btn-ic{transition:transform 0.3s var(--ease);font-size:14px;line-height:1;}
+.prop-figures.show-breakdown .pf-btn .pf-btn-ic{transform:rotate(45deg);}
 
 /* Honest disclosure box */
 .disclosure{
@@ -316,7 +415,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 }
 
 /* ─── WHO BOOKS ──────────────────────────────── */
-.guests-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:26px;}
+.guests-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:26px;}
 .gc{
   padding:24px 24px;background:var(--white);border:1px solid var(--green-pale);
   border-radius:16px;display:flex;flex-direction:column;gap:10px;
@@ -744,7 +843,9 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .vs-intro::before{content:"";width:24px;height:1px;background:var(--green-light);display:inline-block;}
 
 /* ── Risk profile — button + animated comparison chart ───────── */
-.risk{margin-top:20px;}
+.risk{margin-top:20px;text-align:center;}
+.risk-collapse{font-family:var(--sans);font-size:10.5px;color:rgba(243,238,224,0.6);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:99px;padding:4px 11px;cursor:pointer;margin-left:12px;vertical-align:middle;transition:all .18s var(--ease);}
+.risk-collapse:hover{background:rgba(255,255,255,0.14);color:#f3eee0;}
 .risk-btn{
   display:inline-flex;align-items:center;gap:10px;cursor:pointer;
   font-family:var(--sans);font-size:12.5px;font-weight:500;letter-spacing:0.02em;
@@ -795,11 +896,11 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
   font-size:9.5px;letter-spacing:0.06em;color:rgba(243,238,224,0.78);font-weight:600;
   padding:1px 8px;border-radius:99px;border:1px solid rgba(243,238,224,0.2);white-space:nowrap;
 }
-.risk-cap{font-size:11.5px;color:rgba(243,238,224,0.7);font-weight:300;line-height:1.55;margin-top:20px;max-width:640px;}
+.risk-cap{font-size:11.5px;color:rgba(243,238,224,0.7);font-weight:300;line-height:1.55;margin:20px auto 0;max-width:640px;}
 .risk-cap strong{color:#f3eee0;font-weight:500;}
 /* verdict — long let vs short let, revealed as the climax of the build */
 .verdict{
-  margin-top:24px;padding-top:22px;border-top:1px solid rgba(255,255,255,0.1);
+  margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid rgba(255,255,255,0.1);
   opacity:0;transform:translateY(10px);
   transition:opacity 0.6s var(--ease) 2.6s,transform 0.6s var(--ease) 2.6s;
 }
@@ -808,7 +909,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .verdict-a{font-family:var(--serif);font-weight:600;font-size:62px;line-height:1.04;letter-spacing:-0.02em;}
 .verdict-a.is-short{color:#6ee7a0;text-shadow:0 0 32px rgba(110,231,160,0.38);}
 .verdict-a.is-long{color:#ff6b5e;text-shadow:0 0 32px rgba(255,107,94,0.32);}
-.verdict-sub{font-size:12.5px;color:rgba(243,238,224,0.72);font-weight:300;line-height:1.55;max-width:660px;margin-top:10px;}
+.verdict-sub{font-size:12.5px;color:rgba(243,238,224,0.72);font-weight:300;line-height:1.55;max-width:660px;margin:10px auto 0;text-align:center;}
 @media (max-width:900px){.risk-bar{width:48px;}.risk-num{font-size:19px;}.verdict-a{font-size:46px;}}
 
 /* ── How Stayful works — model strip + 3-button hub ──────────── */
@@ -858,9 +959,87 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .hsw-soon{padding:48px 40px;text-align:center;color:rgba(243,238,224,0.5);font-size:13px;border:1px dashed rgba(255,255,255,0.14);border-radius:12px;}
 
 /* Management & your experience panel */
-.mh-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px;}
+.mh-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px;max-width:1000px;margin:0 auto;}
+.hsw-panel[data-panel="management"] .gv-flowhead,.hsw-panel[data-panel="management"] .mh-sub{text-align:center;}
 .mh-do{display:flex;align-items:flex-start;gap:9px;background:rgba(122,155,113,0.08);border:1px solid rgba(122,155,113,0.22);border-radius:10px;padding:11px 13px;font-size:12px;color:#f3eee0;font-weight:400;line-height:1.35;}
 .mh-do::before{content:"✓";color:#9fc295;font-weight:700;font-size:12px;flex-shrink:0;line-height:1.35;}
+/* Cleaning — expandable button + visual breakdown */
+.mh-do-btn{font-family:var(--sans);cursor:pointer;text-align:left;width:100%;}
+.mh-do-btn .mh-do-ic{margin-left:auto;color:#9fc295;font-size:11px;transition:transform .3s var(--ease);flex-shrink:0;}
+.mh-do-btn:hover{background:rgba(122,155,113,0.16);}
+.mh-do-btn.open{background:rgba(122,155,113,0.18);border-color:rgba(122,155,113,0.45);}
+.mh-do-btn.open .mh-do-ic{transform:rotate(180deg);}
+.clean-box{margin-top:14px;padding:22px 24px;border-radius:14px;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.1);text-align:center;}
+.clean-eb{font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--green-light);font-weight:600;}
+.clean-h{font-family:var(--serif);font-size:24px;font-weight:400;color:#f3eee0;line-height:1.12;margin:5px 0 10px;}
+.clean-h em{font-style:italic;color:var(--green-light);}
+.clean-intro{font-size:13px;color:rgba(243,238,224,0.8);line-height:1.6;font-weight:300;max-width:860px;margin:0 auto;}
+.clean-intro strong{color:#f3eee0;font-weight:600;}
+.clean-eg{margin-top:18px;}
+.clean-eg-h{font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(243,238,224,0.5);font-weight:600;margin-bottom:12px;}
+.clean-flow{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;}
+.clean-chip{padding:14px 20px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);text-align:center;min-width:104px;}
+.clean-chip .clean-v{font-family:var(--serif);font-size:30px;font-weight:300;color:#fff;line-height:1;}
+.clean-chip .clean-l{font-size:10.5px;color:rgba(243,238,224,0.6);margin-top:6px;letter-spacing:0.02em;}
+.clean-chip.stay{background:rgba(122,155,113,0.16);border-color:rgba(122,155,113,0.4);}
+.clean-chip.fee{background:rgba(184,132,31,0.14);border-color:rgba(184,132,31,0.38);}
+.clean-chip.fee .clean-v{color:#e1b66c;}
+.clean-chip.total{background:linear-gradient(135deg,var(--green-d),var(--green-dd));border-color:var(--green-light);}
+.clean-op{font-family:var(--serif);font-size:24px;color:rgba(243,238,224,0.5);}
+.clean-note{margin:16px auto 0;max-width:760px;padding:13px 18px;border-radius:10px;background:rgba(122,155,113,0.12);border:1px solid rgba(122,155,113,0.28);font-size:12.5px;color:rgba(243,238,224,0.85);line-height:1.55;}
+.clean-note strong{color:#f3eee0;font-weight:600;}
+.ch-table{max-width:660px;margin:18px auto 0;text-align:left;}
+.ch-row{display:grid;grid-template-columns:1fr 110px 110px;gap:8px;align-items:center;padding:11px 16px;border-radius:9px;margin-bottom:5px;}
+.ch-row.ch-head{padding:4px 16px 2px;margin-bottom:2px;}
+.ch-head .ch-c{font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(243,238,224,0.42);font-weight:600;}
+.ch-l{font-size:12.5px;color:#f3eee0;font-weight:500;line-height:1.25;}
+.ch-l span{display:block;font-size:10px;color:rgba(243,238,224,0.5);font-weight:300;margin-top:2px;}
+.ch-c{text-align:right;font-family:var(--serif);font-size:19px;color:#f3eee0;font-weight:400;}
+.ch-row.gross{background:rgba(255,255,255,0.05);}
+.ch-row.deduct{background:rgba(184,132,31,0.1);}
+.ch-row.deduct .ch-l,.ch-row.deduct .ch-c{color:#e1b66c;}
+.ch-row.deduct.mgmt{background:rgba(122,155,113,0.16);}
+.ch-row.deduct.mgmt .ch-l,.ch-row.deduct.mgmt .ch-c{color:var(--green-light);}
+.ch-row.sub{background:transparent;}
+.ch-row.sub .ch-l,.ch-row.sub .ch-c{color:rgba(243,238,224,0.62);}
+.ch-row.net{background:linear-gradient(135deg,var(--green-d),var(--green-dd));border:1px solid var(--green-light);margin-top:6px;}
+.ch-row.net .ch-l{color:#fff;font-weight:600;}
+.ch-row.net .ch-c{color:#fff;font-size:24px;}
+@media(max-width:620px){.ch-row{grid-template-columns:1fr 80px 80px;}.ch-c{font-size:16px;}}
+.ct-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:840px;margin:18px auto 0;text-align:center;}
+.ct-card{padding:18px 16px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);}
+.ct-card .ct-v{font-family:var(--serif);font-size:30px;color:#fff;line-height:1;font-weight:300;}
+.ct-card .ct-v span{font-size:15px;color:rgba(243,238,224,0.5);}
+.ct-card .ct-t{font-size:12px;color:#f3eee0;font-weight:600;margin-top:8px;}
+.ct-card .ct-d{font-size:10.5px;color:rgba(243,238,224,0.6);margin-top:5px;line-height:1.45;}
+.ct-card.warn{background:rgba(184,132,31,0.12);border-color:rgba(184,132,31,0.35);}
+.ct-card.warn .ct-v{color:#e1b66c;}
+.ct-notes{max-width:820px;margin:16px auto 0;text-align:left;display:flex;flex-direction:column;gap:8px;}
+.ct-note{padding:11px 16px;border-radius:10px;background:rgba(122,155,113,0.1);border:1px solid rgba(122,155,113,0.24);font-size:12px;color:rgba(243,238,224,0.85);line-height:1.5;}
+.ct-note strong{color:var(--green-light);font-weight:600;}
+@media(max-width:760px){.ct-grid{grid-template-columns:1fr 1fr;}}
+.cmp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:840px;margin:18px auto 0;text-align:left;}
+.cmp-card{padding:16px 18px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);}
+.cmp-region{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(243,238,224,0.5);font-weight:600;}
+.cmp-status{font-family:var(--serif);font-size:22px;color:#f3eee0;margin-top:5px;line-height:1.1;}
+.cmp-d{font-size:11px;color:rgba(243,238,224,0.62);margin-top:8px;line-height:1.45;}
+.cmp-d strong{color:#f3eee0;font-weight:600;}
+.cmp-card.ok{background:rgba(122,155,113,0.14);border-color:rgba(122,155,113,0.35);}
+.cmp-card.ok .cmp-status{color:var(--green-light);}
+.cmp-card.warn{background:rgba(184,132,31,0.1);border-color:rgba(184,132,31,0.3);}
+.cmp-card.warn .cmp-status{color:#e1b66c;}
+.cmp-sub{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(243,238,224,0.5);font-weight:600;margin:22px 0 12px;}
+.cmp-fire{max-width:840px;margin:0 auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;}
+.cmp-fire-h{font-size:14px;color:#f3eee0;font-weight:600;}
+.cmp-chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
+.cmp-chip{font-size:12px;padding:7px 14px;border-radius:99px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);color:#f3eee0;}
+.cmp-chip.extra{background:rgba(122,155,113,0.12);border-color:rgba(122,155,113,0.3);color:var(--green-light);}
+@media(max-width:760px){.cmp-grid{grid-template-columns:1fr;}}
+.ms-item-btn{font-family:var(--sans);cursor:pointer;background:transparent;border:none;border-right:1px solid rgba(255,255,255,0.08);transition:background .18s var(--ease);border-radius:8px;}
+.ms-item-btn:last-child{border-right:none;}
+.ms-item-btn:hover{background:rgba(122,155,113,0.12);}
+.ms-cta{font-size:9.5px;letter-spacing:0.04em;color:var(--green-light);font-weight:600;margin-top:4px;}
+@media(max-width:760px){.clean-flow{flex-direction:column;align-items:stretch;}.clean-op{text-align:center;}}
 .mh-tools{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
 .mh-tile{display:block;text-decoration:none;color:inherit;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;transition:transform .2s var(--ease),border-color .2s var(--ease),box-shadow .2s var(--ease);}
 .mh-tile:hover{transform:translateY(-2px);border-color:rgba(122,155,113,0.45);box-shadow:0 14px 34px rgba(0,0,0,0.34);}
@@ -957,6 +1136,290 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .at-base{background:white;color:var(--mid);border:1px solid var(--bd);}
 .at-edge{background:rgba(93,129,86,0.1);color:var(--green);border:1px solid rgba(93,129,86,0.2);}
 .at-gap{background:white;color:var(--am);border:1px solid rgba(196,124,26,0.25);}
+
+/* ═══ NUMBERS SLIDE · centred + progressive reveal ═══ */
+.num-head{text-align:center;max-width:none;margin:0 auto;}
+.num-head .eb{justify-content:center;}
+.num-head h2,.num-head .sh{margin-left:auto;margin-right:auto;}
+.num-head .sh{text-align:center;max-width:920px;}
+.num-body{max-width:none;margin:0 auto;width:100%;}
+.num-body .chart-wrap{margin-top:24px;}
+
+/* Reveal buttons + collapsible panels */
+.reveal-row{display:flex;justify-content:center;margin-top:24px;}
+.reveal-btn{
+  font-family:var(--sans);font-size:12.5px;font-weight:500;letter-spacing:0.03em;
+  color:#fff;background:var(--green-d);border:1px solid var(--green-d);border-radius:99px;
+  padding:12px 26px;cursor:pointer;display:inline-flex;align-items:center;gap:10px;
+  transition:all .2s var(--ease);
+}
+.reveal-btn:hover{background:var(--green-dd);border-color:var(--green-dd);}
+.reveal-btn .rb-ic{font-size:15px;line-height:1;transition:transform .3s var(--ease);}
+.reveal-btn.open .rb-ic{transform:rotate(45deg);}
+.reveal-btn.alt{background:transparent;color:var(--green-d);border-color:rgba(45,74,53,0.28);}
+.reveal-btn.alt:hover{background:var(--green-soft);border-color:rgba(45,74,53,0.4);}
+
+.reveal-panel{
+  display:grid;grid-template-rows:0fr;opacity:0;
+  transition:grid-template-rows 2s var(--ease),opacity 2s var(--ease);
+}
+.reveal-panel.open{grid-template-rows:1fr;opacity:1;}
+.reveal-panel>.rp-inner{overflow:hidden;min-height:0;}
+.rp-pad{padding-top:30px;}
+.rp-pad .eb{justify-content:center;}
+.rp-pad .comp-h{text-align:center;}
+
+/* Journey framing */
+.journey-intro{
+  max-width:1040px;margin:0 auto 8px;text-align:center;
+  font-size:13.5px;color:var(--ink2);line-height:1.6;font-weight:400;
+}
+.journey-intro strong{color:var(--green-d);font-weight:600;}
+
+/* Journey timeline + progress meter */
+.jt{max-width:none;margin:18px auto 4px;}
+.jt-track{position:relative;height:7px;border-radius:99px;background:var(--green-soft);
+  border:1px solid var(--line);margin:74px 46px 96px;}
+.jt-fill{position:absolute;left:0;top:-1px;bottom:-1px;width:0;border-radius:99px;
+  background:linear-gradient(90deg,var(--am),var(--green) 55%,var(--green-d));
+  transition:width 2s var(--ease) .35s;}
+.reveal-panel.open .jt-fill{width:100%;}
+.jt-node{position:absolute;top:50%;transform:translateY(-50%);}
+.jt-dot{width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--green);
+  position:relative;z-index:2;transform:translateX(-50%);transition:all .4s var(--ease);}
+.jt-dot.is-now{border-color:var(--am);box-shadow:0 0 0 5px rgba(184,132,31,0.14);}
+.jt-dot.is-top{border-color:var(--green-d);background:var(--green-d);box-shadow:0 0 0 5px rgba(45,74,53,0.12);}
+.jt-above{position:absolute;bottom:24px;left:0;transform:translateX(-50%);white-space:nowrap;text-align:center;}
+.jt-below{position:absolute;top:26px;left:0;transform:translateX(-50%);white-space:nowrap;text-align:center;}
+.jt-stat{display:inline-block;font-family:var(--serif);font-size:22px;color:var(--green-d);line-height:1;}
+.jt-node.is-now .jt-stat{color:var(--am);}
+.jt-mini{font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-top:5px;}
+.jt-stage{font-size:13px;font-weight:600;color:var(--green-d);}
+.jt-time{font-size:11px;color:var(--muted);font-weight:400;margin-top:3px;}
+.jt-node.is-top .jt-stage{color:var(--green-d);}
+.jt-badge{display:inline-block;margin-top:5px;font-size:8.5px;letter-spacing:0.08em;text-transform:uppercase;
+  background:var(--green-d);color:#fff;padding:2px 8px;border-radius:99px;font-weight:600;}
+
+/* What gets you there faster — review velocity, our differentiator */
+.rv-head{text-align:center;margin:26px 0 16px;}
+.rv-eb{font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--green);font-weight:600;}
+.rv-h{font-family:var(--serif);font-size:25px;color:var(--green-d);font-weight:400;margin-top:5px;line-height:1.15;}
+.rv-h em{font-style:italic;color:var(--green);}
+.rv-sub{max-width:1000px;margin:9px auto 0;font-size:12.5px;color:var(--ink2);line-height:1.55;font-weight:400;}
+.rv-compare{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:stretch;}
+.rv-card{padding:22px 24px;border-radius:14px;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;text-align:center;}
+.rv-us{background:linear-gradient(135deg,var(--green-d),var(--green-dd));border-color:var(--green-d);color:#f3eee0;}
+.rv-them{background:var(--green-soft);}
+.rv-tag{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;margin-bottom:12px;}
+.rv-us .rv-tag{color:var(--green-light);}
+.rv-them .rv-tag{color:var(--muted);}
+.rv-ratio{font-family:var(--serif);font-size:50px;line-height:1;font-weight:300;}
+.rv-us .rv-ratio{color:#fff;}
+.rv-them .rv-ratio{color:var(--green-d);}
+.rv-ratio-l{font-size:11.5px;font-weight:400;margin-top:6px;}
+.rv-us .rv-ratio-l{color:rgba(243,238,224,0.72);}
+.rv-them .rv-ratio-l{color:var(--muted);}
+.rv-dots{display:flex;gap:6px;margin:16px 0 6px;flex-wrap:wrap;justify-content:center;max-width:180px;}
+.rv-dot{width:12px;height:12px;border-radius:50%;}
+.rv-us .rv-dot.on{background:var(--green-light);}
+.rv-us .rv-dot.off{background:rgba(255,255,255,0.14);}
+.rv-them .rv-dot.on{background:var(--green);}
+.rv-them .rv-dot.off{background:rgba(45,74,53,0.1);}
+.rv-dcap{font-size:10px;letter-spacing:0.04em;margin-bottom:14px;}
+.rv-us .rv-dcap{color:rgba(243,238,224,0.55);}
+.rv-them .rv-dcap{color:var(--muted-l);}
+.rv-out{font-size:12.5px;font-weight:500;margin-top:auto;padding-top:6px;line-height:1.4;}
+.rv-us .rv-out{color:#fff;}
+.rv-them .rv-out{color:var(--am);}
+.rv-vs{align-self:center;font-family:var(--serif);font-size:22px;font-style:italic;color:var(--muted);}
+.rv-note{max-width:1000px;margin:16px auto 0;text-align:center;font-size:12.5px;color:var(--ink2);line-height:1.55;
+  padding:13px 20px;background:var(--am-pale);border-radius:10px;border:1px solid rgba(184,132,31,0.18);}
+.rv-note strong{color:var(--am);font-weight:600;}
+@media(max-width:900px){.rv-compare{grid-template-columns:1fr;}.rv-vs{transform:rotate(90deg);}}
+
+/* Amenity reframe — complementary, at the end */
+.amenity-block{margin-top:26px;}
+.amenity-head{text-align:center;margin-bottom:6px;}
+.amenity-eb{font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--am);font-weight:600;}
+.amenity-h{font-family:var(--serif);font-size:23px;color:var(--green-d);font-weight:400;margin-top:5px;line-height:1.15;}
+.amenity-note{
+  max-width:940px;margin:8px auto 16px;text-align:center;
+  font-size:11.5px;color:var(--ink2);line-height:1.55;font-weight:400;
+  padding:11px 18px;background:var(--am-pale);border-radius:10px;border:1px solid rgba(184,132,31,0.18);
+}
+.amenity-note strong{color:var(--am);font-weight:600;}
+
+@media(max-width:900px){.amenity-intel{grid-template-columns:1fr;}}
+
+/* ── Spotlight cue reveal (voice / click driven) ── */
+.cue-block{transition:opacity .55s var(--ease),filter .55s var(--ease);}
+.slide.spotlight .cue-block{opacity:0.07;filter:blur(3px);}
+.slide.spotlight .cue-block.lit{opacity:1;filter:none;}
+.slide.spotlight .reveal-row{opacity:0.07;transition:opacity .55s var(--ease);}
+/* Who Books spotlight — dim header & demand grid, keep the lit panel bright */
+.slide.spotlight .wb-head,
+.slide.spotlight .guests-grid{opacity:0.07;filter:blur(3px);transition:opacity .55s var(--ease),filter .55s var(--ease);}
+.slide.spotlight .reveal-panel.lit{opacity:1;filter:none;}
+/* How Stayful works spotlight — dim the hub, highlight the lit tile */
+.slide.spotlight .hsw-tabs,
+.slide.spotlight .mh-grid,
+.slide.spotlight .mh-sub,
+.slide.spotlight .mh-soft,
+.slide.spotlight .gv-flowhead,
+.slide.spotlight .model-strip,
+.slide.spotlight .gv-flow{opacity:0.07;filter:blur(3px);transition:opacity .55s var(--ease),filter .55s var(--ease);}
+.ms-cta-ic{display:inline-block;transition:transform .3s var(--ease);}
+.ms-item-btn.open .ms-cta-ic{transform:rotate(180deg);}
+.mh-tile.cue-block{transition:opacity .55s var(--ease),filter .55s var(--ease),box-shadow .35s var(--ease);}
+.slide.spotlight .mh-tile.lit{box-shadow:0 0 0 2px var(--green-light),0 16px 50px rgba(0,0,0,0.5);}
+.cue-bar{
+  position:fixed;left:50%;bottom:66px;transform:translateX(-50%);z-index:70;
+  display:flex;align-items:center;gap:7px;max-width:92vw;flex-wrap:wrap;justify-content:center;
+  background:rgba(26,36,24,0.92);backdrop-filter:blur(12px);
+  padding:8px 10px;border-radius:99px;border:1px solid rgba(255,255,255,0.1);
+  box-shadow:0 10px 34px rgba(0,0,0,0.32);
+  opacity:0;pointer-events:none;transition:opacity .3s var(--ease);
+}
+.cue-bar.show{opacity:1;pointer-events:auto;}
+.cue-bar-lbl{font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(243,238,224,0.42);font-weight:600;padding:0 4px;}
+.cue-pill{
+  font-size:11px;color:#f3eee0;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);
+  border-radius:99px;padding:6px 13px;cursor:pointer;font-weight:500;letter-spacing:0.02em;white-space:nowrap;
+  transition:all .16s var(--ease);
+}
+.cue-pill:hover{background:rgba(255,255,255,0.16);}
+.cue-pill.active{background:var(--green);border-color:var(--green);color:#fff;}
+.cue-pill.reset{background:transparent;border-color:rgba(255,255,255,0.18);color:rgba(243,238,224,0.7);}
+.cue-pill.reset:hover{background:rgba(255,255,255,0.1);}
+
+/* ── Voice command reference (Notes slide) ── */
+.vc-intro{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:12px;}
+.vc-intro code{background:var(--green-soft);padding:1px 6px;border-radius:5px;font-size:11px;color:var(--green-d);}
+.vc-group{margin-bottom:14px;}
+.vc-group-h{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);font-weight:700;margin:0 0 8px;}
+.vc-item{border:1px solid var(--line);border-radius:10px;margin-bottom:6px;overflow:hidden;background:var(--white);}
+.vc-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;background:transparent;border:none;cursor:pointer;font-family:var(--sans);text-align:left;}
+.vc-btn:hover{background:var(--green-soft);}
+.vc-label{font-size:13px;color:var(--ink);font-weight:600;}
+.vc-meta{font-size:10.5px;color:var(--muted);display:flex;align-items:center;gap:8px;white-space:nowrap;}
+.vc-ic{display:inline-block;transition:transform .25s var(--ease);}
+.vc-item.open .vc-ic{transform:rotate(180deg);}
+.vc-drop{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s var(--ease);}
+.vc-item.open .vc-drop{grid-template-rows:1fr;}
+.vc-drop-inner{overflow:hidden;min-height:0;}
+.vc-chips-wrap{display:flex;flex-wrap:wrap;gap:6px;padding:2px 14px 13px;}
+.vc-chip{font-size:11px;padding:4px 11px;border-radius:99px;background:var(--green-soft);border:1px solid var(--line);color:var(--ink2);}
+.vc-cmd-note{font-size:10.5px;color:var(--am);padding:0 14px 11px;font-style:italic;}
+
+/* ── Case study PDF overlay ── */
+.pdf-ov{position:fixed;inset:0;z-index:200;display:none;}
+.pdf-ov.show{display:block;}
+.pdf-ov-bd{position:absolute;inset:0;background:rgba(15,25,18,0.8);backdrop-filter:blur(6px);cursor:pointer;}
+.pdf-ov-modal{position:absolute;inset:3% 4%;display:flex;flex-direction:column;background:var(--green-dd);border:1px solid rgba(255,255,255,0.12);border-radius:16px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,0.5);}
+.pdf-ov-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 20px;background:rgba(0,0,0,0.22);border-bottom:1px solid rgba(255,255,255,0.08);}
+.pdf-ov-title{font-family:var(--serif);font-size:20px;color:#f3eee0;font-weight:400;}
+.pdf-ov-actions{display:flex;align-items:center;gap:10px;}
+.pdf-ov-tab{font-size:11.5px;color:var(--green-light);text-decoration:none;font-weight:500;letter-spacing:0.03em;padding:7px 12px;border:1px solid rgba(255,255,255,0.14);border-radius:99px;}
+.pdf-ov-tab:hover{background:rgba(255,255,255,0.08);}
+.pdf-ov-close{font-family:var(--sans);font-size:11.5px;color:#f3eee0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.16);border-radius:99px;padding:7px 14px;cursor:pointer;font-weight:500;letter-spacing:0.03em;}
+.pdf-ov-close:hover{background:rgba(255,255,255,0.18);}
+.pdf-ov-body{flex:1;background:#0f1912;}
+.pdf-ov-body iframe{width:100%;height:100%;border:0;display:block;}
+
+/* ═══ WHO BOOKS · centred + direct-booking score & nearby events ═══ */
+.wb-head{text-align:center;}
+.wb-head .eb{justify-content:center;}
+.wb-head .sh{margin:14px auto 0;text-align:center;max-width:none;}
+.wb-metrics{display:flex;justify-content:stretch;gap:18px;margin:28px auto 6px;flex-wrap:wrap;}
+.wb-metric{
+  flex:1 1 0;min-width:280px;padding:30px 40px;border-radius:18px;
+  background:var(--green-soft);border:1px solid var(--line);text-align:center;
+}
+.wb-metric.score{
+  background:linear-gradient(135deg,var(--green-d),var(--green-dd));border-color:var(--green-d);
+  color:#f3eee0;position:relative;overflow:hidden;
+}
+.wb-metric.score::before{
+  content:"";position:absolute;top:-50%;right:-25%;width:70%;height:170%;
+  background:radial-gradient(circle,rgba(122,155,113,0.18),transparent 70%);pointer-events:none;
+}
+.wb-metric>*{position:relative;z-index:1;}
+.wb-m-l{font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;font-weight:600;margin-bottom:10px;}
+.wb-metric .wb-m-l{color:var(--green);}
+.wb-metric.score .wb-m-l{color:var(--green-light);}
+.wb-m-v{font-family:var(--serif);font-weight:300;line-height:1;letter-spacing:-0.01em;}
+.wb-metric .wb-m-v{font-size:58px;color:var(--green-d);}
+.wb-metric.score .wb-m-v{font-size:68px;color:#fff;}
+.wb-m-u{font-size:28px;font-weight:400;}
+.wb-metric .wb-m-u{color:var(--muted-l);}
+.wb-metric.score .wb-m-u{color:rgba(243,238,224,0.5);}
+.wb-m-s{font-size:11.5px;margin-top:9px;font-weight:300;line-height:1.45;}
+.wb-metric .wb-m-s{color:var(--muted);}
+.wb-metric.score .wb-m-s{color:rgba(243,238,224,0.66);}
+.wb-score-bar{height:6px;border-radius:99px;background:rgba(255,255,255,0.16);margin-top:16px;overflow:hidden;}
+.wb-score-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--green-light),#fff);width:0;transition:width 1.4s var(--ease);}
+.wb-head + .wb-metrics{margin-top:24px;}
+.db-score-wrap{display:flex;justify-content:center;}
+.db-score-wrap .wb-metric{max-width:560px;width:100%;}
+
+/* ── How Stayful gets direct bookings — process flow ── */
+.dbp{width:100%;}
+.dbp-intro{max-width:1000px;margin:6px auto 4px;text-align:center;font-size:13px;color:var(--ink2);line-height:1.6;}
+.dbp-intro strong{color:var(--green-d);font-weight:600;}
+.dbp-pipe{display:flex;align-items:stretch;gap:10px;margin:24px 0 6px;}
+.dbp-stage{flex:1;padding:16px 14px;border-radius:14px;background:var(--green-soft);border:1px solid var(--line);text-align:center;display:flex;flex-direction:column;gap:4px;}
+.dbp-stage.recv{background:#fff;}
+.dbp-ic{font-size:24px;line-height:1;}
+.dbp-sn{font-size:8.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--green);font-weight:700;}
+.dbp-st{font-family:var(--serif);font-size:18px;color:var(--green-d);line-height:1.1;}
+.dbp-ss{font-size:10.5px;color:var(--muted);line-height:1.4;}
+.dbp-arrow{display:flex;align-items:center;color:var(--green-light);font-size:20px;flex-shrink:0;}
+.dbp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0;}
+.dbp-card{padding:18px 20px;border-radius:14px;border:1px solid var(--line);background:#fff;display:flex;flex-direction:column;}
+.dbp-card-eb{font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--green);font-weight:700;margin-bottom:3px;}
+.dbp-card-h{font-family:var(--serif);font-size:19px;color:var(--green-d);line-height:1.1;margin-bottom:12px;}
+.dbp-rule{display:flex;gap:8px;align-items:flex-start;font-size:11.5px;color:var(--ink2);line-height:1.4;padding:7px 0;border-top:1px solid var(--line);}
+.dbp-rule:first-of-type{border-top:none;}
+.dbp-rule .rx{color:#c0492b;font-weight:700;flex-shrink:0;}
+.dbp-rule strong{color:var(--green-d);font-weight:600;}
+.dbp-chip{align-self:flex-start;padding:6px 13px;border-radius:99px;background:var(--green-pale);color:var(--green-d);font-size:11px;font-weight:600;}
+.dbp-chip.pad{margin-top:14px;}
+.dbp-sig{display:flex;align-items:center;gap:12px;padding:8px 0;border-top:1px solid var(--line);}
+.dbp-sig:first-of-type{border-top:none;}
+.dbp-sig-l{flex:1.3;font-size:11px;color:var(--ink2);line-height:1.3;}
+.dbp-sig-l strong{color:var(--green-d);font-weight:600;}
+.dbp-sig-bar{flex:1;height:8px;border-radius:99px;background:var(--green-soft);overflow:hidden;}
+.dbp-sig-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--green-light),var(--green-d));}
+.dbp-sig-v{width:46px;text-align:right;font-family:var(--serif);font-size:18px;color:var(--green-d);}
+.dbp-sig-v span{font-size:11px;color:var(--muted);}
+.dbp-tier{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;margin-bottom:7px;border:1px solid var(--line);}
+.dbp-tier-pts{font-family:var(--serif);font-size:17px;color:var(--green-d);min-width:58px;}
+.dbp-tier-tx{flex:1;font-size:11.5px;color:var(--ink2);line-height:1.35;}
+.dbp-tier-tx strong{color:var(--green-d);font-weight:600;display:block;}
+.dbp-tier.t1{background:var(--green-pale);border-color:rgba(93,129,86,0.3);}
+.dbp-tier.t2{background:var(--green-soft);}
+.dbp-tier.t3{background:#fff;}
+.dbp-override{margin-top:10px;padding:10px 13px;border-radius:10px;background:var(--am-pale);border:1px solid rgba(184,132,31,0.2);font-size:11px;color:var(--ink2);line-height:1.45;}
+.dbp-override strong{color:var(--am);font-weight:700;}
+.dbp-result{margin-top:6px;padding:24px 28px;border-radius:18px;background:linear-gradient(135deg,var(--green-d),var(--green-dd));color:#f3eee0;position:relative;overflow:hidden;}
+.dbp-result::before{content:"";position:absolute;top:-50%;right:-10%;width:50%;height:180%;background:radial-gradient(circle,rgba(122,155,113,0.18),transparent 70%);pointer-events:none;}
+.dbp-result-row{display:flex;align-items:stretch;justify-content:center;gap:0;position:relative;z-index:1;flex-wrap:wrap;}
+.dbp-rstat{flex:1;min-width:150px;text-align:center;padding:6px 18px;}
+.dbp-rstat-v{font-family:var(--serif);font-size:48px;font-weight:300;color:#fff;line-height:1;}
+.dbp-rstat-l{font-size:11px;color:rgba(243,238,224,0.7);margin-top:7px;line-height:1.4;}
+.dbp-rdiv{width:1px;background:rgba(255,255,255,0.14);}
+.dbp-result-tag{text-align:center;margin-top:14px;font-style:italic;font-family:var(--serif);font-size:18px;color:var(--green-light);position:relative;z-index:1;}
+.dbp-hero{display:flex;align-items:center;gap:24px;justify-content:center;margin:22px auto;max-width:760px;padding:24px 34px;border-radius:18px;background:linear-gradient(135deg,var(--green-d),var(--green-dd));color:#f3eee0;position:relative;overflow:hidden;}
+.dbp-hero::before{content:"";position:absolute;top:-50%;right:-10%;width:55%;height:190%;background:radial-gradient(circle,rgba(122,155,113,0.22),transparent 70%);pointer-events:none;}
+.dbp-hero-v{font-family:var(--serif);font-size:76px;font-weight:300;color:#fff;line-height:1;position:relative;z-index:1;flex-shrink:0;}
+.dbp-hero-l{font-size:17px;color:#f3eee0;font-weight:500;line-height:1.25;position:relative;z-index:1;}
+.dbp-hero-l span{display:block;font-size:12px;color:rgba(243,238,224,0.66);font-weight:300;margin-top:6px;line-height:1.45;}
+.dbp-ben-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px;}
+.dbp-ben{padding:24px 24px;border-radius:14px;border:1px solid var(--line);background:var(--green-soft);text-align:center;}
+.dbp-ben-ic{font-size:32px;line-height:1;margin-bottom:12px;}
+.dbp-ben-h{font-family:var(--serif);font-size:22px;color:var(--green-d);margin-bottom:9px;line-height:1.1;}
+.dbp-ben-d{font-size:12.5px;color:var(--ink2);line-height:1.55;}
+@media(max-width:900px){.dbp-pipe{flex-direction:column;}.dbp-arrow{transform:rotate(90deg);align-self:center;}.dbp-grid,.dbp-ben-grid{grid-template-columns:1fr;}.dbp-hero{flex-direction:column;text-align:center;}}
 
 </style>
 </head>
@@ -1079,6 +1542,12 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
       </div>
     </div>
 
+    <div class="np-section">
+      <div class="np-section-h">Voice commands</div>
+      <div class="vc-intro">Mic is live in presenter mode (<code>?present=1</code>). Say a phrase below to jump to or open that section. Tap a command to see all its variations.</div>
+      <div class="vc-ref" id="voiceRef"></div>
+    </div>
+
     <div class="np-copy-row">
       <span class="np-copy-status" id="np-copy-status">Copied — paste into Monday call summary</span>
       <button class="np-copy-btn" id="np-copy">Copy all to clipboard</button>
@@ -1087,111 +1556,181 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 </div>
 
 <!-- ═══ SLIDE 2: COVER ═══ -->
-<div class="slide dark" data-name="Property" data-bg="dark">
-  <div class="fi"><div class="eb">Stayful · Airbnb Management Company</div></div>
-  <h1 class="fi">What 43 The Royal Wilton Place Salford M6 3WP M6 3WP<br>could yield as a managed <em>short let</em></h1>
-  <p class="sh fi" style="margin-top:14px;">Income analysis for Sunil Pal's property at 43 The Royal Wilton Place Salford M6 3WP M6 3WP. Based on 12 active Airbnb comparables — this market is proven.</p>
+<div class="slide dark" data-name="Property" data-bg="dark" data-cue-nav="main figures|headline figures|the main figures|the headline figures|main numbers">
+  <div class="prop-head fi">
+    <div class="eb">Stayful · Airbnb Management Company</div>
+    <h1>What 43 The Royal Wilton Place Salford M6 3WP M6 3WP<br>could yield as a managed <em>short let</em></h1>
+    <p class="sh" style="margin-top:14px;">Income analysis for Sunil Pal's property at 43 The Royal Wilton Place Salford M6 3WP M6 3WP. Based on 12 active Airbnb comparables — this market is proven.</p>
+  </div>
 
-  <div class="cover-grid fi">
-    <div>
-      <div class="stat-row">
-        <div class="stat">
-          <div class="stat-l">Net per month</div>
-          <div class="stat-v">£809</div>
-          <div class="stat-s">£9,713 / year, after all fees</div>
-        </div>
-        <div class="stat">
-          <div class="stat-l">Uplift over long-let</div>
-          <div class="stat-v">-£181</div>
-          <div class="stat-s">+-18% / -£2,167 per year vs long-let</div>
-        </div>
-        <div class="stat">
-          <div class="stat-l">Investment risk</div>
-          <div class="stat-v">4 / 100</div>
-          <div class="stat-s">Low risk · direct booking score 100/100</div>
-        </div>
+  <div class="prop-figures fi" id="prop-figures">
+    <!-- Gross revenue -->
+    <div class="pf-row">
+      <div class="pf-box pf-gross">
+        <div class="pf-l">Gross revenue · annual</div>
+        <div class="pf-v">£18,672</div>
       </div>
-      <div class="cover-pills">
-        <span class="pill">12 active comparables · 0.34 km</span>
-        <span class="pill">Median annual revenue £13,683</span>
-        <span class="pill live">Listed on Airbnb · Booking.com</span>
+      <div class="pf-box pf-gross">
+        <div class="pf-l">Gross revenue · monthly</div>
+        <div class="pf-v">£1,556</div>
       </div>
     </div>
-    <div class="cover-side">
-      <div class="cs-row"><div class="cs-l">Avg nightly rate</div><div class="cs-v">£100</div></div>
-      <div class="cs-row"><div class="cs-l">Occupancy</div><div class="cs-v">51%</div></div>
-      <div class="cs-row"><div class="cs-l">Market avg occupancy</div><div class="cs-v">56%</div></div>
-      <div class="cs-row"><div class="cs-l">Bedrooms · Sleeps</div><div class="cs-v">1 · 2</div></div>
+
+    <!-- Cost breakdown — appears between gross & net -->
+    <div class="pf-breakdown">
+      <div class="pf-bd-inner">
+        <div class="pf-bd-card">
+          <div class="pf-bd-head">From gross to net — operating costs</div>
+          <div class="pf-bd-item">
+            <div class="pf-bd-name">Booking platform commissions<span class="pf-bd-pct">15%</span></div>
+            <div class="pf-bd-figs">
+              <div class="pf-bd-fig"><div class="pf-bd-fl">Annual</div><div class="pf-bd-fv">−£2,801</div></div>
+              <div class="pf-bd-fig"><div class="pf-bd-fl">Monthly</div><div class="pf-bd-fv">−£233</div></div>
+            </div>
+          </div>
+          <div class="pf-bd-item">
+            <div class="pf-bd-name">Cleaning &amp; laundry <em style="font-style:italic;opacity:0.6;">(estimated)</em><span class="pf-bd-pct">18%</span></div>
+            <div class="pf-bd-figs">
+              <div class="pf-bd-fig"><div class="pf-bd-fl">Annual</div><div class="pf-bd-fv">−£3,361</div></div>
+              <div class="pf-bd-fig"><div class="pf-bd-fl">Monthly</div><div class="pf-bd-fv">−£280</div></div>
+            </div>
+          </div>
+          <div class="pf-bd-item">
+            <div class="pf-bd-name">Property management<span class="pf-bd-pct">15%</span></div>
+            <div class="pf-bd-figs">
+              <div class="pf-bd-fig"><div class="pf-bd-fl">Annual</div><div class="pf-bd-fv">−£2,801</div></div>
+              <div class="pf-bd-fig"><div class="pf-bd-fl">Monthly</div><div class="pf-bd-fv">−£233</div></div>
+            </div>
+          </div>
+          <div class="pf-bd-total">
+            <div class="pf-bd-name">Total operating costs <span class="pf-bd-pct">48%</span></div>
+            <div class="pf-bd-figs">
+              <div class="pf-bd-fig"><div class="pf-bd-fl">Annual</div><div class="pf-bd-fv">−£8,963</div></div>
+              <div class="pf-bd-fig"><div class="pf-bd-fl">Monthly</div><div class="pf-bd-fv">−£747</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Net revenue -->
+    <div class="pf-row">
+      <div class="pf-box pf-net">
+        <div class="pf-l">Net revenue · annual</div>
+        <div class="pf-v">£9,713</div>
+      </div>
+      <div class="pf-box pf-net">
+        <div class="pf-l">Net revenue · monthly</div>
+        <div class="pf-v">£809</div>
+      </div>
+    </div>
+
+    <!-- Nightly rate / occupancy -->
+    <div class="pf-row">
+      <div class="pf-box">
+        <div class="pf-l">Average nightly rate</div>
+        <div class="pf-v">£100</div>
+      </div>
+      <div class="pf-box">
+        <div class="pf-l">Occupancy rate</div>
+        <div class="pf-v">51%</div>
+      </div>
+    </div>
+
+    <!-- Long-let comparison -->
+    <div class="pf-row">
+      <div class="pf-box pf-ll">
+        <div class="pf-l">Long-let · annual</div>
+        <div class="pf-v">£11,880</div>
+      </div>
+      <div class="pf-box pf-ll">
+        <div class="pf-l">Long-let · monthly</div>
+        <div class="pf-v">£990</div>
+      </div>
+    </div>
+
+    <!-- Short-let net vs long-let — the upside verdict -->
+    <div class="pf-row">
+      <div class="pf-box pf-verdict pf-verdict-down">
+        <div class="pf-l">Short-let net vs long-let · annual</div>
+        <div class="pf-v">−£2,167</div>
+        <div class="pf-s">−18% vs long-let</div>
+      </div>
+      <div class="pf-box pf-verdict pf-verdict-down">
+        <div class="pf-l">Short-let net vs long-let · monthly</div>
+        <div class="pf-v">−£181</div>
+        <div class="pf-s">net short-let £809 vs long-let £990</div>
+      </div>
+    </div>
+
+    <div class="pf-btn-row">
+      <button class="pf-btn" type="button" data-cue="cost breakdown|breakdown|the costs|cost" data-cue-label="Cost breakdown" data-cue-target=".prop-figures" data-cue-class="show-breakdown" onclick="this.closest('.prop-figures').classList.toggle('show-breakdown')">
+        <span class="pf-btn-ic">+</span>Cost breakdown
+      </button>
     </div>
   </div>
 
-  <div class="cover-foot fi">Source: Stayful Property Income Analysis · 19 May 2026 · Data via Airbtics</div>
+  <div class="cover-foot fi" style="text-align:center;">Source: Stayful Property Income Analysis · 19 May 2026 · Data via Airbtics</div>
 </div>
 
 <!-- ═══ SLIDE 6: NUMBERS ═══ -->
 <div class="slide white" data-name="The Numbers" data-bg="white">
-  <div class="fi"><div class="eb">Twelve months · Real demand · 43 The Royal Wilton Place Salford M6 3WP M6 3WP M6</div></div>
-  <h2 class="fi">£809 average per month — <em>-£181/month more than long-let</em></h2>
-  <p class="sh fi">Even December — the quietest month at £528 — still beats long-let. Short-let averages -£181/month more than long-let, every month.</p>
-
-  <div class="chart-wrap fi" id="chart">
-    <div class="chart-h">Net monthly income · 43 The Royal Wilton Place Salford M6 3WP M6 3WP · Dashed line = long-let net £990</div>
-    <div class="bars" id="bars"></div>
-    <div class="bnames" id="bnames"></div>
-    <div class="ltl-line" id="ltl-line" style="bottom:42px;"></div>
-    <div class="ltl-lbl" style="bottom:33px;">LTL £990</div>
+  <div class="num-head fi">
+    <div class="eb">Twelve months · Real demand · 43 The Royal Wilton Place Salford M6 3WP M6 3WP M6</div>
+    <h2>£809 average per month — <em>-£181/month more than long-let</em></h2>
+    <p class="sh">Even December — the quietest month at £528 — still beats long-let. Short-let averages -£181/month more than long-let, every month.</p>
   </div>
 
-  <div class="income-strip fi">
-    <div class="is-cell">
-      <div class="is-l">Quietest month — December</div>
-      <div class="is-v">£528</div>
-      <div class="is-n">-£462 above long-let, even in the quietest month</div>
-    </div>
-    <div class="is-cell">
-      <div class="is-l">Peak month — July</div>
-      <div class="is-v">£954</div>
-      <div class="is-n">-£36 above long-let</div>
-    </div>
-  </div>
-
-  <!-- Folded-in comparables section -->
-  <div class="merge-divider fi"></div>
-
-  <div class="comp-section fi">
-    <div class="eb">12 active Airbnb listings within 0.34 km · 43 The Royal Wilton Place Salford M6 3WP M6 3WP</div>
-    <h3 class="comp-h">The market your listing enters — <em>all active comparables</em></h3>
-
-    <div class="comp-banner">
-      <div class="cb-item"><div class="cb-l">Average Rating</div><div class="cb-v">4.5 ★</div></div>
-      <div class="cb-div"></div>
-      <div class="cb-item"><div class="cb-l">Average Reviews</div><div class="cb-v">19</div></div>
-      <div class="cb-div"></div>
-      <div class="cb-item"><div class="cb-l">Average Nightly Rate</div><div class="cb-v">£92</div></div>
-      <div class="cb-div"></div>
-      <div class="cb-item"><div class="cb-l">Average Occupancy</div><div class="cb-v">56%</div></div>
-      <div class="cb-div"></div>
-      <div class="cb-item"><div class="cb-l">Average Annual Revenue</div><div class="cb-v">£13,683</div></div>
+  <div class="num-body fi">
+    <div class="cue-block" data-cue="the numbers|income|monthly income|earnings|how much" data-cue-label="Income">
+    <div class="chart-wrap" id="chart">
+      <div class="chart-h">Net monthly income · 43 The Royal Wilton Place Salford M6 3WP M6 3WP · Dashed line = long-let net £990</div>
+      <div class="bars" id="bars"></div>
+      <div class="bnames" id="bnames"></div>
+      <div class="ltl-line" id="ltl-line" style="bottom:42px;"></div>
+      <div class="ltl-lbl" style="bottom:33px;">LTL £990</div>
     </div>
 
-    <div class="rev-outlook fi">
-      <div class="ro-card ro-catchup">
-        <div class="ro-eb">Time to become competitive</div>
-        <div class="ro-headline"><strong>6–10 months</strong> to reach the market average of 19 reviews</div>
-        <div class="ro-note">You can expect to achieve 85% of the forecast figures from 10 reviews onwards.</div>
+    <div class="income-strip">
+      <div class="is-cell">
+        <div class="is-l">Quietest month — December</div>
+        <div class="is-v">£528</div>
+        <div class="is-n">-£462 above long-let, even in the quietest month</div>
       </div>
-      <div class="ro-card ro-top">
-        <div class="ro-eb">Beat the average → top 10% of listings in this area</div>
-        <div class="ro-figs">
-          <div class="ro-fig"><div class="ro-fig-l">Annual net revenue</div><div class="ro-fig-v">£12,017</div></div>
-          <div class="ro-fig-div"></div>
-          <div class="ro-fig"><div class="ro-fig-l">Monthly net</div><div class="ro-fig-v">£1,001</div></div>
-        </div>
-        <div class="ro-note">Based on the area's top performer — £23,111 gross, less 48% operating costs.</div>
+      <div class="is-cell">
+        <div class="is-l">Peak month — July</div>
+        <div class="is-v">£954</div>
+        <div class="is-n">-£36 above long-let</div>
       </div>
     </div>
+    </div><!-- /cue Income -->
 
-    <div class="comp-table">
+    <!-- View competition → reveals the comparables first -->
+    <div class="reveal-row">
+      <button class="reveal-btn" type="button" data-shut="View competition" data-open="Hide competition" onclick="toggleReveal(this,'comp-reveal')">
+        <span class="rb-ic">+</span><span class="rb-label">View competition</span>
+      </button>
+    </div>
+
+    <div class="reveal-panel" id="comp-reveal">
+     <div class="rp-inner"><div class="rp-pad">
+      <div class="cue-block" data-cue="competition|the competition|comparable|comparables|the market|competitor|view competition" data-cue-label="Competition">
+      <div class="eb">12 active Airbnb listings within 0.34 km · 43 The Royal Wilton Place Salford M6 3WP M6 3WP</div>
+      <h3 class="comp-h">The market your listing enters — <em>all active comparables</em></h3>
+
+      <div class="comp-banner">
+        <div class="cb-item"><div class="cb-l">Average Rating</div><div class="cb-v">4.5 ★</div></div>
+        <div class="cb-div"></div>
+        <div class="cb-item"><div class="cb-l">Average Reviews</div><div class="cb-v">19</div></div>
+        <div class="cb-div"></div>
+        <div class="cb-item"><div class="cb-l">Average Nightly Rate</div><div class="cb-v">£92</div></div>
+        <div class="cb-div"></div>
+        <div class="cb-item"><div class="cb-l">Average Occupancy</div><div class="cb-v">56%</div></div>
+        <div class="cb-div"></div>
+        <div class="cb-item"><div class="cb-l">Average Annual Revenue</div><div class="cb-v">£13,683</div></div>
+      </div>
+
+      <div class="comp-table">
       <div class="comp-row head"><div>Property</div><div>Dist</div><div>Nightly</div><div>Occ</div><div>Annual</div><div>Rating</div></div>
 <!-- ST:BLOCK_START COMP_ROWS -->
       <div class="comp-row"><div class="name">Close to Salford Quays, City Centre & Salford Uni</div><div>0.09 km</div><div class="num">£63</div><div class="num">48%</div><div class="num">£11,155</div><div class="num rat">5.0 ★</div></div>
@@ -1207,15 +1746,114 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
       <div class="comp-row"><div class="name">8A PLAB Only, Mixed, Shared Single</div><div>0.16 km</div><div class="num">£101</div><div class="num">39%</div><div class="num">£6,248</div><div class="num rat">4.0 ★</div></div>
       <div class="comp-row"><div class="name">11B PLAB Only, Mixed, Shared Single</div><div>0.18 km</div><div class="num">£92</div><div class="num">48%</div><div class="num">£15,842</div><div class="num rat">5.0 ★</div></div>
 <!-- ST:BLOCK_END COMP_ROWS -->
-    </div>
+      </div>
+      </div><!-- /cue Competition -->
 
+      <!-- Your path to the top → reveals the journey -->
+      <div class="reveal-row">
+        <button class="reveal-btn alt" type="button" data-shut="Your path to the top" data-open="Hide the path" onclick="toggleReveal(this,'journey-reveal')">
+          <span class="rb-ic">+</span><span class="rb-label">Your path to the top</span>
+        </button>
+      </div>
+
+      <div class="reveal-panel" id="journey-reveal">
+       <div class="rp-inner"><div class="rp-pad">
+        <div class="eb">From new listing to market leader</div>
+        <h3 class="comp-h">Your listing starts <em>brand-new</em> — here's the path to the top</h3>
+        <p class="journey-intro">Every comparable above is an <strong>established listing</strong> with reviews and a rating history. Yours starts fresh. Most listings turn <strong>competitive after ~10 strong reviews</strong> — but to reach the <strong>top of the market</strong> you need to match or beat the area average of <strong>19 reviews</strong> and <strong>4.5★</strong>. Here's how long that takes — and how we get you there faster.</p>
+
+        <div class="cue-block" data-cue="how long|how long does it take|timeline|become competitive|time to|the journey|path to the top|how long will it take" data-cue-label="How long">
+        <div class="jt">
+          <div class="jt-track">
+            <div class="jt-fill"></div>
+            <div class="jt-node is-now" style="left:6%">
+              <div class="jt-above"><span class="jt-stat">0</span><div class="jt-mini">reviews</div></div>
+              <div class="jt-dot is-now"></div>
+              <div class="jt-below"><div class="jt-stage">New listing</div><div class="jt-time">Today · go live</div></div>
+            </div>
+            <div class="jt-node" style="left:50%">
+              <div class="jt-above"><span class="jt-stat">~10</span><div class="jt-mini">reviews</div></div>
+              <div class="jt-dot"></div>
+              <div class="jt-below"><div class="jt-stage">Competitive</div><div class="jt-time">~Month 6 · 85% of forecast</div></div>
+            </div>
+            <div class="jt-node is-top" style="left:94%">
+              <div class="jt-above"><span class="jt-stat">19+</span><div class="jt-mini">reviews · 4.5★</div></div>
+              <div class="jt-dot is-top"></div>
+              <div class="jt-below"><div class="jt-stage">Top 10%</div><div class="jt-time">~Month 6–10</div><span class="jt-badge">Market leader</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-outlook">
+          <div class="ro-card ro-catchup">
+            <div class="ro-eb">Time to become competitive</div>
+            <div class="ro-headline"><strong>6–10 months</strong> to reach the market average of 19 reviews</div>
+            <div class="ro-note">You can expect to achieve 85% of the forecast figures from 10 reviews onwards.</div>
+          </div>
+          <div class="ro-card ro-top">
+            <div class="ro-eb">Beat the average → top 10% of listings in this area</div>
+            <div class="ro-figs">
+              <div class="ro-fig"><div class="ro-fig-l">Annual net revenue</div><div class="ro-fig-v">£12,017</div></div>
+              <div class="ro-fig-div"></div>
+              <div class="ro-fig"><div class="ro-fig-l">Monthly net</div><div class="ro-fig-v">£1,001</div></div>
+            </div>
+            <div class="ro-note">Based on the area's top performer — £23,111 gross, less 48% operating costs.</div>
+          </div>
+        </div>
+        </div><!-- /cue How long -->
+
+        <div class="cue-block" data-cue="reviews|review|review velocity|quality reviews|getting reviews" data-cue-label="Reviews">
+        <div class="rv-head">
+          <div class="rv-eb">Our expertise · the guiding hand</div>
+          <div class="rv-h">It comes down to one thing — <em>consistent, quality reviews</em></div>
+          <p class="rv-sub">Reviews are what lift a new listing up the rankings. Our entire focus is turning stays into reviews — the single biggest driver of how fast you reach the figures above. Most management companies don't, and it's why their listings stall.</p>
+        </div>
+        <div class="rv-compare">
+          <div class="rv-card rv-us">
+            <div class="rv-tag">Stayful</div>
+            <div class="rv-ratio">1 in 2–3</div>
+            <div class="rv-ratio-l">stays becomes a review</div>
+            <div class="rv-dots">
+              <span class="rv-dot on"></span><span class="rv-dot on"></span><span class="rv-dot on"></span><span class="rv-dot off"></span><span class="rv-dot off"></span><span class="rv-dot off"></span><span class="rv-dot off"></span><span class="rv-dot off"></span>
+            </div>
+            <div class="rv-dcap">≈ 3 reviews from the same 8 stays</div>
+            <div class="rv-out">Competitive in ~6–10 months</div>
+          </div>
+          <div class="rv-vs">vs</div>
+          <div class="rv-card rv-them">
+            <div class="rv-tag">Typical management company</div>
+            <div class="rv-ratio">1 in 4–8</div>
+            <div class="rv-ratio-l">stays becomes a review</div>
+            <div class="rv-dots">
+              <span class="rv-dot on"></span><span class="rv-dot off"></span><span class="rv-dot off"></span><span class="rv-dot off"></span><span class="rv-dot off"></span><span class="rv-dot off"></span><span class="rv-dot off"></span><span class="rv-dot off"></span>
+            </div>
+            <div class="rv-dcap">≈ 1 review from the same 8 stays</div>
+            <div class="rv-out">2–3× slower to compete</div>
+          </div>
+        </div>
+        <div class="rv-note">This is the gap most owners never see — slow review growth is <strong>why most management companies miss the returns they quoted</strong>. We obsess over review conversion so your listing climbs to the top far faster.</div>
+        </div><!-- /cue Reviews -->
+
+        <div class="amenity-block cue-block" data-cue="recommended amenities|recommended amenity|recommended" data-cue-label="Recommended amenities">
+          <div class="amenity-head">
+            <div class="amenity-eb">Once you're established</div>
+            <div class="amenity-h">Amenities that unlock a rate premium</div>
+          </div>
+          <div class="amenity-note"><strong>Complementary, not foundational.</strong> Amenities lift your nightly rate <em>once the fundamentals — strong reviews &amp; rating — are in place</em>. On their own, with few reviews, they won't win top-of-market rates.</div>
 <!-- ST:BLOCK_START AMENITY_INTEL -->
-    <div class="amenity-intel">
-      <div class="ai-col ai-base"><div class="ai-lbl">✅ Market baseline</div><div class="ai-sub">Every listing here has</div><div class="ai-tags"><!-- ST:BLOCK_START AMENITY_BASELINE --><span class="ai-tag at-base">WiFi</span><span class="ai-tag at-base">Kitchen</span><!-- ST:BLOCK_END AMENITY_BASELINE --></div></div>
-      <div class="ai-col ai-edge"><div class="ai-lbl">📈 Competitive edge</div><div class="ai-sub">Top earners add these</div><div class="ai-tags"><!-- ST:BLOCK_START AMENITY_EDGE --><span class="ai-tag at-edge">Garden</span><span class="ai-tag at-edge">Workspace</span><span class="ai-tag at-edge">Free Parking</span><span class="ai-tag at-edge">Smart TV</span><!-- ST:BLOCK_END AMENITY_EDGE --></div></div>
-      <div class="ai-col ai-gap"><div class="ai-lbl">🚀 Rate premium gap</div><div class="ai-sub">15–30% higher rate · few offer these</div><div class="ai-tags"><!-- ST:BLOCK_START AMENITY_GAP --><span class="ai-tag at-gap">Hot Tub</span><span class="ai-tag at-gap">EV Charger</span><span class="ai-tag at-gap">Pet Friendly</span><span class="ai-tag at-gap">Smart Lock</span><span class="ai-tag at-gap">Pool</span><!-- ST:BLOCK_END AMENITY_GAP --></div></div>
-    </div>
+          <div class="amenity-intel">
+            <div class="ai-col ai-base"><div class="ai-lbl">✅ Market baseline</div><div class="ai-sub">Every listing here has</div><div class="ai-tags"><!-- ST:BLOCK_START AMENITY_BASELINE --><span class="ai-tag at-base">WiFi</span><span class="ai-tag at-base">Kitchen</span><!-- ST:BLOCK_END AMENITY_BASELINE --></div></div>
+            <div class="ai-col ai-edge"><div class="ai-lbl">📈 Competitive edge</div><div class="ai-sub">Top earners add these</div><div class="ai-tags"><!-- ST:BLOCK_START AMENITY_EDGE --><span class="ai-tag at-edge">Garden</span><span class="ai-tag at-edge">Workspace</span><span class="ai-tag at-edge">Free Parking</span><span class="ai-tag at-edge">Smart TV</span><!-- ST:BLOCK_END AMENITY_EDGE --></div></div>
+            <div class="ai-col ai-gap"><div class="ai-lbl">🚀 Rate premium gap</div><div class="ai-sub">15–30% higher rate · few offer these</div><div class="ai-tags"><!-- ST:BLOCK_START AMENITY_GAP --><span class="ai-tag at-gap">Hot Tub</span><span class="ai-tag at-gap">EV Charger</span><span class="ai-tag at-gap">Pet Friendly</span><span class="ai-tag at-gap">Smart Lock</span><span class="ai-tag at-gap">Pool</span><!-- ST:BLOCK_END AMENITY_GAP --></div></div>
+          </div>
 <!-- ST:BLOCK_END AMENITY_INTEL -->
+        </div>
+
+       </div></div>
+      </div>
+
+     </div></div>
+    </div>
   </div>
 </div>
 
@@ -1247,11 +1885,16 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
   </div>
 
   <div class="risk fi">
-    <button class="risk-btn" type="button" onclick="playRisk(this)">
+    <button class="risk-btn" type="button" data-cue="risk profile|risk|present risk|risk and reward|best case|worst case" data-cue-label="Risk profile" data-cue-click="1" onclick="playRisk(this)">
       <span class="risk-btn-ic">▶</span><span class="risk-btn-tx">Present risk profile</span>
     </button>
     <div class="risk-chart" id="riskChart">
-      <div class="risk-head">Monthly net vs the long-let benchmark</div>
+      <div class="verdict">
+        <div class="verdict-q">Better to long let or short let?</div>
+        <div class="verdict-a" id="verdictA">&nbsp;</div>
+        <div class="verdict-sub" id="verdictSub"></div>
+      </div>
+      <div class="risk-head">Monthly net vs the long-let benchmark<button class="risk-collapse" type="button" onclick="collapseRisk(this)">Collapse ✕</button></div>
       <div class="risk-plot">
         <div class="risk-bars">
           <div class="risk-bench" style="--b:188px"><span class="risk-bench-l">Long-let benchmark · £990/mo</span></div>
@@ -1266,23 +1909,18 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
         </div>
       </div>
       <div class="risk-cap">The long-let nets <strong>£990/mo</strong>. Beat the market's average reviews &amp; rating and short-let clears it (£1,001); the likely case lands just under it (£809); only an extremely unlikely all-December year (£528) sits well below.</div>
-      <div class="verdict">
-        <div class="verdict-q">Better to long let or short let?</div>
-        <div class="verdict-a" id="verdictA">&nbsp;</div>
-        <div class="verdict-sub" id="verdictSub"></div>
-      </div>
     </div>
   </div>
 
   <div class="eb fi" style="margin-top:28px;">Proof · forecast vs actual on Stayful-managed properties</div>
 
   <div class="cards-4 fi">
-    <a href="https://drive.google.com/file/d/14J1Zb8c79YLywOXEWpbXLPrRsXsOPcm8/view?usp=sharing" target="_blank" class="card" style="text-decoration:none;color:inherit;display:block;">
+    <a href="https://drive.google.com/file/d/14J1Zb8c79YLywOXEWpbXLPrRsXsOPcm8/view?usp=sharing" target="_blank" class="card" data-cue="manchester case study|case study manchester|manchester case|manchester study|eastbank case study" data-cue-label="Manchester case study" data-cue-pdf="14J1Zb8c79YLywOXEWpbXLPrRsXsOPcm8" style="text-decoration:none;color:inherit;display:block;">
       <div class="cs">Case study</div>
       <div class="ct">803 Eastbank Tower · Manchester</div>
       <div style="margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--green-light);font-weight:500;letter-spacing:0.04em;">Open case study →</div>
     </a>
-    <a href="https://drive.google.com/file/d/1wBDU2RxrOw0di244IlBxZOWWlfu_ORHn/view?usp=sharing" target="_blank" class="card" style="text-decoration:none;color:inherit;display:block;">
+    <a href="https://drive.google.com/file/d/1wBDU2RxrOw0di244IlBxZOWWlfu_ORHn/view?usp=sharing" target="_blank" class="card" data-cue="york case study|case study york|york case|york study|park crescent case study" data-cue-label="York case study" data-cue-pdf="1wBDU2RxrOw0di244IlBxZOWWlfu_ORHn" style="text-decoration:none;color:inherit;display:block;">
       <div class="cs">Case study</div>
       <div class="ct">17 Park Crescent · York</div>
       <div style="margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--green-light);font-weight:500;letter-spacing:0.04em;">Open case study →</div>
@@ -1292,7 +1930,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
       <div class="ct">Property 62186 · Full year 2025</div>
       <div style="margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--green-light);font-weight:500;letter-spacing:0.04em;">Open Uplisting insights →</div>
     </a>
-    <a href="https://drive.google.com/file/d/1j7E50JvCz8r9G38p-pjnYJ8AIp_7bZX1/view?usp=sharing" target="_blank" class="card" style="text-decoration:none;color:inherit;display:block;">
+    <a href="https://drive.google.com/file/d/1j7E50JvCz8r9G38p-pjnYJ8AIp_7bZX1/view?usp=sharing" target="_blank" class="card" data-cue="leeds case study|case study leeds|leeds case|leeds study|burley case study|beechwood case study" data-cue-label="Leeds case study" data-cue-pdf="1j7E50JvCz8r9G38p-pjnYJ8AIp_7bZX1" style="text-decoration:none;color:inherit;display:block;">
       <div class="cs">Case study</div>
       <div class="ct">7 Beechwood Mount · Burley, Leeds</div>
       <div style="margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--green-light);font-weight:500;letter-spacing:0.04em;">Open case study →</div>
@@ -1301,10 +1939,31 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 </div>
 
 <!-- ═══ SLIDE 4: WHO BOOKS ═══ -->
-<div class="slide white" data-name="Who Books" data-bg="white">
-  <div class="fi"><div class="eb">Demand intelligence · Salford · M6</div></div>
-  <h2 class="fi">Who actually <em>books</em> properties like this</h2>
-  <p class="sh fi">Built from the demand drivers around 43 The Royal Wilton Place Salford M6 3WP M6 3WP. The places, employers, and events that drive year-round bookings.</p>
+<div class="slide white" data-name="Who Books" data-bg="white" data-cue-nav="who books|who book|whose books|who's book|who's books|who books here|who actually books|who looks|who's looking|two books|you books|who stays|who stays here|who is booking|who's booking|who would book|who's staying|who are the guests|guest profile|guest demand|the demand|demand intelligence">
+  <div class="wb-head fi">
+    <div class="eb">Demand intelligence · Salford · M6</div>
+    <h2>Who actually <em>books</em> properties like this</h2>
+    <p class="sh">Built from the demand drivers around 43 The Royal Wilton Place Salford M6 3WP M6 3WP. The places, employers, and events that drive year-round bookings.</p>
+  </div>
+
+  <div class="reveal-row fi">
+    <button class="reveal-btn" type="button" data-shut="View direct booking score" data-open="Hide direct booking score" data-cue="direct booking score|booking score" data-cue-label="Direct booking" data-cue-target="#db-reveal" data-cue-class="open" onclick="toggleReveal(this,'db-reveal')">
+      <span class="rb-ic">+</span><span class="rb-label">View direct booking score</span>
+    </button>
+  </div>
+
+  <div class="reveal-panel fi" id="db-reveal">
+    <div class="rp-inner"><div class="rp-pad">
+      <div class="db-score-wrap">
+        <div class="wb-metric score">
+          <div class="wb-m-l">Direct booking score</div>
+          <div class="wb-m-v" id="dbScoreVal"><!-- ST:DBSCORE_START -->100<!-- ST:DBSCORE_END --><span class="wb-m-u">/100</span></div>
+          <div class="wb-score-bar"><div class="wb-score-fill" id="dbScoreFill"></div></div>
+          <div class="wb-m-s">Exceptional standalone demand — this area can sustain direct bookings, not just platform traffic.</div>
+        </div>
+      </div>
+    </div></div>
+  </div>
 
   <div class="guests-grid fi">
 <!-- ST:BLOCK_START DEMAND_DRIVER_CARDS -->
@@ -1312,32 +1971,171 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
     <div class="gc"><div class="gc-h"><div class="gc-icon">🎓</div><div class="gc-meta"><div class="gc-tag">Educational Institutions</div><div class="gc-title">The University of Manchester</div></div></div><div class="gc-desc">3 nearby institutions</div><div class="gc-loc">📍 <strong>The University of Manchester</strong> · 4.63 km · <strong>HIGH</strong> demand</div></div>
     <div class="gc"><div class="gc-h"><div class="gc-icon">✈</div><div class="gc-meta"><div class="gc-tag">Transport Links</div><div class="gc-title">Salford Crescent</div></div></div><div class="gc-desc">10 nearby transport links</div><div class="gc-loc">📍 <strong>Salford Crescent</strong> · 1.08 km · <strong>HIGH</strong> demand</div></div>
 <!-- ST:BLOCK_END DEMAND_DRIVER_CARDS -->
+    <div class="gc"><div class="gc-h"><div class="gc-icon">🎟️</div><div class="gc-meta"><div class="gc-tag">Events &amp; Venues</div><div class="gc-title">Year-round event demand</div></div></div><div class="gc-desc"><!-- ST:EVENTS_NEARBY_START -->18<!-- ST:EVENTS_NEARBY_END --> nearby venues &amp; event spaces</div><div class="gc-loc">📍 <strong>Within 5 km</strong> · peak-rate weekends · <strong>HIGH</strong> demand</div></div>
+  </div>
+
+  <div class="reveal-row fi">
+    <button class="reveal-btn alt" type="button" data-shut="How Stayful gets direct bookings" data-open="Hide direct booking process" data-cue="how stayful gets direct bookings|direct booking process|the direct booking process|direct booking processes|direct bookings process|booking process|how we get direct bookings|getting direct bookings|direct booking system" data-cue-target="#db-process" data-cue-class="open" data-cue-label="DB process" onclick="toggleReveal(this,'db-process')">
+      <span class="rb-ic">+</span><span class="rb-label">How Stayful gets direct bookings</span>
+    </button>
+  </div>
+
+  <div class="reveal-panel fi" id="db-process">
+   <div class="rp-inner"><div class="rp-pad">
+    <div class="dbp">
+      <div class="eb" style="justify-content:center;">Your bookings · working harder for you</div>
+      <h3 class="comp-h" style="text-align:center;">More of your bookings come <em>direct</em> — and cost you less</h3>
+      <p class="dbp-intro">Behind the scenes, Stayful spots the guests worth a long-term relationship and quietly builds it — so a growing share of your bookings come <strong>straight to us</strong>, with no platform in the middle. For you, that means lower fees and lower running costs, month after month.</p>
+
+      <div class="dbp-hero">
+        <div class="dbp-hero-v">30%+</div>
+        <div class="dbp-hero-l">of your bookings come direct<span>Booked straight with us — no Airbnb or Booking.com commission to pay</span></div>
+      </div>
+
+      <div class="dbp-pipe">
+        <div class="dbp-stage"><div class="dbp-ic">🧭</div><div class="dbp-sn">We handle it</div><div class="dbp-st">Spot the right guests</div><div class="dbp-ss">Every platform booking is checked for direct-booking potential</div></div>
+        <div class="dbp-arrow">→</div>
+        <div class="dbp-stage"><div class="dbp-ic">🤝</div><div class="dbp-sn">We handle it</div><div class="dbp-st">Build the relationship</div><div class="dbp-ss">The right guests are looked after and offered a direct rate</div></div>
+        <div class="dbp-arrow">→</div>
+        <div class="dbp-stage recv"><div class="dbp-ic">🔁</div><div class="dbp-sn">You benefit</div><div class="dbp-st">They rebook direct</div><div class="dbp-ss">Repeat stays booked straight with us — fee-free</div></div>
+      </div>
+
+      <div class="dbp-card-eb" style="text-align:center;margin:24px 0 6px;letter-spacing:0.16em;">What that means for you</div>
+      <div class="dbp-ben-grid">
+        <div class="dbp-ben">
+          <div class="dbp-ben-ic">💸</div>
+          <div class="dbp-ben-h">Lower platform costs</div>
+          <div class="dbp-ben-d">Direct bookings skip the platform commission entirely — so your online platform fees fall every month as the direct share grows.</div>
+        </div>
+        <div class="dbp-ben">
+          <div class="dbp-ben-ic">🧹</div>
+          <div class="dbp-ben-h">Cheaper cleaning</div>
+          <div class="dbp-ben-d">Direct guests tend to stay longer, so there are fewer changeovers — meaning less cleaning &amp; laundry cost across the year.</div>
+        </div>
+        <div class="dbp-ben">
+          <div class="dbp-ben-ic">🛠️</div>
+          <div class="dbp-ben-h">Less maintenance</div>
+          <div class="dbp-ben-d">Longer stays and fewer guests through the door mean less wear and tear — and a noticeably lower maintenance bill.</div>
+        </div>
+      </div>
+    </div>
+   </div></div>
   </div>
 </div>
 
 <!-- ═══ SLIDE 3: HOW STAYFUL WORKS ═══ -->
-<div class="slide dark" data-name="How Stayful works" data-bg="dark">
+<div class="slide dark" data-name="How Stayful works" data-bg="dark" data-cue-nav="how stayful works|how stay full works|how stayfull works|how stateful works|how state full works|how stay for works|how stayfor works|how does stayful work|how does stay full work|how it all works|how this works|how the model works|how everything works|how it works|how it actually works|how you work|how do you work|how the company works|the model|your model|the service model">
   <div class="fi"><div class="eb">The 60-second version</div></div>
   <h2 class="fi">How Stayful <em>works</em></h2>
   <p class="sh fi">The model in one line below — then open any area to see exactly how it works.</p>
 
   <div class="model-strip fi">
-    <div class="ms-item"><span class="ms-v">15% + VAT</span><span class="ms-l">Of net revenue · no setup, monthly or exit fee</span></div>
-    <div class="ms-item"><span class="ms-v">Cleaning</span><span class="ms-l">Charged to guests, not your income</span></div>
-    <div class="ms-item"><span class="ms-v">6-month min</span><span class="ms-l">Then rolling · ~3 weeks to go live</span></div>
+    <button class="ms-item ms-item-btn" type="button" data-cue="stayful management charges|management charges|how stayful charges|how does stayful charge|how do you charge|where do you charge|your management fee|how the fee works" data-cue-label="Management charges" data-cue-target="#charges-reveal" data-cue-class="open" onclick="toggleReveal(this,'charges-reveal')"><span class="ms-v">15% + VAT</span><span class="ms-l">Of net revenue · no setup, monthly or exit fee</span><span class="ms-cta">See how it works <span class="ms-cta-ic">▾</span></span></button>
+    <button class="ms-item ms-item-btn" type="button" data-cue="stayful cleaning|how stayful cleaning works|how cleaning works|cleaning works|how does cleaning work|cleaning fee|the cleaning|cleaning explained|cleaning" data-cue-label="Cleaning" data-cue-target="#cleaning-reveal" data-cue-class="open" onclick="toggleReveal(this,'cleaning-reveal')"><span class="ms-v">Cleaning</span><span class="ms-l">Charged to guests, not your income</span><span class="ms-cta">See how it works <span class="ms-cta-ic">▾</span></span></button>
+    <button class="ms-item ms-item-btn" type="button" data-cue="contract information|contract terms|the contract|contract details|tell me about the contract|what is the contract|terms of the contract|contract" data-cue-label="Contract" data-cue-target="#contract-reveal" data-cue-class="open" onclick="toggleReveal(this,'contract-reveal')"><span class="ms-v">Contract</span><span class="ms-l">6-month term · key things to know</span><span class="ms-cta">See how it works <span class="ms-cta-ic">▾</span></span></button>
+    <button class="ms-item ms-item-btn" type="button" data-cue="short letting compliance information|short letting compliance|short let compliance|compliance information|safety checks|is short letting regulated|short term let regulation|short letting regulation|compliance" data-cue-label="Compliance" data-cue-target="#compliance-reveal" data-cue-class="open" onclick="toggleReveal(this,'compliance-reveal')"><span class="ms-v">Compliance</span><span class="ms-l">Short-letting safety &amp; regulation</span><span class="ms-cta">See how it works <span class="ms-cta-ic">▾</span></span></button>
+  </div>
+
+  <div class="reveal-panel fi" id="charges-reveal">
+   <div class="rp-inner"><div class="rp-pad">
+    <div class="clean-box charges-box">
+      <div class="clean-eb">How Stayful charges</div>
+      <h4 class="clean-h">We charge 15% — but only on <em>what's left after the platforms</em></h4>
+      <p class="clean-intro">No setup, monthly or exit fees. The booking platforms take their cut first; we then charge our management fee on what remains — so we only earn when you do.</p>
+      <div class="ch-table">
+        <div class="ch-row ch-head"><div class="ch-l"></div><div class="ch-c">Annual</div><div class="ch-c">Monthly</div></div>
+        <div class="ch-row gross"><div class="ch-l">Gross bookings</div><div class="ch-c"><!-- ST:CH_GROSS_Y_START -->£18,672<!-- ST:CH_GROSS_Y_END --></div><div class="ch-c"><!-- ST:CH_GROSS_M_START -->£1,556<!-- ST:CH_GROSS_M_END --></div></div>
+        <div class="ch-row deduct"><div class="ch-l">− Online platform fees <span>15% · Airbnb, Booking.com</span></div><div class="ch-c"><!-- ST:CH_PLAT_Y_START -->−£2,801<!-- ST:CH_PLAT_Y_END --></div><div class="ch-c"><!-- ST:CH_PLAT_M_START -->−£233<!-- ST:CH_PLAT_M_END --></div></div>
+        <div class="ch-row sub"><div class="ch-l">After platform fees</div><div class="ch-c"><!-- ST:CH_AFTER_Y_START -->£15,871<!-- ST:CH_AFTER_Y_END --></div><div class="ch-c"><!-- ST:CH_AFTER_M_START -->£1,323<!-- ST:CH_AFTER_M_END --></div></div>
+        <div class="ch-row deduct mgmt"><div class="ch-l">− Stayful management <span>15% of what's left</span></div><div class="ch-c"><!-- ST:CH_MGMT_Y_START -->−£2,381<!-- ST:CH_MGMT_Y_END --></div><div class="ch-c"><!-- ST:CH_MGMT_M_START -->−£198<!-- ST:CH_MGMT_M_END --></div></div>
+        <div class="ch-row net"><div class="ch-l">Your net income</div><div class="ch-c"><!-- ST:CH_NET_Y_START -->£13,490<!-- ST:CH_NET_Y_END --></div><div class="ch-c"><!-- ST:CH_NET_M_START -->£1,124<!-- ST:CH_NET_M_END --></div></div>
+      </div>
+      <div class="clean-note">Our fee is <strong>15% of net revenue</strong> — the booking income left after the platforms. No fee on the platforms' cut, and nothing until you're earning.</div>
+    </div>
+   </div></div>
+  </div>
+
+  <div class="reveal-panel fi" id="cleaning-reveal">
+   <div class="rp-inner"><div class="rp-pad">
+    <div class="clean-box">
+      <div class="clean-eb">How cleaning works</div>
+      <h4 class="clean-h">Cleaning is charged to the guest — <em>not deducted from you</em></h4>
+      <p class="clean-intro">In your income estimate, cleaning shows as a cost because we forecast <strong>total revenue</strong> — which already includes the cleaning fee guests pay. In reality the guest pays that fee <strong>on top of</strong> the nightly rate, so it washes through and never comes out of your earnings.</p>
+      <div class="clean-eg">
+        <div class="clean-eg-h">Example · a 3-night stay</div>
+        <div class="clean-flow">
+          <div class="clean-chip"><div class="clean-v">£100</div><div class="clean-l">× 3 nights</div></div>
+          <div class="clean-op">=</div>
+          <div class="clean-chip stay"><div class="clean-v">£300</div><div class="clean-l">accommodation</div></div>
+          <div class="clean-op">+</div>
+          <div class="clean-chip fee"><div class="clean-v">£100</div><div class="clean-l">cleaning fee</div></div>
+          <div class="clean-op">=</div>
+          <div class="clean-chip total"><div class="clean-v">£400</div><div class="clean-l">guest pays</div></div>
+        </div>
+      </div>
+      <div class="clean-note">The guest pays <strong>£400</strong> in total. The <strong>£100 cleaning</strong> is theirs to cover — your <strong>£300</strong> accommodation revenue is untouched.</div>
+    </div>
+   </div></div>
+  </div>
+
+  <div class="reveal-panel fi" id="contract-reveal">
+   <div class="rp-inner"><div class="rp-pad">
+    <div class="clean-box contract-box">
+      <div class="clean-eb">Contract · what you're agreeing to</div>
+      <h4 class="clean-h">A <em>6-month fixed term</em> — then rolling</h4>
+      <p class="clean-intro">Straightforward terms designed to give your listing the runway to perform — and to protect your guests if anything changes.</p>
+      <div class="ct-grid">
+        <div class="ct-card"><div class="ct-v">6 months</div><div class="ct-t">Fixed term</div><div class="ct-d">Then rolling, month to month.</div></div>
+        <div class="ct-card"><div class="ct-v">3 months</div><div class="ct-t">Notice to leave</div><div class="ct-d">So guests already booked are always honoured.</div></div>
+        <div class="ct-card warn"><div class="ct-v">£1,000</div><div class="ct-t">Early-exit penalty</div><div class="ct-d">Only if you actively leave inside the 6-month fixed term.</div></div>
+        <div class="ct-card"><div class="ct-v">£300<span>/mo</span></div><div class="ct-t">Maintenance auto-approved</div><div class="ct-d">One job or accumulated — we fix without chasing you for sign-off.</div></div>
+      </div>
+      <div class="ct-notes">
+        <div class="ct-note"><strong>Why the fixed term?</strong> A new listing needs reviews and ranking to build — the 6 months gives us the runway to deliver the figures we've presented to you.</div>
+        <div class="ct-note"><strong>Why the notice period?</strong> It protects your guests. If you give notice but guests have already booked, we honour those stays first, then hand the property — and all your short-let details — back to you smoothly.</div>
+        <div class="ct-note"><strong>Signed before viewings.</strong> The contract is signed before property viewings &amp; inspections take place — so we both know you're committed to working with us.</div>
+      </div>
+    </div>
+   </div></div>
+  </div>
+
+  <div class="reveal-panel fi" id="compliance-reveal">
+   <div class="rp-inner"><div class="rp-pad">
+    <div class="clean-box compliance-box">
+      <div class="clean-eb">Short-letting compliance</div>
+      <h4 class="clean-h">Short-term letting <em>isn't a regulated industry</em></h4>
+      <p class="clean-intro">There's no mandatory regulation around short-term letting across most of the UK. That doesn't mean you should skip safety — the checks below are sensible <strong>advisory best practice: nice to have, not essential</strong>. There are just two exceptions:</p>
+      <div class="cmp-grid">
+        <div class="cmp-card ok"><div class="cmp-region">Most of the UK</div><div class="cmp-status">No regulation</div><div class="cmp-d">The safety checks below are advisory only — not mandatory.</div></div>
+        <div class="cmp-card warn"><div class="cmp-region">London</div><div class="cmp-status">90-day rule</div><div class="cmp-d">A 90-night annual cap applies. <strong>Stayful works around it</strong> and helps you stay compliant.</div></div>
+        <div class="cmp-card warn"><div class="cmp-region">Scotland</div><div class="cmp-status">Licence required</div><div class="cmp-d">A short-term let licence is needed — we guide you through it.</div></div>
+      </div>
+      <div class="cmp-sub">Advisory safety checks · nice to do, not required</div>
+      <div class="cmp-fire">
+        <div class="cmp-fire-h">🔥 Fire safety</div>
+        <div class="cmp-chips">
+          <span class="cmp-chip">Smoke alarms</span>
+          <span class="cmp-chip">Fire blankets</span>
+          <span class="cmp-chip">Fire extinguishers</span>
+          <span class="cmp-chip extra">Fire doors · nice extra</span>
+        </div>
+      </div>
+      <div class="clean-note">Outside London &amp; Scotland, none of these are legal requirements for short-term letting — they're sensible safety steps we'd recommend, and we'll advise you on what's worth doing.</div>
+    </div>
+   </div></div>
   </div>
 
   <div class="hsw fi" id="hsw">
     <div class="hsw-tabs">
-      <button class="hsw-tab" type="button" data-panel="vetting" onclick="hswOpen(this)">
+      <button class="hsw-tab" type="button" data-panel="vetting" data-cue="how we vet guests|how do you vet guests|how do you vet|vet guests|guest vetting|how you vet|the vetting|how do you screen guests|guest screening|how you protect|how do you protect the property|how guests are vetted" data-cue-label="Guest vetting" data-cue-click="1" onclick="hswOpen(this)">
         <span class="hsw-tab-ic">🛡️</span>
         <span><span class="hsw-tab-t">Guest vetting</span><span class="hsw-tab-s">How we protect your property</span></span>
       </button>
-      <button class="hsw-tab" type="button" data-panel="onboarding" onclick="hswOpen(this)">
+      <button class="hsw-tab" type="button" data-panel="onboarding" data-cue="onboarding|onboarding and go live|how does onboarding work|getting started|how do we get started|go live|going live|how do we start|setup process|how long to go live|signature to live" data-cue-label="Onboarding" data-cue-click="1" onclick="hswOpen(this)">
         <span class="hsw-tab-ic">🚀</span>
         <span><span class="hsw-tab-t">Onboarding &amp; go-live</span><span class="hsw-tab-s">Signature to live in ~3 weeks</span></span>
       </button>
-      <button class="hsw-tab" type="button" data-panel="management" onclick="hswOpen(this)">
+      <button class="hsw-tab" type="button" data-panel="management" data-cue="how our management works|how the management works|how our service works|how your service works|management and your experience|your experience|how you manage|how management works|the management section|how does it work from your perspective" data-cue-label="Management" data-cue-click="1" onclick="hswOpen(this)">
         <span class="hsw-tab-ic">📊</span>
         <span><span class="hsw-tab-t">Management &amp; your experience</span><span class="hsw-tab-s">What we run · what you see</span></span>
       </button>
@@ -1474,7 +2272,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 
         <div class="mh-sub">What you'll see · live tools, every day</div>
         <div class="mh-tools">
-          <a class="mh-tile" href="https://app.uplisting.io/calendar?from=2026-06-12" target="_blank" rel="noopener">
+          <a class="mh-tile cue-block" data-cue="centralised booking calendar|central booking calendar|booking calendar|central calendar|owner calendar|the calendar|uplisting calendar|calendar|centralised|central" data-cue-label="Owner calendar" href="https://app.uplisting.io/calendar?from=2026-06-12" target="_blank" rel="noopener">
             <div class="mh-vidwrap">
               <video class="mh-vid" src="media/management-calendar.mp4" muted loop autoplay playsinline preload="metadata"></video>
               <span class="mh-badge">Live demo</span>
@@ -1486,7 +2284,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
               <div class="mh-link">Open live demo →</div>
             </div>
           </a>
-          <a class="mh-tile" href="https://app.slack.com/client/T061GPD7ZB8/C09LDM5GY86" target="_blank" rel="noopener">
+          <a class="mh-tile cue-block" data-cue="our instant messaging app|instant messaging app|instant messaging|messaging app|the slack channel|slack channel|slack" data-cue-label="Slack channel" href="https://app.slack.com/client/T061GPD7ZB8/C09LDM5GY86" target="_blank" rel="noopener">
             <div class="mh-vidwrap">
               <video class="mh-vid" src="media/management-slack.mp4" muted loop autoplay playsinline preload="metadata"></video>
               <span class="mh-badge">Live demo</span>
@@ -1498,7 +2296,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
               <div class="mh-link">Open live demo →</div>
             </div>
           </a>
-          <a class="mh-tile" href="https://drive.google.com/file/d/1Ja1yEDno_nS-te7y9qh-UcaaHLt0enPR/view" target="_blank" rel="noopener">
+          <a class="mh-tile cue-block" data-cue="income statement|profit and loss|p and l|p and l report|monthly p and l|monthly report|the income statement|p n l" data-cue-label="P&amp;L report" href="https://drive.google.com/file/d/1Ja1yEDno_nS-te7y9qh-UcaaHLt0enPR/view" target="_blank" rel="noopener">
             <div class="mh-vidwrap">
               <video class="mh-vid" src="media/management-pnl.mp4" muted loop autoplay playsinline preload="metadata"></video>
               <span class="mh-badge">Example</span>
@@ -1573,10 +2371,65 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
   <button class="nav-arr" id="next" aria-label="Next">→</button>
 </div>
 
+<!-- Case study PDF overlay -->
+<div class="pdf-ov" id="pdfOv" aria-hidden="true">
+  <div class="pdf-ov-bd" id="pdfOvBd"></div>
+  <div class="pdf-ov-modal">
+    <div class="pdf-ov-head">
+      <div class="pdf-ov-title" id="pdfOvTitle">Case study</div>
+      <div class="pdf-ov-actions">
+        <a class="pdf-ov-tab" id="pdfOvTab" href="#" target="_blank" rel="noopener">Open in new tab ↗</a>
+        <button class="pdf-ov-close" id="pdfOvClose" type="button">Close ✕</button>
+      </div>
+    </div>
+    <div class="pdf-ov-body"><iframe id="pdfOvFrame" title="Case study" allow="autoplay" referrerpolicy="no-referrer"></iframe></div>
+  </div>
+</div>
+
 <script>
 const FORECAST = /* ST:FORECAST_START */[791, 849, 838, 814, 833, 896, 954, 748, 774, 873, 816, 528]/* ST:FORECAST_END */;
 const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const LTL_MONTHLY = /* ST:LTL_MONTHLY_START */990/* ST:LTL_MONTHLY_END */;
+
+/* Progressive reveal — toggles a collapsible panel + swaps the button label */
+// Case study PDF overlay (in-presentation, no popup blocker)
+function stOpenPdf(fileId, title, viewUrl){
+  const ov = document.getElementById('pdfOv');
+  const fr = document.getElementById('pdfOvFrame');
+  if(!ov || !fr) return;
+  const src = 'https://drive.google.com/file/d/' + fileId + '/preview';
+  if(ov.classList.contains('show') && fr.src === src) return;   // already showing this file
+  fr.src = src;
+  document.getElementById('pdfOvTitle').textContent = title || 'Case study';
+  const tab = document.getElementById('pdfOvTab');
+  if(tab) tab.href = viewUrl || ('https://drive.google.com/file/d/' + fileId + '/view');
+  ov.classList.add('show'); ov.setAttribute('aria-hidden', 'false');
+}
+function stClosePdf(){
+  const ov = document.getElementById('pdfOv');
+  const fr = document.getElementById('pdfOvFrame');
+  if(!ov) return;
+  ov.classList.remove('show'); ov.setAttribute('aria-hidden', 'true');
+  if(fr) fr.src = 'about:blank';   // empty string makes the iframe reload the whole deck
+}
+window.stOpenPdf = stOpenPdf;
+window.stClosePdf = stClosePdf;
+document.getElementById('pdfOvClose').onclick = stClosePdf;
+document.getElementById('pdfOvBd').onclick = stClosePdf;
+
+function toggleReveal(btn, panelId){
+  const panel = document.getElementById(panelId);
+  if(!panel) return;
+  const willOpen = !panel.classList.contains('open');
+  if(window.stClearDim) window.stClearDim();                                   // reset any prior spotlight
+  if(willOpen && window.stCloseStrays) window.stCloseStrays(panel);            // collapse other open dropdowns
+  const open = panel.classList.toggle('open');
+  btn.classList.toggle('open', open);
+  const lbl = btn.querySelector('.rb-label');
+  if(lbl){ lbl.textContent = open ? (btn.dataset.open || lbl.textContent) : (btn.dataset.shut || lbl.textContent); }
+  // a section panel (no nested cue-blocks) becomes the focus — dim the rest — like voice
+  if(open && !panel.querySelector('.cue-block') && window.stSpotlight){ window.stSpotlight(panel); }
+}
 
 const slides = document.querySelectorAll('.slide');
 const TOTAL = slides.length;
@@ -1616,6 +2469,7 @@ function update() {
   tbLbl.textContent = SLIDE_NAMES[cur];
   document.getElementById('prev').disabled = (cur === 0);
   document.getElementById('next').disabled = (cur === TOTAL - 1);
+  if (window.__onSlideChange) window.__onSlideChange();
 }
 function goTo(i) {
   if (i < 0 || i >= TOTAL || i === cur) return;
@@ -1625,6 +2479,11 @@ function goTo(i) {
 function nav(dir) { goTo(cur + dir); }
 
 // Risk profile — reveal chart and animate bars + counters over ~3s
+function collapseRisk(btn) {
+  const risk = btn.closest('.risk');
+  if (risk) risk.classList.remove('open');
+}
+
 function playRisk(btn) {
   const risk = btn.closest('.risk');
   if (!risk || risk.classList.contains('open')) return;
@@ -1844,6 +2703,397 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     w.document.write('<pre style="font-family:monospace;padding:24px;font-size:13px;">' + text.replace(/</g, '&lt;') + '</pre>');
   }
 });
+
+/* ─── Spotlight cue reveal controller (voice + click) ───
+   Tag any block with data-cue="phrase one|phrase two" data-cue-label="Name".
+   Voice layer (or built-in mic with ?present=1) calls window.stCue("spoken text");
+   the matching block opens its parent panels, the rest of the slide dims, and it
+   scrolls to centre. Clickable cue bar gives a manual fallback ('c' toggles it). */
+(function(){
+  const params = new URLSearchParams(location.search);
+  const PRESENT = params.get('present') === '1' || params.get('presenter') === '1';
+  const activeSlide = () => document.querySelector('.slide.active');
+
+  function openAncestors(el){
+    const opened = [];
+    let p = el.parentElement;
+    while(p && p !== document.body){
+      if(p.classList && p.classList.contains('reveal-panel') && !p.classList.contains('open')){
+        p.classList.add('open');
+        opened.push(p);
+        const btn = document.querySelector('[onclick*="' + p.id + '"]');
+        if(btn){
+          btn.classList.add('open');
+          const lbl = btn.querySelector('.rb-label');
+          if(lbl && btn.dataset.open) lbl.textContent = btn.dataset.open;
+        }
+      }
+      p = p.parentElement;
+    }
+    return opened;
+  }
+
+  // dim-only clear — removes the spotlight/lit state but leaves panels open
+  function clearDim(slide){
+    slide = slide || activeSlide();
+    if(!slide) return;
+    slide.classList.remove('spotlight');
+    slide.querySelectorAll('.lit').forEach(b => b.classList.remove('lit'));
+    document.querySelectorAll('.cue-pill.active').forEach(p => p.classList.remove('active'));
+  }
+  window.stClearDim = clearDim;
+
+  // full reset — clears the dim AND closes any voice-opened panels on the slide
+  function clearSpotlight(slide){
+    slide = slide || activeSlide();
+    if(!slide) return;
+    clearDim(slide);
+    slide.querySelectorAll('.risk.open').forEach(r => r.classList.remove('open'));
+    slide.querySelectorAll('[data-cue-target]').forEach(el => {
+      const tgt = document.querySelector(el.getAttribute('data-cue-target'));
+      if(!tgt) return;
+      tgt.classList.remove(el.getAttribute('data-cue-class'));
+      if(tgt.classList.contains('reveal-panel') && tgt.id){
+        const b = document.querySelector('[onclick*="' + tgt.id + '"]');
+        if(b){ b.classList.remove('open'); const l = b.querySelector('.rb-label'); if(l && b.dataset.shut) l.textContent = b.dataset.shut; }
+      }
+    });
+  }
+
+  // Spotlight an opened reveal panel (voice/cue path): show it alone, dim the rest, centre it
+  function spotlightPanel(panel, delayed){
+    const slide = panel.closest('.slide'); if(!slide) return;
+    slide.querySelectorAll('.reveal-panel.open').forEach(p => {
+      if(p === panel) return;
+      p.classList.remove('open', 'lit');
+      if(p.id){ const b = document.querySelector('[onclick*="' + p.id + '"]'); if(b){ b.classList.remove('open'); const l = b.querySelector('.rb-label'); if(l && b.dataset.shut) l.textContent = b.dataset.shut; } }
+    });
+    slide.classList.add('spotlight');
+    slide.querySelectorAll('.lit').forEach(b => { if(b !== panel) b.classList.remove('lit'); });
+    panel.classList.add('lit');
+    const centre = () => panel.scrollIntoView({behavior:'smooth', block:'center'});
+    requestAnimationFrame(() => requestAnimationFrame(centre));
+    setTimeout(centre, 1000); setTimeout(centre, 2150);
+    if(delayed){ setTimeout(centre, 2300); setTimeout(centre, 2800); }   // wait for a tab to populate first
+  }
+  window.stSpotlight = spotlightPanel;
+
+  // open a parent How-Stayful-works tab panel if the element lives in an inactive one
+  function ensureTab(el){
+    const hp = el.closest('.hsw-panel');
+    if(hp && !hp.classList.contains('active')){
+      const hub = hp.closest('.hsw');
+      const tabBtn = hub && hub.querySelector('.hsw-tab[data-panel="' + hp.getAttribute('data-panel') + '"]');
+      if(tabBtn && typeof hswOpen === 'function'){ const switching = !!hub.querySelector('.hsw-panel.active'); hswOpen(tabBtn); return switching; }
+    }
+    return false;
+  }
+
+  function revealBlock(block){
+    if(!block) return;
+    const slide = block.closest('.slide') || activeSlide();
+    if(!slide) return;
+    const already = slide.classList.contains('spotlight') && block.classList.contains('lit');
+    const tabSwitching = ensureTab(block);
+    const opened = openAncestors(block);
+    slide.classList.add('spotlight');
+    slide.querySelectorAll('.cue-block.lit').forEach(b => { if(b !== block) b.classList.remove('lit'); });
+    block.classList.add('lit');
+    document.querySelectorAll('.cue-pill').forEach(p => p.classList.toggle('active', p.__block === block));
+    const centre = () => block.scrollIntoView({behavior:'smooth', block:'center'});
+    if(!already){
+      requestAnimationFrame(() => requestAnimationFrame(centre));
+      // panels expand over ~2s — re-centre as the layout settles so deep blocks land correctly
+      if(opened.length){ setTimeout(centre, 1000); setTimeout(centre, 2150); }
+      if(tabSwitching){ setTimeout(centre, 2200); setTimeout(centre, 2700); }   // wait for tab collapse + populate
+    }
+  }
+  window.stReveal = revealBlock;
+
+  // Action cues — open a target (e.g. the cost breakdown). ensureOpen=add, else toggle.
+  function doAction(el, ensureOpen){
+    const tgt = document.querySelector(el.getAttribute('data-cue-target'));
+    const cls = el.getAttribute('data-cue-class');
+    if(!tgt || !cls) return;
+    if(ensureOpen) tgt.classList.add(cls); else tgt.classList.toggle(cls);
+    const on = tgt.classList.contains(cls);
+    // keep a controlling reveal button (label + icon) in sync
+    if(tgt.classList.contains('reveal-panel') && tgt.id){
+      const btn = document.querySelector('[onclick*="' + tgt.id + '"]');
+      if(btn){
+        btn.classList.toggle('open', on);
+        const lbl = btn.querySelector('.rb-label');
+        if(lbl){ lbl.textContent = on ? (btn.dataset.open || lbl.textContent) : (btn.dataset.shut || lbl.textContent); }
+      }
+    }
+    document.querySelectorAll('.cue-pill').forEach(p => p.classList.toggle('active', p.__block === el && on));
+  }
+
+  // Slide-title navigation (from any slide). Multi-word titles fire on the title
+  // alone; single-word / sensitive titles (Notes, Property) require a nav verb.
+  const NAV_VERBS = ['go to','goto','show me','show the','take me to','let us look at','lets look at','move to','jump to','navigate to','bring up','open the'];
+  const NAV_SENSITIVE = ['notes','property'];
+  function navInfo(p){
+    if(/\bnext slide\b/.test(p)) return {idx: Math.min(cur + 1, TOTAL - 1), pos: p.lastIndexOf('next slide'), rel: 'next'};
+    const bm = p.match(/previous slide|last slide|go back/);
+    if(bm) return {idx: Math.max(cur - 1, 0), pos: p.lastIndexOf(bm[0]), rel: 'prev'};
+    let idx = -1, pos = -1, len = 0;
+    // explicit per-slide spoken aliases: data-cue-nav="phrase|phrase"
+    slides.forEach((s, i) => {
+      (s.getAttribute('data-cue-nav') || '').split('|').forEach(c => {
+        c = c.trim().toLowerCase(); if(!c) return;
+        const at = p.lastIndexOf(c);
+        if(at >= 0 && (at > pos || (at === pos && c.length > len))){ pos = at; len = c.length; idx = i; }
+      });
+    });
+    // slide titles (multi-word fire on the title alone; single-word/sensitive need a nav verb)
+    const hasVerb = NAV_VERBS.some(v => p.includes(v));
+    SLIDE_NAMES.forEach((name, i) => {
+      const n = (name || '').toLowerCase();
+      const at = p.lastIndexOf(n);
+      if(at < 0) return;
+      const distinctive = n.includes(' ');
+      const sensitive = NAV_SENSITIVE.includes(n);
+      if(((distinctive && !sensitive) || hasVerb) && (at > pos || (at === pos && n.length > len))){ pos = at; len = n.length; idx = i; }
+    });
+    return {idx, pos};
+  }
+
+  // Close open dropdown panels on the active slide, except `keep` (and its ancestors)
+  function closeStrayReveals(keep){
+    const slide = activeSlide(); if(!slide) return;
+    slide.querySelectorAll('.reveal-panel.open').forEach(p => {
+      if(keep && (p === keep || p.contains(keep))) return;
+      p.classList.remove('open', 'lit');
+      if(p.id){ const b = document.querySelector('[onclick*="' + p.id + '"]'); if(b){ b.classList.remove('open'); const l = b.querySelector('.rb-label'); if(l && b.dataset.shut) l.textContent = b.dataset.shut; } }
+    });
+  }
+  window.stCloseStrays = closeStrayReveals;
+
+  // Reveal a matched cue: open-a-target cues, click-a-button cues, or spotlight blocks.
+  function dispatchCue(block){
+    // close any other open dropdown on this slide (keep the one we're opening / its ancestors)
+    const keep = block.hasAttribute('data-cue-target') ? document.querySelector(block.getAttribute('data-cue-target')) : block;
+    closeStrayReveals(keep);
+    if(block.hasAttribute('data-cue-pdf')){
+      if(window.stOpenPdf) window.stOpenPdf(block.getAttribute('data-cue-pdf'), block.getAttribute('data-cue-label') || 'Case study', block.getAttribute('href'));
+      document.querySelectorAll('.cue-pill').forEach(p => p.classList.toggle('active', p.__block === block));
+      return;
+    }
+    if(block.hasAttribute('data-cue-target')){
+      const switching = ensureTab(block);   // open a parent tab (e.g. Management) if needed
+      doAction(block, true);
+      const tgt = document.querySelector(block.getAttribute('data-cue-target'));
+      // a reveal panel opened by voice gets the full Numbers-style spotlight + centre
+      if(tgt && tgt.classList.contains('reveal-panel') && tgt.classList.contains('open')) spotlightPanel(tgt, switching);
+    }
+    else if(block.hasAttribute('data-cue-click')){
+      block.click();   // run the button's own handler (idempotent — handlers guard re-runs)
+      document.querySelectorAll('.cue-pill').forEach(p => p.classList.toggle('active', p.__block === block));
+      block.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+    else revealBlock(block);
+  }
+
+  // Decide what a phrase should do — NO side effects — picking the MOST RECENTLY
+  // spoken intent across navigation, reset, case-study PDFs and section cues.
+  function decideCue(p){
+    const cands = [];
+    const nav = navInfo(p);
+    if(nav.idx >= 0 && nav.idx !== cur){
+      // relative moves use a stable key so repeated interim partials only move once
+      const navKey = nav.rel ? ('nav:' + nav.rel) : ('nav:' + nav.idx);
+      cands.push({pos: nav.pos, key: navKey, run: () => { if(window.stClosePdf) window.stClosePdf(); goTo(nav.idx); }});
+    }
+    let resetIdx = -1;
+    ['reset','show all','clear','everything','zoom out','hide','close'].forEach(w => { const i = p.lastIndexOf(w); if(i > resetIdx) resetIdx = i; });
+    if(resetIdx >= 0) cands.push({pos: resetIdx, key: 'reset', run: () => { if(window.stClosePdf) window.stClosePdf(); clearSpotlight(activeSlide()); }});
+    // case-study quick-match — a city + "case study" in any order / with words between
+    if(/case stud/.test(p)){
+      let pe = null, pIdx = -1;
+      slides.forEach(s => s.querySelectorAll('[data-cue-pdf]').forEach(el => {
+        const city = (el.getAttribute('data-cue-city') || (el.getAttribute('data-cue-label') || '').trim().split(' ')[0]).toLowerCase();
+        if(!city) return;
+        const at = p.lastIndexOf(city);
+        if(at >= 0 && at > pIdx){ pIdx = at; pe = el; }
+      }));
+      if(pe) cands.push({pos: pIdx, key: 'pdf:' + pe.getAttribute('data-cue-pdf'), run: () => {
+        const sl = pe.closest('.slide'); if(sl && sl !== activeSlide()){ const ti = [...slides].indexOf(sl); if(ti >= 0) goTo(ti); }
+        dispatchCue(pe);
+      }});
+    }
+    // section cues across every slide
+    let best = null, bestIdx = -1, bestLen = 0, bestSlide = null;
+    slides.forEach(s => s.querySelectorAll('[data-cue]').forEach(b => {
+      (b.dataset.cue || '').split('|').forEach(c => {
+        c = c.trim().toLowerCase(); if(!c) return;
+        const i = p.lastIndexOf(c); if(i < 0) return;
+        if(i > bestIdx || (i === bestIdx && c.length > bestLen)){ bestIdx = i; bestLen = c.length; best = b; bestSlide = s; }
+      });
+    }));
+    if(best) cands.push({pos: bestIdx, key: 'cue:' + (best.getAttribute('data-cue-label') || best.getAttribute('data-cue') || ''), run: () => {
+      if(!best.hasAttribute('data-cue-pdf') && window.stClosePdf) window.stClosePdf();
+      if(bestSlide && bestSlide !== activeSlide()){ const ti = [...slides].indexOf(bestSlide); if(ti >= 0) goTo(ti); }
+      dispatchCue(best);
+    }});
+    if(!cands.length) return null;
+    cands.sort((a, b) => b.pos - a.pos);   // most recently spoken intent wins
+    return cands[0];
+  }
+
+  // Public entry — interim-friendly: de-dupes so a command fires once per utterance,
+  // letting it run on every partial result (low latency, react to keywords mid-sentence).
+  let lastKey = '', lastTime = 0;
+  function stCue(phrase){
+    const p = (phrase || '').toLowerCase(); if(!p) return false;
+    const d = decideCue(p);
+    if(!d) return false;
+    const now = Date.now();
+    if(d.key === lastKey && now - lastTime < 1800) return false;
+    lastKey = d.key; lastTime = now;
+    d.run();
+    return true;
+  }
+  window.stCue = stCue;
+
+  // Cue bar — manual fallback + review aid
+  const bar = document.createElement('div');
+  bar.className = 'cue-bar';
+  document.body.appendChild(bar);
+  let barPinned = PRESENT;
+
+  function refresh(){
+    const slide = activeSlide();
+    const blocks = slide ? [...slide.querySelectorAll('[data-cue]')] : [];
+    bar.innerHTML = '';
+    if(!blocks.length){ bar.classList.remove('show'); return; }
+    const lbl = document.createElement('span');
+    lbl.className = 'cue-bar-lbl'; lbl.textContent = 'Cue';
+    bar.appendChild(lbl);
+    blocks.forEach(b => {
+      const pill = document.createElement('button');
+      pill.className = 'cue-pill';
+      pill.textContent = b.dataset.cueLabel || (b.dataset.cue || '').split('|')[0];
+      pill.__block = b;
+      pill.onclick = () => {
+        if(b.hasAttribute('data-cue-pdf')){ if(window.stOpenPdf) window.stOpenPdf(b.getAttribute('data-cue-pdf'), b.getAttribute('data-cue-label') || 'Case study', b.getAttribute('href')); }
+        else if(b.hasAttribute('data-cue-target')) doAction(b, false);
+        else if(b.hasAttribute('data-cue-click')) b.click();
+        else revealBlock(b);
+      };
+      bar.appendChild(pill);
+    });
+    const reset = document.createElement('button');
+    reset.className = 'cue-pill reset'; reset.textContent = 'Show all';
+    reset.onclick = () => clearSpotlight(slide);
+    bar.appendChild(reset);
+    bar.classList.toggle('show', barPinned);
+  }
+
+  window.__onSlideChange = function(){ clearSpotlight(); refresh(); };
+
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape'){ if(window.stClosePdf) window.stClosePdf(); clearSpotlight(); }
+    else if((e.key === 'c' || e.key === 'C') && !e.metaKey && !e.ctrlKey && !e.altKey){
+      barPinned = !barPinned; refresh();
+    }
+  });
+
+  // Built-in mic (opt-in via ?present=1) — drives stCue directly
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(PRESENT && SR){
+    let running = false, dead = false;
+    const recog = new SR();
+    recog.continuous = true; recog.interimResults = true; recog.lang = 'en-GB';
+    recog.onstart = () => { running = true; };
+    recog.onresult = e => {
+      // react to keywords as they're spoken (interim) for low latency; stCue de-dupes
+      // so a command only fires once per utterance even as the partial grows
+      let t = '';
+      for(let i = e.resultIndex; i < e.results.length; i++) t += e.results[i][0].transcript;
+      try { stCue(t); } catch(_) {}
+    };
+    recog.onerror = ev => { if(ev && (ev.error === 'not-allowed' || ev.error === 'service-not-allowed')) dead = true; };
+    recog.onend = () => { running = false; if(!dead) setTimeout(() => { try{ recog.start(); }catch(_){} }, 300); };
+    const kick = () => { if(running || dead) return; try{ recog.start(); }catch(_){} };
+    kick();
+    window.addEventListener('pointerdown', () => { dead = false; kick(); });   // a tap re-arms a dropped mic
+  }
+
+  refresh();
+})();
+
+// Direct-booking score meter — fills to the score value each time it's revealed
+(function(){
+  const el = document.getElementById('dbScoreVal');
+  const fill = document.getElementById('dbScoreFill');
+  const panel = document.getElementById('db-reveal');
+  if(!el || !fill) return;
+  const v = Math.max(0, Math.min(100, parseInt(el.textContent, 10) || 0));
+  const play = () => { fill.style.width = '0'; requestAnimationFrame(() => requestAnimationFrame(() => { fill.style.width = v + '%'; })); };
+  if(panel){
+    new MutationObserver(() => {
+      if(panel.classList.contains('open')) play();
+      else fill.style.width = '0';
+    }).observe(panel, {attributes:true, attributeFilter:['class']});
+  } else {
+    play();
+  }
+})();
+
+// Build the voice-command reference in the Notes slide from the deck's actual cues
+(function(){
+  const ref = document.getElementById('voiceRef');
+  if(!ref) return;
+  const groups = [];
+  document.querySelectorAll('.slide').forEach(s => {
+    const name = s.getAttribute('data-name');
+    if(name === 'Notes') return;
+    const items = [];
+    // navigation (title + data-cue-nav aliases)
+    const navPhrases = [];
+    if(name) navPhrases.push(name.toLowerCase());
+    const nav = s.getAttribute('data-cue-nav');
+    if(nav) nav.split('|').forEach(p => { const t = p.trim(); if(t && navPhrases.indexOf(t) < 0) navPhrases.push(t); });
+    const sensitive = ['notes','property'].includes((name || '').toLowerCase());
+    items.push({ label: 'Go to “' + name + '”', phrases: navPhrases, note: sensitive ? 'Say with a verb, e.g. “go to ' + (name||'').toLowerCase() + '”' : '' });
+    // section cues
+    s.querySelectorAll('[data-cue]').forEach(el => {
+      const label = el.getAttribute('data-cue-label') || (el.getAttribute('data-cue') || '').split('|')[0];
+      const phrases = (el.getAttribute('data-cue') || '').split('|').map(x => x.trim()).filter(Boolean);
+      if(phrases.length) items.push({ label, phrases, note: '' });
+    });
+    if(items.length) groups.push({ section: name, items });
+  });
+  groups.push({ section: 'Controls', items: [
+    { label: 'Close / reset', phrases: ['close', 'reset', 'show all', 'clear', 'hide'], note: 'Closes the open dropdown / overlay' },
+    { label: 'Move slides', phrases: ['next slide', 'previous slide', 'go back'], note: '' }
+  ]});
+
+  groups.forEach(group => {
+    const sec = document.createElement('div'); sec.className = 'vc-group';
+    const h = document.createElement('div'); h.className = 'vc-group-h'; h.textContent = group.section; sec.appendChild(h);
+    group.items.forEach(item => {
+      const row = document.createElement('div'); row.className = 'vc-item';
+      const btn = document.createElement('button'); btn.className = 'vc-btn'; btn.type = 'button';
+      const lab = document.createElement('span'); lab.className = 'vc-label'; lab.textContent = item.label;
+      const meta = document.createElement('span'); meta.className = 'vc-meta';
+      meta.innerHTML = item.phrases.length + ' phrase' + (item.phrases.length === 1 ? '' : 's') + ' <span class="vc-ic">▾</span>';
+      btn.appendChild(lab); btn.appendChild(meta);
+      const drop = document.createElement('div'); drop.className = 'vc-drop';
+      const inner = document.createElement('div'); inner.className = 'vc-drop-inner';
+      const wrap = document.createElement('div'); wrap.className = 'vc-chips-wrap';
+      item.phrases.forEach(p => { const c = document.createElement('span'); c.className = 'vc-chip'; c.textContent = '“' + p + '”'; wrap.appendChild(c); });
+      inner.appendChild(wrap);
+      if(item.note){ const n = document.createElement('div'); n.className = 'vc-cmd-note'; n.textContent = item.note; inner.appendChild(n); }
+      drop.appendChild(inner);
+      btn.onclick = () => row.classList.toggle('open');
+      row.appendChild(btn); row.appendChild(drop);
+      sec.appendChild(row);
+    });
+    ref.appendChild(sec);
+  });
+})();
 
 buildBars();
 update();
