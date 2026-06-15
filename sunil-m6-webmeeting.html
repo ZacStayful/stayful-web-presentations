@@ -2662,13 +2662,16 @@ document.getElementById('np-copy').addEventListener('click', async () => {
   if(PRESENT && SR){
     let last = 0, running = false, dead = false;
     const recog = new SR();
-    recog.continuous = true; recog.interimResults = true; recog.lang = 'en-GB';
+    recog.continuous = true; recog.interimResults = false; recog.lang = 'en-GB';
     recog.onstart = () => { running = true; };
     recog.onresult = e => {
+      // act only on finalised phrases so a partial ("direct booking") can't
+      // fire before the full phrase ("direct booking process") arrives
       let t = '';
-      for(let i = e.resultIndex; i < e.results.length; i++) t += e.results[i][0].transcript;
+      for(let i = e.resultIndex; i < e.results.length; i++){ if(e.results[i].isFinal) t += e.results[i][0].transcript; }
+      if(!t.trim()) return;
       const now = Date.now();
-      if(now - last < 1100) return;
+      if(now - last < 500) return;
       try { if(stCue(t)) last = now; } catch(_) {}   // a command error never kills the loop
     };
     recog.onerror = ev => { if(ev && (ev.error === 'not-allowed' || ev.error === 'service-not-allowed')) dead = true; };
