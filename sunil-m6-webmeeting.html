@@ -843,7 +843,9 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .vs-intro::before{content:"";width:24px;height:1px;background:var(--green-light);display:inline-block;}
 
 /* ── Risk profile — button + animated comparison chart ───────── */
-.risk{margin-top:20px;}
+.risk{margin-top:20px;text-align:center;}
+.risk-collapse{font-family:var(--sans);font-size:10.5px;color:rgba(243,238,224,0.6);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:99px;padding:4px 11px;cursor:pointer;margin-left:12px;vertical-align:middle;transition:all .18s var(--ease);}
+.risk-collapse:hover{background:rgba(255,255,255,0.14);color:#f3eee0;}
 .risk-btn{
   display:inline-flex;align-items:center;gap:10px;cursor:pointer;
   font-family:var(--sans);font-size:12.5px;font-weight:500;letter-spacing:0.02em;
@@ -894,7 +896,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
   font-size:9.5px;letter-spacing:0.06em;color:rgba(243,238,224,0.78);font-weight:600;
   padding:1px 8px;border-radius:99px;border:1px solid rgba(243,238,224,0.2);white-space:nowrap;
 }
-.risk-cap{font-size:11.5px;color:rgba(243,238,224,0.7);font-weight:300;line-height:1.55;margin-top:20px;max-width:640px;}
+.risk-cap{font-size:11.5px;color:rgba(243,238,224,0.7);font-weight:300;line-height:1.55;margin:20px auto 0;max-width:640px;}
 .risk-cap strong{color:#f3eee0;font-weight:500;}
 /* verdict — long let vs short let, revealed as the climax of the build */
 .verdict{
@@ -957,7 +959,8 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .hsw-soon{padding:48px 40px;text-align:center;color:rgba(243,238,224,0.5);font-size:13px;border:1px dashed rgba(255,255,255,0.14);border-radius:12px;}
 
 /* Management & your experience panel */
-.mh-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px;}
+.mh-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px;max-width:1000px;margin:0 auto;}
+.hsw-panel[data-panel="management"] .gv-flowhead,.hsw-panel[data-panel="management"] .mh-sub{text-align:center;}
 .mh-do{display:flex;align-items:flex-start;gap:9px;background:rgba(122,155,113,0.08);border:1px solid rgba(122,155,113,0.22);border-radius:10px;padding:11px 13px;font-size:12px;color:#f3eee0;font-weight:400;line-height:1.35;}
 .mh-do::before{content:"✓";color:#9fc295;font-weight:700;font-size:12px;flex-shrink:0;line-height:1.35;}
 /* Cleaning — expandable button + visual breakdown */
@@ -1886,7 +1889,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
       <span class="risk-btn-ic">▶</span><span class="risk-btn-tx">Present risk profile</span>
     </button>
     <div class="risk-chart" id="riskChart">
-      <div class="risk-head">Monthly net vs the long-let benchmark</div>
+      <div class="risk-head">Monthly net vs the long-let benchmark<button class="risk-collapse" type="button" onclick="collapseRisk(this)">Collapse ✕</button></div>
       <div class="risk-plot">
         <div class="risk-bars">
           <div class="risk-bench" style="--b:188px"><span class="risk-bench-l">Long-let benchmark · £990/mo</span></div>
@@ -2415,14 +2418,17 @@ document.getElementById('pdfOvClose').onclick = stClosePdf;
 document.getElementById('pdfOvBd').onclick = stClosePdf;
 
 function toggleReveal(btn, panelId){
-  if(window.stClearDim) window.stClearDim();   // manual click = plain open, no spotlight
   const panel = document.getElementById(panelId);
   if(!panel) return;
-  if(!panel.classList.contains('open') && window.stCloseStrays) window.stCloseStrays(panel);  // collapse other open dropdowns
+  const willOpen = !panel.classList.contains('open');
+  if(window.stClearDim) window.stClearDim();                                   // reset any prior spotlight
+  if(willOpen && window.stCloseStrays) window.stCloseStrays(panel);            // collapse other open dropdowns
   const open = panel.classList.toggle('open');
   btn.classList.toggle('open', open);
   const lbl = btn.querySelector('.rb-label');
   if(lbl){ lbl.textContent = open ? (btn.dataset.open || lbl.textContent) : (btn.dataset.shut || lbl.textContent); }
+  // a section panel (no nested cue-blocks) becomes the focus — dim the rest — like voice
+  if(open && !panel.querySelector('.cue-block') && window.stSpotlight){ window.stSpotlight(panel); }
 }
 
 const slides = document.querySelectorAll('.slide');
@@ -2473,6 +2479,11 @@ function goTo(i) {
 function nav(dir) { goTo(cur + dir); }
 
 // Risk profile — reveal chart and animate bars + counters over ~3s
+function collapseRisk(btn) {
+  const risk = btn.closest('.risk');
+  if (risk) risk.classList.remove('open');
+}
+
 function playRisk(btn) {
   const risk = btn.closest('.risk');
   if (!risk || risk.classList.contains('open')) return;
@@ -2737,6 +2748,7 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     slide = slide || activeSlide();
     if(!slide) return;
     clearDim(slide);
+    slide.querySelectorAll('.risk.open').forEach(r => r.classList.remove('open'));
     slide.querySelectorAll('[data-cue-target]').forEach(el => {
       const tgt = document.querySelector(el.getAttribute('data-cue-target'));
       if(!tgt) return;
@@ -2764,6 +2776,7 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     setTimeout(centre, 1000); setTimeout(centre, 2150);
     if(delayed){ setTimeout(centre, 2300); setTimeout(centre, 2800); }   // wait for a tab to populate first
   }
+  window.stSpotlight = spotlightPanel;
 
   // open a parent How-Stayful-works tab panel if the element lives in an inactive one
   function ensureTab(el){
