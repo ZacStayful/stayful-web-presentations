@@ -1200,6 +1200,21 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .cue-pill.reset{background:transparent;border-color:rgba(255,255,255,0.18);color:rgba(243,238,224,0.7);}
 .cue-pill.reset:hover{background:rgba(255,255,255,0.1);}
 
+/* ── Case study PDF overlay ── */
+.pdf-ov{position:fixed;inset:0;z-index:200;display:none;}
+.pdf-ov.show{display:block;}
+.pdf-ov-bd{position:absolute;inset:0;background:rgba(15,25,18,0.8);backdrop-filter:blur(6px);cursor:pointer;}
+.pdf-ov-modal{position:absolute;inset:3% 4%;display:flex;flex-direction:column;background:var(--green-dd);border:1px solid rgba(255,255,255,0.12);border-radius:16px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,0.5);}
+.pdf-ov-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 20px;background:rgba(0,0,0,0.22);border-bottom:1px solid rgba(255,255,255,0.08);}
+.pdf-ov-title{font-family:var(--serif);font-size:20px;color:#f3eee0;font-weight:400;}
+.pdf-ov-actions{display:flex;align-items:center;gap:10px;}
+.pdf-ov-tab{font-size:11.5px;color:var(--green-light);text-decoration:none;font-weight:500;letter-spacing:0.03em;padding:7px 12px;border:1px solid rgba(255,255,255,0.14);border-radius:99px;}
+.pdf-ov-tab:hover{background:rgba(255,255,255,0.08);}
+.pdf-ov-close{font-family:var(--sans);font-size:11.5px;color:#f3eee0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.16);border-radius:99px;padding:7px 14px;cursor:pointer;font-weight:500;letter-spacing:0.03em;}
+.pdf-ov-close:hover{background:rgba(255,255,255,0.18);}
+.pdf-ov-body{flex:1;background:#0f1912;}
+.pdf-ov-body iframe{width:100%;height:100%;border:0;display:block;}
+
 /* ═══ WHO BOOKS · centred + direct-booking score & nearby events ═══ */
 .wb-head{text-align:center;}
 .wb-head .eb{justify-content:center;}
@@ -1783,12 +1798,12 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
   <div class="eb fi" style="margin-top:28px;">Proof · forecast vs actual on Stayful-managed properties</div>
 
   <div class="cards-4 fi">
-    <a href="https://drive.google.com/file/d/14J1Zb8c79YLywOXEWpbXLPrRsXsOPcm8/view?usp=sharing" target="_blank" class="card" style="text-decoration:none;color:inherit;display:block;">
+    <a href="https://drive.google.com/file/d/14J1Zb8c79YLywOXEWpbXLPrRsXsOPcm8/view?usp=sharing" target="_blank" class="card" data-cue="manchester case study|case study manchester|manchester case|manchester study|eastbank case study" data-cue-label="Manchester case study" data-cue-pdf="14J1Zb8c79YLywOXEWpbXLPrRsXsOPcm8" style="text-decoration:none;color:inherit;display:block;">
       <div class="cs">Case study</div>
       <div class="ct">803 Eastbank Tower · Manchester</div>
       <div style="margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--green-light);font-weight:500;letter-spacing:0.04em;">Open case study →</div>
     </a>
-    <a href="https://drive.google.com/file/d/1wBDU2RxrOw0di244IlBxZOWWlfu_ORHn/view?usp=sharing" target="_blank" class="card" style="text-decoration:none;color:inherit;display:block;">
+    <a href="https://drive.google.com/file/d/1wBDU2RxrOw0di244IlBxZOWWlfu_ORHn/view?usp=sharing" target="_blank" class="card" data-cue="york case study|case study york|york case|york study|park crescent case study" data-cue-label="York case study" data-cue-pdf="1wBDU2RxrOw0di244IlBxZOWWlfu_ORHn" style="text-decoration:none;color:inherit;display:block;">
       <div class="cs">Case study</div>
       <div class="ct">17 Park Crescent · York</div>
       <div style="margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--green-light);font-weight:500;letter-spacing:0.04em;">Open case study →</div>
@@ -1798,7 +1813,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
       <div class="ct">Property 62186 · Full year 2025</div>
       <div style="margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--green-light);font-weight:500;letter-spacing:0.04em;">Open Uplisting insights →</div>
     </a>
-    <a href="https://drive.google.com/file/d/1j7E50JvCz8r9G38p-pjnYJ8AIp_7bZX1/view?usp=sharing" target="_blank" class="card" style="text-decoration:none;color:inherit;display:block;">
+    <a href="https://drive.google.com/file/d/1j7E50JvCz8r9G38p-pjnYJ8AIp_7bZX1/view?usp=sharing" target="_blank" class="card" data-cue="leeds case study|case study leeds|leeds case|leeds study|burley case study|beechwood case study" data-cue-label="Leeds case study" data-cue-pdf="1j7E50JvCz8r9G38p-pjnYJ8AIp_7bZX1" style="text-decoration:none;color:inherit;display:block;">
       <div class="cs">Case study</div>
       <div class="ct">7 Beechwood Mount · Burley, Leeds</div>
       <div style="margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--green-light);font-weight:500;letter-spacing:0.04em;">Open case study →</div>
@@ -2149,12 +2164,50 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
   <button class="nav-arr" id="next" aria-label="Next">→</button>
 </div>
 
+<!-- Case study PDF overlay -->
+<div class="pdf-ov" id="pdfOv" aria-hidden="true">
+  <div class="pdf-ov-bd" id="pdfOvBd"></div>
+  <div class="pdf-ov-modal">
+    <div class="pdf-ov-head">
+      <div class="pdf-ov-title" id="pdfOvTitle">Case study</div>
+      <div class="pdf-ov-actions">
+        <a class="pdf-ov-tab" id="pdfOvTab" href="#" target="_blank" rel="noopener">Open in new tab ↗</a>
+        <button class="pdf-ov-close" id="pdfOvClose" type="button">Close ✕</button>
+      </div>
+    </div>
+    <div class="pdf-ov-body"><iframe id="pdfOvFrame" title="Case study" allow="autoplay" referrerpolicy="no-referrer"></iframe></div>
+  </div>
+</div>
+
 <script>
 const FORECAST = /* ST:FORECAST_START */[791, 849, 838, 814, 833, 896, 954, 748, 774, 873, 816, 528]/* ST:FORECAST_END */;
 const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const LTL_MONTHLY = /* ST:LTL_MONTHLY_START */990/* ST:LTL_MONTHLY_END */;
 
 /* Progressive reveal — toggles a collapsible panel + swaps the button label */
+// Case study PDF overlay (in-presentation, no popup blocker)
+function stOpenPdf(fileId, title, viewUrl){
+  const ov = document.getElementById('pdfOv');
+  const fr = document.getElementById('pdfOvFrame');
+  if(!ov || !fr) return;
+  fr.src = 'https://drive.google.com/file/d/' + fileId + '/preview';
+  document.getElementById('pdfOvTitle').textContent = title || 'Case study';
+  const tab = document.getElementById('pdfOvTab');
+  if(tab) tab.href = viewUrl || ('https://drive.google.com/file/d/' + fileId + '/view');
+  ov.classList.add('show'); ov.setAttribute('aria-hidden', 'false');
+}
+function stClosePdf(){
+  const ov = document.getElementById('pdfOv');
+  const fr = document.getElementById('pdfOvFrame');
+  if(!ov) return;
+  ov.classList.remove('show'); ov.setAttribute('aria-hidden', 'true');
+  if(fr) fr.src = '';
+}
+window.stOpenPdf = stOpenPdf;
+window.stClosePdf = stClosePdf;
+document.getElementById('pdfOvClose').onclick = stClosePdf;
+document.getElementById('pdfOvBd').onclick = stClosePdf;
+
 function toggleReveal(btn, panelId){
   if(window.stClearDim) window.stClearDim();   // manual click = plain open, no spotlight
   const panel = document.getElementById(panelId);
@@ -2573,6 +2626,11 @@ document.getElementById('np-copy').addEventListener('click', async () => {
 
   // Reveal a matched cue: open-a-target cues, click-a-button cues, or spotlight blocks.
   function dispatchCue(block){
+    if(block.hasAttribute('data-cue-pdf')){
+      if(window.stOpenPdf) window.stOpenPdf(block.getAttribute('data-cue-pdf'), block.getAttribute('data-cue-label') || 'Case study', block.getAttribute('href'));
+      document.querySelectorAll('.cue-pill').forEach(p => p.classList.toggle('active', p.__block === block));
+      return;
+    }
     if(block.hasAttribute('data-cue-target')){
       doAction(block, true);
       const tgt = document.querySelector(block.getAttribute('data-cue-target'));
@@ -2597,7 +2655,7 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     if(nidx >= 0 && nidx !== cur){ goTo(nidx); return true; }
     // 2) reset / clear on the current slide
     let resetIdx = -1;
-    ['reset','show all','clear','everything','zoom out','hide'].forEach(w => { const i = p.lastIndexOf(w); if(i > resetIdx) resetIdx = i; });
+    ['reset','show all','clear','everything','zoom out','hide','close'].forEach(w => { const i = p.lastIndexOf(w); if(i > resetIdx) resetIdx = i; });
     // 3) match a section cue across every slide (most recently spoken wins)
     let best = null, bestIdx = -1, bestLen = 0, bestSlide = null;
     slides.forEach(s => {
@@ -2611,7 +2669,7 @@ document.getElementById('np-copy').addEventListener('click', async () => {
         });
       });
     });
-    if(resetIdx > bestIdx){ clearSpotlight(activeSlide()); return true; }
+    if(resetIdx > bestIdx){ if(window.stClosePdf) window.stClosePdf(); clearSpotlight(activeSlide()); return true; }
     if(best){
       if(bestSlide && bestSlide !== activeSlide()){
         const ti = [...slides].indexOf(bestSlide);
@@ -2644,7 +2702,8 @@ document.getElementById('np-copy').addEventListener('click', async () => {
       pill.textContent = b.dataset.cueLabel || (b.dataset.cue || '').split('|')[0];
       pill.__block = b;
       pill.onclick = () => {
-        if(b.hasAttribute('data-cue-target')) doAction(b, false);
+        if(b.hasAttribute('data-cue-pdf')){ if(window.stOpenPdf) window.stOpenPdf(b.getAttribute('data-cue-pdf'), b.getAttribute('data-cue-label') || 'Case study', b.getAttribute('href')); }
+        else if(b.hasAttribute('data-cue-target')) doAction(b, false);
         else if(b.hasAttribute('data-cue-click')) b.click();
         else revealBlock(b);
       };
@@ -2660,7 +2719,7 @@ document.getElementById('np-copy').addEventListener('click', async () => {
   window.__onSlideChange = function(){ clearSpotlight(); refresh(); };
 
   document.addEventListener('keydown', e => {
-    if(e.key === 'Escape'){ clearSpotlight(); }
+    if(e.key === 'Escape'){ if(window.stClosePdf) window.stClosePdf(); clearSpotlight(); }
     else if((e.key === 'c' || e.key === 'C') && !e.metaKey && !e.ctrlKey && !e.altKey){
       barPinned = !barPinned; refresh();
     }
