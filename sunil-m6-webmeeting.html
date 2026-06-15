@@ -1279,7 +1279,17 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .dbp-rstat-l{font-size:11px;color:rgba(243,238,224,0.7);margin-top:7px;line-height:1.4;}
 .dbp-rdiv{width:1px;background:rgba(255,255,255,0.14);}
 .dbp-result-tag{text-align:center;margin-top:14px;font-style:italic;font-family:var(--serif);font-size:18px;color:var(--green-light);position:relative;z-index:1;}
-@media(max-width:900px){.dbp-pipe{flex-direction:column;}.dbp-arrow{transform:rotate(90deg);align-self:center;}.dbp-grid{grid-template-columns:1fr;}}
+.dbp-hero{display:flex;align-items:center;gap:24px;justify-content:center;margin:22px auto;max-width:760px;padding:24px 34px;border-radius:18px;background:linear-gradient(135deg,var(--green-d),var(--green-dd));color:#f3eee0;position:relative;overflow:hidden;}
+.dbp-hero::before{content:"";position:absolute;top:-50%;right:-10%;width:55%;height:190%;background:radial-gradient(circle,rgba(122,155,113,0.22),transparent 70%);pointer-events:none;}
+.dbp-hero-v{font-family:var(--serif);font-size:76px;font-weight:300;color:#fff;line-height:1;position:relative;z-index:1;flex-shrink:0;}
+.dbp-hero-l{font-size:17px;color:#f3eee0;font-weight:500;line-height:1.25;position:relative;z-index:1;}
+.dbp-hero-l span{display:block;font-size:12px;color:rgba(243,238,224,0.66);font-weight:300;margin-top:6px;line-height:1.45;}
+.dbp-ben-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px;}
+.dbp-ben{padding:24px 24px;border-radius:14px;border:1px solid var(--line);background:var(--green-soft);text-align:center;}
+.dbp-ben-ic{font-size:32px;line-height:1;margin-bottom:12px;}
+.dbp-ben-h{font-family:var(--serif);font-size:22px;color:var(--green-d);margin-bottom:9px;line-height:1.1;}
+.dbp-ben-d{font-size:12.5px;color:var(--ink2);line-height:1.55;}
+@media(max-width:900px){.dbp-pipe{flex-direction:column;}.dbp-arrow{transform:rotate(90deg);align-self:center;}.dbp-grid,.dbp-ben-grid{grid-template-columns:1fr;}.dbp-hero{flex-direction:column;text-align:center;}}
 
 </style>
 </head>
@@ -1837,57 +1847,40 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
   <div class="reveal-panel fi" id="db-process">
    <div class="rp-inner"><div class="rp-pad">
     <div class="dbp">
-      <div class="eb" style="justify-content:center;">Proprietary system · every booking since 2023</div>
-      <h3 class="comp-h" style="text-align:center;">How Stayful identifies <em>direct booking</em> opportunities</h3>
-      <p class="dbp-intro">Every booking through Airbnb or Booking.com runs through a proprietary filtering &amp; scoring system. The goal is simple: find the guests genuinely worth a <strong>direct relationship</strong> — and ignore the ones who never will be. Treating every guest as a lead wastes effort and produces poor results.</p>
+      <div class="eb" style="justify-content:center;">Your bookings · working harder for you</div>
+      <h3 class="comp-h" style="text-align:center;">More of your bookings come <em>direct</em> — and cost you less</h3>
+      <p class="dbp-intro">Behind the scenes, Stayful spots the guests worth a long-term relationship and quietly builds it — so a growing share of your bookings come <strong>straight to us</strong>, with no platform in the middle. For you, that means lower fees and lower running costs, month after month.</p>
+
+      <div class="dbp-hero">
+        <div class="dbp-hero-v">30%+</div>
+        <div class="dbp-hero-l">of your bookings come direct<span>Booked straight with us — no Airbnb or Booking.com commission to pay</span></div>
+      </div>
 
       <div class="dbp-pipe">
-        <div class="dbp-stage recv"><div class="dbp-ic">📩</div><div class="dbp-sn">Input</div><div class="dbp-st">Booking received</div><div class="dbp-ss">Every Airbnb &amp; Booking.com stay</div></div>
+        <div class="dbp-stage"><div class="dbp-ic">🧭</div><div class="dbp-sn">We handle it</div><div class="dbp-st">Spot the right guests</div><div class="dbp-ss">Every platform booking is checked for direct-booking potential</div></div>
         <div class="dbp-arrow">→</div>
-        <div class="dbp-stage"><div class="dbp-ic">🚫</div><div class="dbp-sn">Stage 1</div><div class="dbp-st">Exclusion filter</div><div class="dbp-ss">4 hard rules remove non-prospects</div></div>
+        <div class="dbp-stage"><div class="dbp-ic">🤝</div><div class="dbp-sn">We handle it</div><div class="dbp-st">Build the relationship</div><div class="dbp-ss">The right guests are looked after and offered a direct rate</div></div>
         <div class="dbp-arrow">→</div>
-        <div class="dbp-stage"><div class="dbp-ic">🎯</div><div class="dbp-sn">Stage 2</div><div class="dbp-st">Intelligence scoring</div><div class="dbp-ss">4 weighted signals · 0–100</div></div>
-        <div class="dbp-arrow">→</div>
-        <div class="dbp-stage"><div class="dbp-ic">🏆</div><div class="dbp-sn">Stage 3</div><div class="dbp-st">Tiered output</div><div class="dbp-ss">3 outcomes by score</div></div>
+        <div class="dbp-stage recv"><div class="dbp-ic">🔁</div><div class="dbp-sn">You benefit</div><div class="dbp-st">They rebook direct</div><div class="dbp-ss">Repeat stays booked straight with us — fee-free</div></div>
       </div>
 
-      <div class="dbp-grid">
-        <div class="dbp-card">
-          <div class="dbp-card-eb">Stage 1 · Exclusion filter</div>
-          <div class="dbp-card-h">Remove who can't convert</div>
-          <div class="dbp-rule"><span class="rx">✕</span><span><strong>Masked proxy emails</strong> — Booking.com hides the address; can't be contacted.</span></div>
-          <div class="dbp-rule"><span class="rx">✕</span><span><strong>Foreign travellers</strong> — overseas domains aren't returning to the area.</span></div>
-          <div class="dbp-rule"><span class="rx">✕</span><span><strong>Weekend leisure stays</strong> — ≤2 nights, Fri/Sat arrival. Zero conversion.</span></div>
-          <div class="dbp-rule"><span class="rx">✕</span><span><strong>No contactable email</strong> — no valid address, no outreach.</span></div>
-          <div class="dbp-chip pad">≈ 6% of bookings remain</div>
+      <div class="dbp-card-eb" style="text-align:center;margin:24px 0 6px;letter-spacing:0.16em;">What that means for you</div>
+      <div class="dbp-ben-grid">
+        <div class="dbp-ben">
+          <div class="dbp-ben-ic">💸</div>
+          <div class="dbp-ben-h">Lower platform costs</div>
+          <div class="dbp-ben-d">Direct bookings skip the platform commission entirely — so your online platform fees fall every month as the direct share grows.</div>
         </div>
-        <div class="dbp-card">
-          <div class="dbp-card-eb">Stage 2 · Intelligence scoring</div>
-          <div class="dbp-card-h">Score the candidates</div>
-          <div class="dbp-sig"><div class="dbp-sig-l"><strong>Stay length</strong> — 28+ nights = a worker away from home</div><div class="dbp-sig-bar"><div class="dbp-sig-fill" style="width:100%"></div></div><div class="dbp-sig-v">40<span>pt</span></div></div>
-          <div class="dbp-sig"><div class="dbp-sig-l"><strong>Business email</strong> — booking on behalf of an employer</div><div class="dbp-sig-bar"><div class="dbp-sig-fill" style="width:62%"></div></div><div class="dbp-sig-v">25<span>pt</span></div></div>
-          <div class="dbp-sig"><div class="dbp-sig-l"><strong>Accommodation value</strong> — £2,000+ = high-spend need</div><div class="dbp-sig-bar"><div class="dbp-sig-fill" style="width:50%"></div></div><div class="dbp-sig-v">20<span>pt</span></div></div>
-          <div class="dbp-sig"><div class="dbp-sig-l"><strong>Personal high-spend override</strong> — 26+ nights at £1,500+</div><div class="dbp-sig-bar"><div class="dbp-sig-fill" style="width:37%"></div></div><div class="dbp-sig-v">15<span>pt</span></div></div>
+        <div class="dbp-ben">
+          <div class="dbp-ben-ic">🧹</div>
+          <div class="dbp-ben-h">Cheaper cleaning</div>
+          <div class="dbp-ben-d">Direct guests tend to stay longer, so there are fewer changeovers — meaning less cleaning &amp; laundry cost across the year.</div>
         </div>
-        <div class="dbp-card">
-          <div class="dbp-card-eb">Stage 3 · Tiered output</div>
-          <div class="dbp-card-h">Act by priority</div>
-          <div class="dbp-tier t1"><div class="dbp-tier-pts">60+</div><div class="dbp-tier-tx"><strong>Tier 1 · High priority</strong>Personal outreach — call or DM with a corporate rate.</div></div>
-          <div class="dbp-tier t2"><div class="dbp-tier-pts">30–59</div><div class="dbp-tier-tx"><strong>Tier 2 · Marketing campaign</strong>Automated, targeted direct-booking offer.</div></div>
-          <div class="dbp-tier t3"><div class="dbp-tier-pts">&lt;30</div><div class="dbp-tier-tx"><strong>Below threshold</strong>No action — not worth the outreach.</div></div>
-          <div class="dbp-override">⭐ <strong>Known direct bookers</strong> jump to the top automatically — history overrides every score.</div>
+        <div class="dbp-ben">
+          <div class="dbp-ben-ic">🛠️</div>
+          <div class="dbp-ben-h">Less maintenance</div>
+          <div class="dbp-ben-d">Longer stays and fewer guests through the door mean less wear and tear — and a noticeably lower maintenance bill.</div>
         </div>
-      </div>
-
-      <div class="dbp-result">
-        <div class="dbp-result-row">
-          <div class="dbp-rstat"><div class="dbp-rstat-v">6%</div><div class="dbp-rstat-l">of platform bookings targeted</div></div>
-          <div class="dbp-rdiv"></div>
-          <div class="dbp-rstat"><div class="dbp-rstat-v">97%</div><div class="dbp-rstat-l">of direct-booking revenue recovered</div></div>
-          <div class="dbp-rdiv"></div>
-          <div class="dbp-rstat"><div class="dbp-rstat-v">94%</div><div class="dbp-rstat-l">less outreach effort</div></div>
-        </div>
-        <div class="dbp-result-tag">A volume problem, turned into a precision one.</div>
       </div>
     </div>
    </div></div>
