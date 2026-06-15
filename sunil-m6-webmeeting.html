@@ -1424,7 +1424,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 </div>
 
 <!-- ═══ SLIDE 2: COVER ═══ -->
-<div class="slide dark" data-name="Property" data-bg="dark">
+<div class="slide dark" data-name="Property" data-bg="dark" data-cue-nav="main figures|headline figures|the main figures|the headline figures|main numbers">
   <div class="prop-head fi">
     <div class="eb">Stayful · Airbnb Management Company</div>
     <h1>What 43 The Royal Wilton Place Salford M6 3WP M6 3WP<br>could yield as a managed <em>short let</em></h1>
@@ -2549,15 +2549,24 @@ document.getElementById('np-copy').addEventListener('click', async () => {
   function navIndex(p){
     if(/\bnext slide\b/.test(p)) return Math.min(cur + 1, TOTAL - 1);
     if(/\b(previous slide|last slide|go back)\b/.test(p)) return Math.max(cur - 1, 0);
+    let best = -1, bestIdx = -1, bestLen = 0;
+    // explicit per-slide spoken aliases: data-cue-nav="phrase|phrase"
+    slides.forEach((s, i) => {
+      (s.getAttribute('data-cue-nav') || '').split('|').forEach(c => {
+        c = c.trim().toLowerCase(); if(!c) return;
+        const at = p.lastIndexOf(c);
+        if(at >= 0 && (at > bestIdx || (at === bestIdx && c.length > bestLen))){ bestIdx = at; bestLen = c.length; best = i; }
+      });
+    });
+    // slide titles (multi-word fire on the title alone; single-word/sensitive need a nav verb)
     const hasVerb = NAV_VERBS.some(v => p.includes(v));
-    let best = -1, bestIdx = -1;
     SLIDE_NAMES.forEach((name, i) => {
       const n = (name || '').toLowerCase();
       const at = p.lastIndexOf(n);
       if(at < 0) return;
       const distinctive = n.includes(' ');
       const sensitive = NAV_SENSITIVE.includes(n);
-      if(((distinctive && !sensitive) || hasVerb) && at > bestIdx){ bestIdx = at; best = i; }
+      if(((distinctive && !sensitive) || hasVerb) && (at > bestIdx || (at === bestIdx && n.length > bestLen))){ bestIdx = at; bestLen = n.length; best = i; }
     });
     return best;
   }
