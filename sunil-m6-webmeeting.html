@@ -985,6 +985,24 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .clean-op{font-family:var(--serif);font-size:24px;color:rgba(243,238,224,0.5);}
 .clean-note{margin:16px auto 0;max-width:760px;padding:13px 18px;border-radius:10px;background:rgba(122,155,113,0.12);border:1px solid rgba(122,155,113,0.28);font-size:12.5px;color:rgba(243,238,224,0.85);line-height:1.55;}
 .clean-note strong{color:#f3eee0;font-weight:600;}
+.ch-table{max-width:660px;margin:18px auto 0;text-align:left;}
+.ch-row{display:grid;grid-template-columns:1fr 110px 110px;gap:8px;align-items:center;padding:11px 16px;border-radius:9px;margin-bottom:5px;}
+.ch-row.ch-head{padding:4px 16px 2px;margin-bottom:2px;}
+.ch-head .ch-c{font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(243,238,224,0.42);font-weight:600;}
+.ch-l{font-size:12.5px;color:#f3eee0;font-weight:500;line-height:1.25;}
+.ch-l span{display:block;font-size:10px;color:rgba(243,238,224,0.5);font-weight:300;margin-top:2px;}
+.ch-c{text-align:right;font-family:var(--serif);font-size:19px;color:#f3eee0;font-weight:400;}
+.ch-row.gross{background:rgba(255,255,255,0.05);}
+.ch-row.deduct{background:rgba(184,132,31,0.1);}
+.ch-row.deduct .ch-l,.ch-row.deduct .ch-c{color:#e1b66c;}
+.ch-row.deduct.mgmt{background:rgba(122,155,113,0.16);}
+.ch-row.deduct.mgmt .ch-l,.ch-row.deduct.mgmt .ch-c{color:var(--green-light);}
+.ch-row.sub{background:transparent;}
+.ch-row.sub .ch-l,.ch-row.sub .ch-c{color:rgba(243,238,224,0.62);}
+.ch-row.net{background:linear-gradient(135deg,var(--green-d),var(--green-dd));border:1px solid var(--green-light);margin-top:6px;}
+.ch-row.net .ch-l{color:#fff;font-weight:600;}
+.ch-row.net .ch-c{color:#fff;font-size:24px;}
+@media(max-width:620px){.ch-row{grid-template-columns:1fr 80px 80px;}.ch-c{font-size:16px;}}
 .ms-item-btn{font-family:var(--sans);cursor:pointer;background:transparent;border:none;border-right:1px solid rgba(255,255,255,0.08);transition:background .18s var(--ease);border-radius:8px;}
 .ms-item-btn:last-child{border-right:none;}
 .ms-item-btn:hover{background:rgba(122,155,113,0.12);}
@@ -1955,9 +1973,28 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
   <p class="sh fi">The model in one line below — then open any area to see exactly how it works.</p>
 
   <div class="model-strip fi">
-    <div class="ms-item"><span class="ms-v">15% + VAT</span><span class="ms-l">Of net revenue · no setup, monthly or exit fee</span></div>
+    <button class="ms-item ms-item-btn" type="button" data-cue="stayful management charges|management charges|how stayful charges|how does stayful charge|how do you charge|where do you charge|your management fee|how the fee works" data-cue-label="Management charges" data-cue-target="#charges-reveal" data-cue-class="open" onclick="toggleReveal(this,'charges-reveal')"><span class="ms-v">15% + VAT</span><span class="ms-l">Of net revenue · no setup, monthly or exit fee</span><span class="ms-cta">See how it works <span class="ms-cta-ic">▾</span></span></button>
     <button class="ms-item ms-item-btn" type="button" data-cue="how stayful cleaning works|how cleaning works|cleaning works|how does cleaning work|cleaning fee|the cleaning|cleaning explained" data-cue-label="Cleaning" data-cue-target="#cleaning-reveal" data-cue-class="open" onclick="toggleReveal(this,'cleaning-reveal')"><span class="ms-v">Cleaning</span><span class="ms-l">Charged to guests, not your income</span><span class="ms-cta">See how it works <span class="ms-cta-ic">▾</span></span></button>
     <div class="ms-item"><span class="ms-v">6-month min</span><span class="ms-l">Then rolling · ~3 weeks to go live</span></div>
+  </div>
+
+  <div class="reveal-panel fi" id="charges-reveal">
+   <div class="rp-inner"><div class="rp-pad">
+    <div class="clean-box charges-box">
+      <div class="clean-eb">How Stayful charges</div>
+      <h4 class="clean-h">We charge 15% — but only on <em>what's left after the platforms</em></h4>
+      <p class="clean-intro">No setup, monthly or exit fees. The booking platforms take their cut first; we then charge our management fee on what remains — so we only earn when you do.</p>
+      <div class="ch-table">
+        <div class="ch-row ch-head"><div class="ch-l"></div><div class="ch-c">Annual</div><div class="ch-c">Monthly</div></div>
+        <div class="ch-row gross"><div class="ch-l">Gross bookings</div><div class="ch-c"><!-- ST:CH_GROSS_Y_START -->£18,672<!-- ST:CH_GROSS_Y_END --></div><div class="ch-c"><!-- ST:CH_GROSS_M_START -->£1,556<!-- ST:CH_GROSS_M_END --></div></div>
+        <div class="ch-row deduct"><div class="ch-l">− Online platform fees <span>15% · Airbnb, Booking.com</span></div><div class="ch-c"><!-- ST:CH_PLAT_Y_START -->−£2,801<!-- ST:CH_PLAT_Y_END --></div><div class="ch-c"><!-- ST:CH_PLAT_M_START -->−£233<!-- ST:CH_PLAT_M_END --></div></div>
+        <div class="ch-row sub"><div class="ch-l">After platform fees</div><div class="ch-c"><!-- ST:CH_AFTER_Y_START -->£15,871<!-- ST:CH_AFTER_Y_END --></div><div class="ch-c"><!-- ST:CH_AFTER_M_START -->£1,323<!-- ST:CH_AFTER_M_END --></div></div>
+        <div class="ch-row deduct mgmt"><div class="ch-l">− Stayful management <span>15% of what's left</span></div><div class="ch-c"><!-- ST:CH_MGMT_Y_START -->−£2,381<!-- ST:CH_MGMT_Y_END --></div><div class="ch-c"><!-- ST:CH_MGMT_M_START -->−£198<!-- ST:CH_MGMT_M_END --></div></div>
+        <div class="ch-row net"><div class="ch-l">Your net income</div><div class="ch-c"><!-- ST:CH_NET_Y_START -->£13,490<!-- ST:CH_NET_Y_END --></div><div class="ch-c"><!-- ST:CH_NET_M_START -->£1,124<!-- ST:CH_NET_M_END --></div></div>
+      </div>
+      <div class="clean-note">Our fee is <strong>15% of net revenue</strong> — the booking income left after the platforms. No fee on the platforms' cut, and nothing until you're earning.</div>
+    </div>
+   </div></div>
   </div>
 
   <div class="reveal-panel fi" id="cleaning-reveal">
