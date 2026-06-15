@@ -960,6 +960,32 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .mh-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px;}
 .mh-do{display:flex;align-items:flex-start;gap:9px;background:rgba(122,155,113,0.08);border:1px solid rgba(122,155,113,0.22);border-radius:10px;padding:11px 13px;font-size:12px;color:#f3eee0;font-weight:400;line-height:1.35;}
 .mh-do::before{content:"✓";color:#9fc295;font-weight:700;font-size:12px;flex-shrink:0;line-height:1.35;}
+/* Cleaning — expandable button + visual breakdown */
+.mh-do-btn{font-family:var(--sans);cursor:pointer;text-align:left;width:100%;}
+.mh-do-btn .mh-do-ic{margin-left:auto;color:#9fc295;font-size:11px;transition:transform .3s var(--ease);flex-shrink:0;}
+.mh-do-btn:hover{background:rgba(122,155,113,0.16);}
+.mh-do-btn.open{background:rgba(122,155,113,0.18);border-color:rgba(122,155,113,0.45);}
+.mh-do-btn.open .mh-do-ic{transform:rotate(180deg);}
+.clean-box{margin-top:14px;padding:22px 24px;border-radius:14px;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.1);}
+.clean-eb{font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--green-light);font-weight:600;}
+.clean-h{font-family:var(--serif);font-size:24px;font-weight:400;color:#f3eee0;line-height:1.12;margin:5px 0 10px;}
+.clean-h em{font-style:italic;color:var(--green-light);}
+.clean-intro{font-size:13px;color:rgba(243,238,224,0.8);line-height:1.6;font-weight:300;max-width:860px;}
+.clean-intro strong{color:#f3eee0;font-weight:600;}
+.clean-eg{margin-top:18px;}
+.clean-eg-h{font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(243,238,224,0.5);font-weight:600;margin-bottom:12px;}
+.clean-flow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.clean-chip{padding:14px 20px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);text-align:center;min-width:104px;}
+.clean-chip .clean-v{font-family:var(--serif);font-size:30px;font-weight:300;color:#fff;line-height:1;}
+.clean-chip .clean-l{font-size:10.5px;color:rgba(243,238,224,0.6);margin-top:6px;letter-spacing:0.02em;}
+.clean-chip.stay{background:rgba(122,155,113,0.16);border-color:rgba(122,155,113,0.4);}
+.clean-chip.fee{background:rgba(184,132,31,0.14);border-color:rgba(184,132,31,0.38);}
+.clean-chip.fee .clean-v{color:#e1b66c;}
+.clean-chip.total{background:linear-gradient(135deg,var(--green-d),var(--green-dd));border-color:var(--green-light);}
+.clean-op{font-family:var(--serif);font-size:24px;color:rgba(243,238,224,0.5);}
+.clean-note{margin-top:16px;padding:13px 18px;border-radius:10px;background:rgba(122,155,113,0.12);border:1px solid rgba(122,155,113,0.28);font-size:12.5px;color:rgba(243,238,224,0.85);line-height:1.55;}
+.clean-note strong{color:#f3eee0;font-weight:600;}
+@media(max-width:760px){.clean-flow{flex-direction:column;align-items:stretch;}.clean-op{text-align:center;}}
 .mh-tools{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
 .mh-tile{display:block;text-decoration:none;color:inherit;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;transition:transform .2s var(--ease),border-color .2s var(--ease),box-shadow .2s var(--ease);}
 .mh-tile:hover{transform:translateY(-2px);border-color:rgba(122,155,113,0.45);box-shadow:0 14px 34px rgba(0,0,0,0.34);}
@@ -2066,9 +2092,32 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
           <div class="mh-do">Dynamic pricing — adjusted weekly, often daily</div>
           <div class="mh-do">Guest screening, ID verification &amp; deposit collection</div>
           <div class="mh-do">Check-in, key handover &amp; in-stay support</div>
-          <div class="mh-do">Cleaning coordination after every stay</div>
+          <button class="mh-do mh-do-btn" type="button" data-cue="how stayful cleaning works|how cleaning works|cleaning works|how does cleaning work|cleaning fee|the cleaning|cleaning explained" data-cue-label="Cleaning" data-cue-target="#cleaning-reveal" data-cue-class="open" onclick="toggleReveal(this,'cleaning-reveal')"><span class="mh-do-tx">Cleaning coordination after every stay</span><span class="mh-do-ic">▾</span></button>
           <div class="mh-do">Repairs handling up to £300 without consultation</div>
           <div class="mh-do">Monthly P&amp;L report straight to your inbox</div>
+        </div>
+
+        <div class="reveal-panel" id="cleaning-reveal">
+         <div class="rp-inner"><div class="rp-pad">
+          <div class="clean-box">
+            <div class="clean-eb">How cleaning works</div>
+            <h4 class="clean-h">Cleaning is charged to the guest — <em>not deducted from you</em></h4>
+            <p class="clean-intro">In your income estimate, cleaning shows as a cost because we forecast <strong>total revenue</strong> — which already includes the cleaning fee guests pay. In reality the guest pays that fee <strong>on top of</strong> the nightly rate, so it washes through and never comes out of your earnings.</p>
+            <div class="clean-eg">
+              <div class="clean-eg-h">Example · a 3-night stay</div>
+              <div class="clean-flow">
+                <div class="clean-chip"><div class="clean-v">£100</div><div class="clean-l">× 3 nights</div></div>
+                <div class="clean-op">=</div>
+                <div class="clean-chip stay"><div class="clean-v">£300</div><div class="clean-l">accommodation</div></div>
+                <div class="clean-op">+</div>
+                <div class="clean-chip fee"><div class="clean-v">£100</div><div class="clean-l">cleaning fee</div></div>
+                <div class="clean-op">=</div>
+                <div class="clean-chip total"><div class="clean-v">£400</div><div class="clean-l">guest pays</div></div>
+              </div>
+            </div>
+            <div class="clean-note">The guest pays <strong>£400</strong> in total. The <strong>£100 cleaning</strong> is theirs to cover — your <strong>£300</strong> accommodation revenue is untouched.</div>
+          </div>
+         </div></div>
         </div>
 
         <div class="mh-sub">What you'll see · live tools, every day</div>
@@ -2552,7 +2601,7 @@ document.getElementById('np-copy').addEventListener('click', async () => {
   }
 
   // Spotlight an opened reveal panel (voice/cue path): show it alone, dim the rest, centre it
-  function spotlightPanel(panel){
+  function spotlightPanel(panel, delayed){
     const slide = panel.closest('.slide'); if(!slide) return;
     slide.querySelectorAll('.reveal-panel.open').forEach(p => {
       if(p === panel) return;
@@ -2565,6 +2614,18 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     const centre = () => panel.scrollIntoView({behavior:'smooth', block:'center'});
     requestAnimationFrame(() => requestAnimationFrame(centre));
     setTimeout(centre, 1000); setTimeout(centre, 2150);
+    if(delayed){ setTimeout(centre, 2300); setTimeout(centre, 2800); }   // wait for a tab to populate first
+  }
+
+  // open a parent How-Stayful-works tab panel if the element lives in an inactive one
+  function ensureTab(el){
+    const hp = el.closest('.hsw-panel');
+    if(hp && !hp.classList.contains('active')){
+      const hub = hp.closest('.hsw');
+      const tabBtn = hub && hub.querySelector('.hsw-tab[data-panel="' + hp.getAttribute('data-panel') + '"]');
+      if(tabBtn && typeof hswOpen === 'function'){ const switching = !!hub.querySelector('.hsw-panel.active'); hswOpen(tabBtn); return switching; }
+    }
+    return false;
   }
 
   function revealBlock(block){
@@ -2572,14 +2633,7 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     const slide = block.closest('.slide') || activeSlide();
     if(!slide) return;
     const already = slide.classList.contains('spotlight') && block.classList.contains('lit');
-    // if the block lives in an inactive tab panel (How Stayful works hub), open that tab first
-    let tabSwitching = false;
-    const hp = block.closest('.hsw-panel');
-    if(hp && !hp.classList.contains('active')){
-      const hub = hp.closest('.hsw');
-      const tabBtn = hub && hub.querySelector('.hsw-tab[data-panel="' + hp.getAttribute('data-panel') + '"]');
-      if(tabBtn && typeof hswOpen === 'function'){ tabSwitching = !!hub.querySelector('.hsw-panel.active'); hswOpen(tabBtn); }
-    }
+    const tabSwitching = ensureTab(block);
     const opened = openAncestors(block);
     slide.classList.add('spotlight');
     slide.querySelectorAll('.cue-block.lit').forEach(b => { if(b !== block) b.classList.remove('lit'); });
@@ -2652,10 +2706,11 @@ document.getElementById('np-copy').addEventListener('click', async () => {
       return;
     }
     if(block.hasAttribute('data-cue-target')){
+      const switching = ensureTab(block);   // open a parent tab (e.g. Management) if needed
       doAction(block, true);
       const tgt = document.querySelector(block.getAttribute('data-cue-target'));
       // a reveal panel opened by voice gets the full Numbers-style spotlight + centre
-      if(tgt && tgt.classList.contains('reveal-panel') && tgt.classList.contains('open')) spotlightPanel(tgt);
+      if(tgt && tgt.classList.contains('reveal-panel') && tgt.classList.contains('open')) spotlightPanel(tgt, switching);
     }
     else if(block.hasAttribute('data-cue-click')){
       block.click();   // run the button's own handler (idempotent — handlers guard re-runs)
