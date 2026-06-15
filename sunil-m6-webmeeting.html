@@ -1185,16 +1185,6 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
   opacity:0;pointer-events:none;transition:opacity .3s var(--ease);
 }
 .cue-bar.show{opacity:1;pointer-events:auto;}
-.cue-heard{
-  position:fixed;left:50%;bottom:106px;transform:translateX(-50%);z-index:70;
-  max-width:80vw;font-size:11px;color:rgba(243,238,224,0.62);
-  background:rgba(26,36,24,0.82);backdrop-filter:blur(10px);
-  padding:5px 13px;border-radius:99px;border:1px solid rgba(255,255,255,0.08);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;
-  opacity:0;transition:opacity .2s var(--ease);
-}
-.cue-heard.show{opacity:1;}
-.cue-heard.hit{color:#bcd1b3;border-color:rgba(122,155,113,0.4);}
 .cue-bar-lbl{font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(243,238,224,0.42);font-weight:600;padding:0 4px;}
 .cue-pill{
   font-size:11px;color:#f3eee0;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);
@@ -1613,7 +1603,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
         <div class="rv-note">This is the gap most owners never see — slow review growth is <strong>why most management companies miss the returns they quoted</strong>. We obsess over review conversion so your listing climbs to the top far faster.</div>
         </div><!-- /cue Reviews -->
 
-        <div class="amenity-block cue-block" data-cue="amenit|amenities|amenity|the extras|extras|features|add ons|hot tub|premium" data-cue-label="Amenities">
+        <div class="amenity-block cue-block" data-cue="amenities|amenity|hot tub|premium|rate premium|extras" data-cue-label="Amenities">
           <div class="amenity-head">
             <div class="amenity-eb">Once you're established</div>
             <div class="amenity-h">Amenities that unlock a rate premium</div>
@@ -2397,11 +2387,6 @@ document.getElementById('np-copy').addEventListener('click', async () => {
   document.body.appendChild(bar);
   let barPinned = PRESENT;
 
-  // Live "heard" readout — shows what the recogniser captured (diagnostic + tuning)
-  const heardEl = document.createElement('div');
-  heardEl.className = 'cue-heard';
-  document.body.appendChild(heardEl);
-
   function refresh(){
     const slide = activeSlide();
     const blocks = slide ? [...slide.querySelectorAll('[data-cue]')] : [];
@@ -2437,41 +2422,22 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     }
   });
 
-  // Built-in mic (opt-in via ?present=1) — drives stCue directly, with visible status
+  // Built-in mic (opt-in via ?present=1) — drives stCue directly
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(PRESENT){
-    const say = (txt, hit) => { heardEl.textContent = txt; heardEl.classList.add('show'); heardEl.classList.toggle('hit', !!hit); };
-    if(!SR){
-      say('⚠️ No speech recognition in this browser — use Chrome');
-    } else {
-      say('🎙 Starting…');
-      let last = 0, started = false, stopped = false;
-      const recog = new SR();
-      recog.continuous = true; recog.interimResults = true; recog.lang = 'en-GB';
-      recog.onstart = () => { started = true; say('🎙 Listening…'); };
-      recog.onresult = e => {
-        let t = '';
-        for(let i = e.resultIndex; i < e.results.length; i++) t += e.results[i][0].transcript;
-        const trimmed = t.trim();
-        say('🎙 ' + (trimmed || 'Listening…'));
-        const now = Date.now();
-        if(now - last < 1100) return;
-        if(stCue(t)){ last = now; heardEl.classList.add('hit'); }
-      };
-      recog.onerror = ev => {
-        if(ev.error === 'not-allowed' || ev.error === 'service-not-allowed'){
-          stopped = true; say('⚠️ Mic blocked — allow the microphone, then reload');
-        } else if(ev.error !== 'no-speech' && ev.error !== 'aborted' && ev.error !== 'network'){
-          say('⚠️ mic: ' + ev.error);
-        }
-      };
-      recog.onend = () => { started = false; if(!stopped) setTimeout(() => { try{ recog.start(); }catch(_){} }, 350); };
-      const kick = () => { if(!started && !stopped){ try{ recog.start(); }catch(_){} } };
-      kick();
-      // Some setups only grant the mic after a user gesture — retry on first interaction
-      window.addEventListener('click', kick);
-      window.addEventListener('keydown', kick);
-    }
+  if(PRESENT && SR){
+    let last = 0;
+    const recog = new SR();
+    recog.continuous = true; recog.interimResults = true; recog.lang = 'en-GB';
+    recog.onresult = e => {
+      let t = '';
+      for(let i = e.resultIndex; i < e.results.length; i++) t += e.results[i][0].transcript;
+      const now = Date.now();
+      if(now - last < 1100) return;
+      if(stCue(t)) last = now;
+    };
+    recog.onerror = () => {};
+    recog.onend = () => { try{ recog.start(); }catch(_){} };
+    try{ recog.start(); }catch(_){}
   }
 
   refresh();
