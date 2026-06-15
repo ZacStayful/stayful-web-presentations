@@ -31,6 +31,15 @@
   --serif:'Cormorant Garamond',Georgia,serif;
   --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
   --ease:cubic-bezier(0.4,0,0.2,1);
+  /* Aliases used by the folded-in comparables / amenity blocks */
+  --bd:var(--line);
+  --gp:var(--green-soft);
+  --ch:var(--green-d);
+  --mid:var(--ink2);
+  --mu:var(--muted);
+  --gd:var(--green-d);
+  --gc:#f3eee0;
+  --amp:var(--am-pale);
 }
 html,body{width:100%;height:100%;overflow:hidden;background:var(--cream);font-family:var(--sans);color:var(--ink);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased;}
 
@@ -1048,6 +1057,93 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .at-edge{background:rgba(93,129,86,0.1);color:var(--green);border:1px solid rgba(93,129,86,0.2);}
 .at-gap{background:white;color:var(--am);border:1px solid rgba(196,124,26,0.25);}
 
+/* ═══ NUMBERS SLIDE · centred + progressive reveal ═══ */
+.num-head{text-align:center;max-width:840px;margin:0 auto;}
+.num-head .eb{justify-content:center;}
+.num-head h2,.num-head .sh{margin-left:auto;margin-right:auto;}
+.num-head .sh{text-align:center;}
+.num-body{max-width:840px;margin:0 auto;width:100%;}
+.num-body .chart-wrap{margin-top:24px;}
+
+/* Reveal buttons + collapsible panels */
+.reveal-row{display:flex;justify-content:center;margin-top:24px;}
+.reveal-btn{
+  font-family:var(--sans);font-size:12.5px;font-weight:500;letter-spacing:0.03em;
+  color:#fff;background:var(--green-d);border:1px solid var(--green-d);border-radius:99px;
+  padding:12px 26px;cursor:pointer;display:inline-flex;align-items:center;gap:10px;
+  transition:all .2s var(--ease);
+}
+.reveal-btn:hover{background:var(--green-dd);border-color:var(--green-dd);}
+.reveal-btn .rb-ic{font-size:15px;line-height:1;transition:transform .3s var(--ease);}
+.reveal-btn.open .rb-ic{transform:rotate(45deg);}
+.reveal-btn.alt{background:transparent;color:var(--green-d);border-color:rgba(45,74,53,0.28);}
+.reveal-btn.alt:hover{background:var(--green-soft);border-color:rgba(45,74,53,0.4);}
+
+.reveal-panel{
+  display:grid;grid-template-rows:0fr;opacity:0;
+  transition:grid-template-rows 2s var(--ease),opacity 2s var(--ease);
+}
+.reveal-panel.open{grid-template-rows:1fr;opacity:1;}
+.reveal-panel>.rp-inner{overflow:hidden;min-height:0;}
+.rp-pad{padding-top:30px;}
+.rp-pad .eb{justify-content:center;}
+.rp-pad .comp-h{text-align:center;}
+
+/* Journey framing */
+.journey-intro{
+  max-width:760px;margin:0 auto 8px;text-align:center;
+  font-size:13.5px;color:var(--ink2);line-height:1.6;font-weight:400;
+}
+.journey-intro strong{color:var(--green-d);font-weight:600;}
+
+/* Journey timeline + progress meter */
+.jt{max-width:820px;margin:18px auto 4px;}
+.jt-track{position:relative;height:7px;border-radius:99px;background:var(--green-soft);
+  border:1px solid var(--line);margin:74px 46px 96px;}
+.jt-fill{position:absolute;left:0;top:-1px;bottom:-1px;width:0;border-radius:99px;
+  background:linear-gradient(90deg,var(--am),var(--green) 55%,var(--green-d));
+  transition:width 2s var(--ease) .35s;}
+.reveal-panel.open .jt-fill{width:100%;}
+.jt-node{position:absolute;top:50%;transform:translateY(-50%);}
+.jt-dot{width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--green);
+  position:relative;z-index:2;transform:translateX(-50%);transition:all .4s var(--ease);}
+.jt-dot.is-now{border-color:var(--am);box-shadow:0 0 0 5px rgba(184,132,31,0.14);}
+.jt-dot.is-top{border-color:var(--green-d);background:var(--green-d);box-shadow:0 0 0 5px rgba(45,74,53,0.12);}
+.jt-above{position:absolute;bottom:24px;left:0;transform:translateX(-50%);white-space:nowrap;text-align:center;}
+.jt-below{position:absolute;top:26px;left:0;transform:translateX(-50%);white-space:nowrap;text-align:center;}
+.jt-stat{display:inline-block;font-family:var(--serif);font-size:22px;color:var(--green-d);line-height:1;}
+.jt-node.is-now .jt-stat{color:var(--am);}
+.jt-mini{font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-top:5px;}
+.jt-stage{font-size:13px;font-weight:600;color:var(--green-d);}
+.jt-time{font-size:11px;color:var(--muted);font-weight:400;margin-top:3px;}
+.jt-node.is-top .jt-stage{color:var(--green-d);}
+.jt-badge{display:inline-block;margin-top:5px;font-size:8.5px;letter-spacing:0.08em;text-transform:uppercase;
+  background:var(--green-d);color:#fff;padding:2px 8px;border-radius:99px;font-weight:600;}
+
+/* What speeds it up — Stayful expertise */
+.speed-head{text-align:center;margin:24px 0 14px;}
+.speed-eb{font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--green);font-weight:600;}
+.speed-h{font-family:var(--serif);font-size:23px;color:var(--green-d);font-weight:400;margin-top:5px;line-height:1.15;}
+.speed-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.speed-card{padding:16px 16px;border-radius:12px;background:var(--green-soft);border:1px solid var(--line);text-align:center;}
+.speed-ic{font-size:20px;line-height:1;margin-bottom:8px;}
+.speed-t{font-size:12.5px;font-weight:600;color:var(--green-d);margin-bottom:4px;}
+.speed-d{font-size:10.5px;color:var(--muted);font-weight:300;line-height:1.45;}
+
+/* Amenity reframe — complementary, at the end */
+.amenity-block{margin-top:26px;}
+.amenity-head{text-align:center;margin-bottom:6px;}
+.amenity-eb{font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--am);font-weight:600;}
+.amenity-h{font-family:var(--serif);font-size:23px;color:var(--green-d);font-weight:400;margin-top:5px;line-height:1.15;}
+.amenity-note{
+  max-width:720px;margin:8px auto 16px;text-align:center;
+  font-size:11.5px;color:var(--ink2);line-height:1.55;font-weight:400;
+  padding:11px 18px;background:var(--am-pale);border-radius:10px;border:1px solid rgba(184,132,31,0.18);
+}
+.amenity-note strong{color:var(--am);font-weight:600;}
+
+@media(max-width:900px){.speed-grid,.amenity-intel{grid-template-columns:1fr;}}
+
 </style>
 </head>
 <body>
@@ -1296,68 +1392,59 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 
 <!-- ═══ SLIDE 6: NUMBERS ═══ -->
 <div class="slide white" data-name="The Numbers" data-bg="white">
-  <div class="fi"><div class="eb">Twelve months · Real demand · 43 The Royal Wilton Place Salford M6 3WP M6 3WP M6</div></div>
-  <h2 class="fi">£809 average per month — <em>-£181/month more than long-let</em></h2>
-  <p class="sh fi">Even December — the quietest month at £528 — still beats long-let. Short-let averages -£181/month more than long-let, every month.</p>
-
-  <div class="chart-wrap fi" id="chart">
-    <div class="chart-h">Net monthly income · 43 The Royal Wilton Place Salford M6 3WP M6 3WP · Dashed line = long-let net £990</div>
-    <div class="bars" id="bars"></div>
-    <div class="bnames" id="bnames"></div>
-    <div class="ltl-line" id="ltl-line" style="bottom:42px;"></div>
-    <div class="ltl-lbl" style="bottom:33px;">LTL £990</div>
+  <div class="num-head fi">
+    <div class="eb">Twelve months · Real demand · 43 The Royal Wilton Place Salford M6 3WP M6 3WP M6</div>
+    <h2>£809 average per month — <em>-£181/month more than long-let</em></h2>
+    <p class="sh">Even December — the quietest month at £528 — still beats long-let. Short-let averages -£181/month more than long-let, every month.</p>
   </div>
 
-  <div class="income-strip fi">
-    <div class="is-cell">
-      <div class="is-l">Quietest month — December</div>
-      <div class="is-v">£528</div>
-      <div class="is-n">-£462 above long-let, even in the quietest month</div>
-    </div>
-    <div class="is-cell">
-      <div class="is-l">Peak month — July</div>
-      <div class="is-v">£954</div>
-      <div class="is-n">-£36 above long-let</div>
-    </div>
-  </div>
-
-  <!-- Folded-in comparables section -->
-  <div class="merge-divider fi"></div>
-
-  <div class="comp-section fi">
-    <div class="eb">12 active Airbnb listings within 0.34 km · 43 The Royal Wilton Place Salford M6 3WP M6 3WP</div>
-    <h3 class="comp-h">The market your listing enters — <em>all active comparables</em></h3>
-
-    <div class="comp-banner">
-      <div class="cb-item"><div class="cb-l">Average Rating</div><div class="cb-v">4.5 ★</div></div>
-      <div class="cb-div"></div>
-      <div class="cb-item"><div class="cb-l">Average Reviews</div><div class="cb-v">19</div></div>
-      <div class="cb-div"></div>
-      <div class="cb-item"><div class="cb-l">Average Nightly Rate</div><div class="cb-v">£92</div></div>
-      <div class="cb-div"></div>
-      <div class="cb-item"><div class="cb-l">Average Occupancy</div><div class="cb-v">56%</div></div>
-      <div class="cb-div"></div>
-      <div class="cb-item"><div class="cb-l">Average Annual Revenue</div><div class="cb-v">£13,683</div></div>
+  <div class="num-body fi">
+    <div class="chart-wrap" id="chart">
+      <div class="chart-h">Net monthly income · 43 The Royal Wilton Place Salford M6 3WP M6 3WP · Dashed line = long-let net £990</div>
+      <div class="bars" id="bars"></div>
+      <div class="bnames" id="bnames"></div>
+      <div class="ltl-line" id="ltl-line" style="bottom:42px;"></div>
+      <div class="ltl-lbl" style="bottom:33px;">LTL £990</div>
     </div>
 
-    <div class="rev-outlook fi">
-      <div class="ro-card ro-catchup">
-        <div class="ro-eb">Time to become competitive</div>
-        <div class="ro-headline"><strong>6–10 months</strong> to reach the market average of 19 reviews</div>
-        <div class="ro-note">You can expect to achieve 85% of the forecast figures from 10 reviews onwards.</div>
+    <div class="income-strip">
+      <div class="is-cell">
+        <div class="is-l">Quietest month — December</div>
+        <div class="is-v">£528</div>
+        <div class="is-n">-£462 above long-let, even in the quietest month</div>
       </div>
-      <div class="ro-card ro-top">
-        <div class="ro-eb">Beat the average → top 10% of listings in this area</div>
-        <div class="ro-figs">
-          <div class="ro-fig"><div class="ro-fig-l">Annual net revenue</div><div class="ro-fig-v">£12,017</div></div>
-          <div class="ro-fig-div"></div>
-          <div class="ro-fig"><div class="ro-fig-l">Monthly net</div><div class="ro-fig-v">£1,001</div></div>
-        </div>
-        <div class="ro-note">Based on the area's top performer — £23,111 gross, less 48% operating costs.</div>
+      <div class="is-cell">
+        <div class="is-l">Peak month — July</div>
+        <div class="is-v">£954</div>
+        <div class="is-n">-£36 above long-let</div>
       </div>
     </div>
 
-    <div class="comp-table">
+    <!-- View competition → reveals the comparables first -->
+    <div class="reveal-row">
+      <button class="reveal-btn" type="button" data-shut="View competition" data-open="Hide competition" onclick="toggleReveal(this,'comp-reveal')">
+        <span class="rb-ic">+</span><span class="rb-label">View competition</span>
+      </button>
+    </div>
+
+    <div class="reveal-panel" id="comp-reveal">
+     <div class="rp-inner"><div class="rp-pad">
+      <div class="eb">12 active Airbnb listings within 0.34 km · 43 The Royal Wilton Place Salford M6 3WP M6 3WP</div>
+      <h3 class="comp-h">The market your listing enters — <em>all active comparables</em></h3>
+
+      <div class="comp-banner">
+        <div class="cb-item"><div class="cb-l">Average Rating</div><div class="cb-v">4.5 ★</div></div>
+        <div class="cb-div"></div>
+        <div class="cb-item"><div class="cb-l">Average Reviews</div><div class="cb-v">19</div></div>
+        <div class="cb-div"></div>
+        <div class="cb-item"><div class="cb-l">Average Nightly Rate</div><div class="cb-v">£92</div></div>
+        <div class="cb-div"></div>
+        <div class="cb-item"><div class="cb-l">Average Occupancy</div><div class="cb-v">56%</div></div>
+        <div class="cb-div"></div>
+        <div class="cb-item"><div class="cb-l">Average Annual Revenue</div><div class="cb-v">£13,683</div></div>
+      </div>
+
+      <div class="comp-table">
       <div class="comp-row head"><div>Property</div><div>Dist</div><div>Nightly</div><div>Occ</div><div>Annual</div><div>Rating</div></div>
 <!-- ST:BLOCK_START COMP_ROWS -->
       <div class="comp-row"><div class="name">Close to Salford Quays, City Centre & Salford Uni</div><div>0.09 km</div><div class="num">£63</div><div class="num">48%</div><div class="num">£11,155</div><div class="num rat">5.0 ★</div></div>
@@ -1373,15 +1460,90 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
       <div class="comp-row"><div class="name">8A PLAB Only, Mixed, Shared Single</div><div>0.16 km</div><div class="num">£101</div><div class="num">39%</div><div class="num">£6,248</div><div class="num rat">4.0 ★</div></div>
       <div class="comp-row"><div class="name">11B PLAB Only, Mixed, Shared Single</div><div>0.18 km</div><div class="num">£92</div><div class="num">48%</div><div class="num">£15,842</div><div class="num rat">5.0 ★</div></div>
 <!-- ST:BLOCK_END COMP_ROWS -->
-    </div>
+      </div>
 
+      <!-- Your path to the top → reveals the journey -->
+      <div class="reveal-row">
+        <button class="reveal-btn alt" type="button" data-shut="Your path to the top" data-open="Hide the path" onclick="toggleReveal(this,'journey-reveal')">
+          <span class="rb-ic">+</span><span class="rb-label">Your path to the top</span>
+        </button>
+      </div>
+
+      <div class="reveal-panel" id="journey-reveal">
+       <div class="rp-inner"><div class="rp-pad">
+        <div class="eb">From new listing to market leader</div>
+        <h3 class="comp-h">Your listing starts <em>brand-new</em> — here's the path to the top</h3>
+        <p class="journey-intro">Every comparable above is an <strong>established listing</strong> with reviews and a rating history. Yours starts fresh. Most listings turn <strong>competitive after ~10 strong reviews</strong> — but to reach the <strong>top of the market</strong> you need to match or beat the area average of <strong>19 reviews</strong> and <strong>4.5★</strong>. Here's how long that takes — and how we get you there faster.</p>
+
+        <div class="jt">
+          <div class="jt-track">
+            <div class="jt-fill"></div>
+            <div class="jt-node is-now" style="left:6%">
+              <div class="jt-above"><span class="jt-stat">0</span><div class="jt-mini">reviews</div></div>
+              <div class="jt-dot is-now"></div>
+              <div class="jt-below"><div class="jt-stage">New listing</div><div class="jt-time">Today · go live</div></div>
+            </div>
+            <div class="jt-node" style="left:50%">
+              <div class="jt-above"><span class="jt-stat">~10</span><div class="jt-mini">reviews</div></div>
+              <div class="jt-dot"></div>
+              <div class="jt-below"><div class="jt-stage">Competitive</div><div class="jt-time">~Month 6 · 85% of forecast</div></div>
+            </div>
+            <div class="jt-node is-top" style="left:94%">
+              <div class="jt-above"><span class="jt-stat">19+</span><div class="jt-mini">reviews · 4.5★</div></div>
+              <div class="jt-dot is-top"></div>
+              <div class="jt-below"><div class="jt-stage">Top 10%</div><div class="jt-time">~Month 6–10</div><span class="jt-badge">Market leader</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rev-outlook">
+          <div class="ro-card ro-catchup">
+            <div class="ro-eb">Time to become competitive</div>
+            <div class="ro-headline"><strong>6–10 months</strong> to reach the market average of 19 reviews</div>
+            <div class="ro-note">You can expect to achieve 85% of the forecast figures from 10 reviews onwards.</div>
+          </div>
+          <div class="ro-card ro-top">
+            <div class="ro-eb">Beat the average → top 10% of listings in this area</div>
+            <div class="ro-figs">
+              <div class="ro-fig"><div class="ro-fig-l">Annual net revenue</div><div class="ro-fig-v">£12,017</div></div>
+              <div class="ro-fig-div"></div>
+              <div class="ro-fig"><div class="ro-fig-l">Monthly net</div><div class="ro-fig-v">£1,001</div></div>
+            </div>
+            <div class="ro-note">Based on the area's top performer — £23,111 gross, less 48% operating costs.</div>
+          </div>
+        </div>
+
+        <div class="speed-head">
+          <div class="speed-eb">Our expertise · the guiding hand</div>
+          <div class="speed-h">How Stayful gets you there faster</div>
+        </div>
+        <div class="speed-grid">
+          <div class="speed-card"><div class="speed-ic">📸</div><div class="speed-t">Professional listing</div><div class="speed-d">Pro photography &amp; copy so you get booked — and reviewed — from day one.</div></div>
+          <div class="speed-card"><div class="speed-ic">📊</div><div class="speed-t">Dynamic pricing</div><div class="speed-d">Smart rates fill early dates, driving the review velocity that builds rank.</div></div>
+          <div class="speed-card"><div class="speed-ic">🌐</div><div class="speed-t">Multi-platform reach</div><div class="speed-d">Airbnb + Booking.com exposure means more stays, faster review growth.</div></div>
+          <div class="speed-card"><div class="speed-ic">⭐</div><div class="speed-t">5-star experience</div><div class="speed-d">Guest vetting, fast comms &amp; spotless turnarounds earn the reviews that count.</div></div>
+        </div>
+
+        <div class="amenity-block">
+          <div class="amenity-head">
+            <div class="amenity-eb">Once you're established</div>
+            <div class="amenity-h">Amenities that unlock a rate premium</div>
+          </div>
+          <div class="amenity-note"><strong>Complementary, not foundational.</strong> Amenities lift your nightly rate <em>once the fundamentals — strong reviews &amp; rating — are in place</em>. On their own, with few reviews, they won't win top-of-market rates.</div>
 <!-- ST:BLOCK_START AMENITY_INTEL -->
-    <div class="amenity-intel">
-      <div class="ai-col ai-base"><div class="ai-lbl">✅ Market baseline</div><div class="ai-sub">Every listing here has</div><div class="ai-tags"><!-- ST:BLOCK_START AMENITY_BASELINE --><span class="ai-tag at-base">WiFi</span><span class="ai-tag at-base">Kitchen</span><!-- ST:BLOCK_END AMENITY_BASELINE --></div></div>
-      <div class="ai-col ai-edge"><div class="ai-lbl">📈 Competitive edge</div><div class="ai-sub">Top earners add these</div><div class="ai-tags"><!-- ST:BLOCK_START AMENITY_EDGE --><span class="ai-tag at-edge">Garden</span><span class="ai-tag at-edge">Workspace</span><span class="ai-tag at-edge">Free Parking</span><span class="ai-tag at-edge">Smart TV</span><!-- ST:BLOCK_END AMENITY_EDGE --></div></div>
-      <div class="ai-col ai-gap"><div class="ai-lbl">🚀 Rate premium gap</div><div class="ai-sub">15–30% higher rate · few offer these</div><div class="ai-tags"><!-- ST:BLOCK_START AMENITY_GAP --><span class="ai-tag at-gap">Hot Tub</span><span class="ai-tag at-gap">EV Charger</span><span class="ai-tag at-gap">Pet Friendly</span><span class="ai-tag at-gap">Smart Lock</span><span class="ai-tag at-gap">Pool</span><!-- ST:BLOCK_END AMENITY_GAP --></div></div>
-    </div>
+          <div class="amenity-intel">
+            <div class="ai-col ai-base"><div class="ai-lbl">✅ Market baseline</div><div class="ai-sub">Every listing here has</div><div class="ai-tags"><!-- ST:BLOCK_START AMENITY_BASELINE --><span class="ai-tag at-base">WiFi</span><span class="ai-tag at-base">Kitchen</span><!-- ST:BLOCK_END AMENITY_BASELINE --></div></div>
+            <div class="ai-col ai-edge"><div class="ai-lbl">📈 Competitive edge</div><div class="ai-sub">Top earners add these</div><div class="ai-tags"><!-- ST:BLOCK_START AMENITY_EDGE --><span class="ai-tag at-edge">Garden</span><span class="ai-tag at-edge">Workspace</span><span class="ai-tag at-edge">Free Parking</span><span class="ai-tag at-edge">Smart TV</span><!-- ST:BLOCK_END AMENITY_EDGE --></div></div>
+            <div class="ai-col ai-gap"><div class="ai-lbl">🚀 Rate premium gap</div><div class="ai-sub">15–30% higher rate · few offer these</div><div class="ai-tags"><!-- ST:BLOCK_START AMENITY_GAP --><span class="ai-tag at-gap">Hot Tub</span><span class="ai-tag at-gap">EV Charger</span><span class="ai-tag at-gap">Pet Friendly</span><span class="ai-tag at-gap">Smart Lock</span><span class="ai-tag at-gap">Pool</span><!-- ST:BLOCK_END AMENITY_GAP --></div></div>
+          </div>
 <!-- ST:BLOCK_END AMENITY_INTEL -->
+        </div>
+
+       </div></div>
+      </div>
+
+     </div></div>
+    </div>
   </div>
 </div>
 
@@ -1743,6 +1905,16 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 const FORECAST = /* ST:FORECAST_START */[791, 849, 838, 814, 833, 896, 954, 748, 774, 873, 816, 528]/* ST:FORECAST_END */;
 const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const LTL_MONTHLY = /* ST:LTL_MONTHLY_START */990/* ST:LTL_MONTHLY_END */;
+
+/* Progressive reveal — toggles a collapsible panel + swaps the button label */
+function toggleReveal(btn, panelId){
+  const panel = document.getElementById(panelId);
+  if(!panel) return;
+  const open = panel.classList.toggle('open');
+  btn.classList.toggle('open', open);
+  const lbl = btn.querySelector('.rb-label');
+  if(lbl){ lbl.textContent = open ? (btn.dataset.open || lbl.textContent) : (btn.dataset.shut || lbl.textContent); }
+}
 
 const slides = document.querySelectorAll('.slide');
 const TOTAL = slides.length;
