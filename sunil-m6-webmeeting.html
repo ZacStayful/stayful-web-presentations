@@ -1815,7 +1815,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
   </div>
 
   <div class="reveal-row fi">
-    <button class="reveal-btn" type="button" data-shut="View direct booking score" data-open="Hide direct booking score" data-cue="direct booking score|direct booking|booking score" data-cue-label="Direct booking" data-cue-target="#db-reveal" data-cue-class="open" onclick="toggleReveal(this,'db-reveal')">
+    <button class="reveal-btn" type="button" data-shut="View direct booking score" data-open="Hide direct booking score" data-cue="direct booking score|booking score" data-cue-label="Direct booking" data-cue-target="#db-reveal" data-cue-class="open" onclick="toggleReveal(this,'db-reveal')">
       <span class="rb-ic">+</span><span class="rb-label">View direct booking score</span>
     </button>
   </div>
@@ -2660,19 +2660,23 @@ document.getElementById('np-copy').addEventListener('click', async () => {
   // Built-in mic (opt-in via ?present=1) — drives stCue directly
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if(PRESENT && SR){
-    let last = 0, running = false, dead = false;
+    let running = false, dead = false, phrase = '', settle = null;
     const recog = new SR();
     recog.continuous = true; recog.interimResults = false; recog.lang = 'en-GB';
     recog.onstart = () => { running = true; };
     recog.onresult = e => {
-      // act only on finalised phrases so a partial ("direct booking") can't
-      // fire before the full phrase ("direct booking process") arrives
       let t = '';
       for(let i = e.resultIndex; i < e.results.length; i++){ if(e.results[i].isFinal) t += e.results[i][0].transcript; }
-      if(!t.trim()) return;
-      const now = Date.now();
-      if(now - last < 500) return;
-      try { if(stCue(t)) last = now; } catch(_) {}   // a command error never kills the loop
+      t = t.trim();
+      if(!t) return;
+      // Chrome can split one phrase into separate finals ("direct booking" + "process").
+      // Stitch fragments that arrive close together, then match the whole phrase once it settles.
+      phrase = (phrase ? phrase + ' ' + t : t).slice(-160);
+      clearTimeout(settle);
+      settle = setTimeout(() => {
+        const said = phrase; phrase = '';
+        try { stCue(said); } catch(_) {}
+      }, 450);
     };
     recog.onerror = ev => { if(ev && (ev.error === 'not-allowed' || ev.error === 'service-not-allowed')) dead = true; };
     recog.onend = () => { running = false; if(!dead) setTimeout(() => { try{ recog.start(); }catch(_){} }, 300); };
