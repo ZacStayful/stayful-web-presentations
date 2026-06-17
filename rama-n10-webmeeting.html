@@ -3225,19 +3225,23 @@ update();
       rating.push(num(c[5].textContent));
     });
     var mean = function(a){ return a.reduce(function(x,y){ return x+y; }, 0) / a.length; };
-    var avgRating = mean(rating).toFixed(1);
+    // Average Rating is authoritative from the template/PDF — read it, don't recompute
+    var ratingIt = [].slice.call(document.querySelectorAll('.comp-banner .cb-item')).filter(function(it){
+      var l = it.querySelector('.cb-l'); return l && /Average Rating/i.test(l.textContent);
+    })[0];
+    var avgRating = ratingIt ? ratingIt.querySelector('.cb-v').textContent.replace(/[^0-9.]/g, '').trim() : '';
     var maxAnnual = Math.max.apply(null, annual);
     var maxDist   = Math.max.apply(null, dist);
 
-    // banner — leave 'Average Reviews' (sourced upstream via the n8n/PDF template)
+    // banner — Average Reviews and Average Rating come from the template/PDF; only
+    // nightly / occupancy / annual are computed from the comp rows.
     [].forEach.call(document.querySelectorAll('.comp-banner .cb-item'), function(it){
       var lEl = it.querySelector('.cb-l'), vEl = it.querySelector('.cb-v');
       if(!lEl || !vEl) return;
       var lab = lEl.textContent;
-      if(/Average Rating/i.test(lab))        vEl.textContent = avgRating + ' ★';
-      else if(/Average Nightly/i.test(lab))  vEl.textContent = gbp(mean(nightly));
-      else if(/Average Occupancy/i.test(lab))vEl.textContent = Math.round(mean(occ)) + '%';
-      else if(/Average Annual/i.test(lab))   vEl.textContent = gbp(mean(annual));
+      if(/Average Nightly/i.test(lab))        vEl.textContent = gbp(mean(nightly));
+      else if(/Average Occupancy/i.test(lab)) vEl.textContent = Math.round(mean(occ)) + '%';
+      else if(/Average Annual/i.test(lab))    vEl.textContent = gbp(mean(annual));
     });
 
     // comp-section header — real listing count + real max radius
