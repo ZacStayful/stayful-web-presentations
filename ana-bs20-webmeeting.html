@@ -1281,6 +1281,20 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
   opacity:0;pointer-events:none;transition:opacity .3s var(--ease);
 }
 .cue-bar.show{opacity:1;pointer-events:auto;}
+.voice-toggle{
+  position:fixed;left:18px;bottom:60px;z-index:80;
+  display:none;align-items:center;gap:8px;
+  background:rgba(26,36,24,0.92);backdrop-filter:blur(12px);
+  color:#f3eee0;padding:9px 14px 9px 11px;border-radius:99px;
+  border:1px solid rgba(255,255,255,0.12);box-shadow:0 6px 22px rgba(0,0,0,0.32);
+  font-family:system-ui,-apple-system,sans-serif;font-size:12px;font-weight:600;
+  cursor:pointer;letter-spacing:0.01em;transition:opacity .2s,color .2s,border-color .2s;
+}
+.voice-toggle.show{display:inline-flex;}
+.voice-toggle .vt-dot{width:9px;height:9px;border-radius:50%;background:#8fcf87;animation:vtPulse 1.8s infinite;}
+.voice-toggle.muted{color:rgba(243,238,224,0.55);border-color:rgba(255,255,255,0.08);}
+.voice-toggle.muted .vt-dot{background:#c8553d;animation:none;}
+@keyframes vtPulse{0%{box-shadow:0 0 0 0 rgba(143,207,135,0.5);}70%{box-shadow:0 0 0 7px rgba(143,207,135,0);}100%{box-shadow:0 0 0 0 rgba(143,207,135,0);}}
 .cue-bar-lbl{font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(243,238,224,0.42);font-weight:600;padding:0 4px;}
 .cue-pill{
   font-size:11px;color:#f3eee0;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);
@@ -1760,7 +1774,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
        <div class="rp-inner"><div class="rp-pad">
         <div class="eb">From new listing to market leader</div>
         <h3 class="comp-h">Your listing starts <em>brand-new</em> — here's the path to the top</h3>
-        <p class="journey-intro">Every comparable above is an <strong>established listing</strong> with reviews and a rating history. Yours starts fresh. Most listings turn <strong>competitive after ~10 strong reviews</strong> — but to reach the <strong>top of the market</strong> you need to match or beat the area average of <strong>206 reviews</strong> and <strong>4.6★</strong>. Here's how long that takes — and how we get you there faster.</p>
+        <p class="journey-intro">Every comparable above is an <strong>established listing</strong> with reviews and a rating history. Yours starts fresh. Most listings turn <strong>competitive after ~10 strong reviews</strong> — but to reach the <strong>top of the market</strong> you need to match or beat the area average of <strong>19 reviews</strong> and <strong>4.5★</strong>. Here's how long that takes — and how we get you there faster.</p>
 
         <div class="cue-block" data-cue="how long|how long does it take|timeline|become competitive|time to|the journey|path to the top|how long will it take" data-cue-label="How long">
         <div class="jt">
@@ -1777,7 +1791,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
               <div class="jt-below"><div class="jt-stage">Competitive</div><div class="jt-time">~Month 6 · 85% of forecast</div></div>
             </div>
             <div class="jt-node is-top" style="left:94%">
-              <div class="jt-above"><span class="jt-stat">206+</span><div class="jt-mini">reviews · 4.6★</div></div>
+              <div class="jt-above"><span class="jt-stat">19+</span><div class="jt-mini">reviews · 4.5★</div></div>
               <div class="jt-dot is-top"></div>
               <div class="jt-below"><div class="jt-stage">Top 10%</div><div class="jt-time">~Month 6–10</div><span class="jt-badge">Market leader</span></div>
             </div>
@@ -1793,9 +1807,9 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
           <div class="ro-card ro-top">
             <div class="ro-eb">Beat the average → top 10% of listings in this area</div>
             <div class="ro-figs">
-              <div class="ro-fig"><div class="ro-fig-l">Annual net revenue</div><div class="ro-fig-v">£12,017</div></div>
+              <div class="ro-fig"><div class="ro-fig-l">Annual net revenue</div><div class="ro-fig-v">£41,357</div></div>
               <div class="ro-fig-div"></div>
-              <div class="ro-fig"><div class="ro-fig-l">Monthly net</div><div class="ro-fig-v">£1,001</div></div>
+              <div class="ro-fig"><div class="ro-fig-l">Monthly net</div><div class="ro-fig-v">£3,446</div></div>
             </div>
             <div class="ro-note">Based on the area's top performer — £79,532 gross, less 48% operating costs.</div>
           </div>
@@ -1868,7 +1882,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
     <div class="scenario-grid">
       <div class="sc-card sc-best">
         <div class="sc-tag">Best case</div>
-        <div class="sc-v">£1,001<span>/mo</span></div>
+        <div class="sc-v">£3,446<span>/mo</span></div>
         <div class="sc-need">Beat the market's average review count <em>and</em> rating — reaching the area's top 10%. We know it takes <em>6–10 months</em> to get there.</div>
       </div>
       <div class="sc-card sc-likely">
@@ -3002,11 +3016,23 @@ document.getElementById('np-copy').addEventListener('click', async () => {
   // Built-in mic (opt-in via ?present=1) — drives stCue directly
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if(PRESENT && SR){
-    let running = false, dead = false;
+    let running = false, dead = false, muted = false;
+
+    // Floating on/off control — fixed on every slide, mutes voice nav at any time.
+    // Default ON; click to mute (stops the mic so the browser indicator clears too).
+    const vt = document.createElement('button');
+    vt.type = 'button';
+    vt.className = 'voice-toggle show';
+    vt.setAttribute('aria-label', 'Toggle voice commands');
+    vt.innerHTML = '<span class="vt-dot"></span><span class="vt-label">Voice on</span>';
+    document.body.appendChild(vt);
+    const vtLabel = vt.querySelector('.vt-label');
+
     const recog = new SR();
     recog.continuous = true; recog.interimResults = true; recog.lang = 'en-GB';
     recog.onstart = () => { running = true; };
     recog.onresult = e => {
+      if(muted) return;
       // react to keywords as they're spoken (interim) for low latency; stCue de-dupes
       // so a command only fires once per utterance even as the partial grows
       let t = '';
@@ -3014,10 +3040,20 @@ document.getElementById('np-copy').addEventListener('click', async () => {
       try { stCue(t); } catch(_) {}
     };
     recog.onerror = ev => { if(ev && (ev.error === 'not-allowed' || ev.error === 'service-not-allowed')) dead = true; };
-    recog.onend = () => { running = false; if(!dead) setTimeout(() => { try{ recog.start(); }catch(_){} }, 300); };
-    const kick = () => { if(running || dead) return; try{ recog.start(); }catch(_){} };
+    recog.onend = () => { running = false; if(!dead && !muted) setTimeout(() => { try{ recog.start(); }catch(_){} }, 300); };
+    const kick = () => { if(running || dead || muted) return; try{ recog.start(); }catch(_){} };
+
+    vt.onclick = () => {
+      muted = !muted;
+      vt.classList.toggle('muted', muted);
+      vtLabel.textContent = muted ? 'Voice off' : 'Voice on';
+      if(muted){ try{ recog.stop(); }catch(_){} }
+      else { dead = false; kick(); }
+    };
+
     kick();
-    window.addEventListener('pointerdown', () => { dead = false; kick(); });   // a tap re-arms a dropped mic
+    // a tap re-arms a dropped mic — but never fight the mute state or the toggle itself
+    window.addEventListener('pointerdown', e => { if(muted || vt.contains(e.target)) return; dead = false; kick(); });
   }
 
   refresh();
