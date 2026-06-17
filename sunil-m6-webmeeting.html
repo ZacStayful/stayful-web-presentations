@@ -1281,6 +1281,20 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
   opacity:0;pointer-events:none;transition:opacity .3s var(--ease);
 }
 .cue-bar.show{opacity:1;pointer-events:auto;}
+.voice-toggle{
+  position:fixed;left:18px;bottom:60px;z-index:80;
+  display:none;align-items:center;gap:8px;
+  background:rgba(26,36,24,0.92);backdrop-filter:blur(12px);
+  color:#f3eee0;padding:9px 14px 9px 11px;border-radius:99px;
+  border:1px solid rgba(255,255,255,0.12);box-shadow:0 6px 22px rgba(0,0,0,0.32);
+  font-family:system-ui,-apple-system,sans-serif;font-size:12px;font-weight:600;
+  cursor:pointer;letter-spacing:0.01em;transition:opacity .2s,color .2s,border-color .2s;
+}
+.voice-toggle.show{display:inline-flex;}
+.voice-toggle .vt-dot{width:9px;height:9px;border-radius:50%;background:#8fcf87;animation:vtPulse 1.8s infinite;}
+.voice-toggle.muted{color:rgba(243,238,224,0.55);border-color:rgba(255,255,255,0.08);}
+.voice-toggle.muted .vt-dot{background:#c8553d;animation:none;}
+@keyframes vtPulse{0%{box-shadow:0 0 0 0 rgba(143,207,135,0.5);}70%{box-shadow:0 0 0 7px rgba(143,207,135,0);}100%{box-shadow:0 0 0 0 rgba(143,207,135,0);}}
 .cue-bar-lbl{font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(243,238,224,0.42);font-weight:600;padding:0 4px;}
 .cue-pill{
   font-size:11px;color:#f3eee0;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);
@@ -1793,9 +1807,9 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
           <div class="ro-card ro-top">
             <div class="ro-eb">Beat the average → top 10% of listings in this area</div>
             <div class="ro-figs">
-              <div class="ro-fig"><div class="ro-fig-l">Annual net revenue</div><div class="ro-fig-v">£12,017</div></div>
+              <div class="ro-fig"><div class="ro-fig-l">Annual net revenue</div><div class="ro-fig-v">£12,018</div></div>
               <div class="ro-fig-div"></div>
-              <div class="ro-fig"><div class="ro-fig-l">Monthly net</div><div class="ro-fig-v">£1,001</div></div>
+              <div class="ro-fig"><div class="ro-fig-l">Monthly net</div><div class="ro-fig-v">£1,002</div></div>
             </div>
             <div class="ro-note">Based on the area's top performer — £23,111 gross, less 48% operating costs.</div>
           </div>
@@ -1868,7 +1882,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
     <div class="scenario-grid">
       <div class="sc-card sc-best">
         <div class="sc-tag">Best case</div>
-        <div class="sc-v">£1,001<span>/mo</span></div>
+        <div class="sc-v">£1,002<span>/mo</span></div>
         <div class="sc-need">Beat the market's average review count <em>and</em> rating — reaching the area's top 10%. We know it takes <em>6–10 months</em> to get there.</div>
       </div>
       <div class="sc-card sc-likely">
@@ -3002,11 +3016,23 @@ document.getElementById('np-copy').addEventListener('click', async () => {
   // Built-in mic (opt-in via ?present=1) — drives stCue directly
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if(PRESENT && SR){
-    let running = false, dead = false;
+    let running = false, dead = false, muted = false;
+
+    // Floating on/off control — fixed on every slide, mutes voice nav at any time.
+    // Default ON; click to mute (stops the mic so the browser indicator clears too).
+    const vt = document.createElement('button');
+    vt.type = 'button';
+    vt.className = 'voice-toggle show';
+    vt.setAttribute('aria-label', 'Toggle voice commands');
+    vt.innerHTML = '<span class="vt-dot"></span><span class="vt-label">Voice on</span>';
+    document.body.appendChild(vt);
+    const vtLabel = vt.querySelector('.vt-label');
+
     const recog = new SR();
     recog.continuous = true; recog.interimResults = true; recog.lang = 'en-GB';
     recog.onstart = () => { running = true; };
     recog.onresult = e => {
+      if(muted) return;
       // react to keywords as they're spoken (interim) for low latency; stCue de-dupes
       // so a command only fires once per utterance even as the partial grows
       let t = '';
@@ -3014,10 +3040,20 @@ document.getElementById('np-copy').addEventListener('click', async () => {
       try { stCue(t); } catch(_) {}
     };
     recog.onerror = ev => { if(ev && (ev.error === 'not-allowed' || ev.error === 'service-not-allowed')) dead = true; };
-    recog.onend = () => { running = false; if(!dead) setTimeout(() => { try{ recog.start(); }catch(_){} }, 300); };
-    const kick = () => { if(running || dead) return; try{ recog.start(); }catch(_){} };
+    recog.onend = () => { running = false; if(!dead && !muted) setTimeout(() => { try{ recog.start(); }catch(_){} }, 300); };
+    const kick = () => { if(running || dead || muted) return; try{ recog.start(); }catch(_){} };
+
+    vt.onclick = () => {
+      muted = !muted;
+      vt.classList.toggle('muted', muted);
+      vtLabel.textContent = muted ? 'Voice off' : 'Voice on';
+      if(muted){ try{ recog.stop(); }catch(_){} }
+      else { dead = false; kick(); }
+    };
+
     kick();
-    window.addEventListener('pointerdown', () => { dead = false; kick(); });   // a tap re-arms a dropped mic
+    // a tap re-arms a dropped mic — but never fight the mute state or the toggle itself
+    window.addEventListener('pointerdown', e => { if(muted || vt.contains(e.target)) return; dead = false; kick(); });
   }
 
   refresh();
@@ -3097,6 +3133,172 @@ document.getElementById('np-copy').addEventListener('click', async () => {
 
 buildBars();
 update();
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Self-correcting per-lead figures.
+   Every displayed number below is derived at render time from THIS deck's own
+   source data — FORECAST[] (monthly net), LTL_MONTHLY (long-let net) and the
+   comparables table — so the headline, income callouts, comp-banner averages
+   and top-10% net can never drift from the data again. The one figure with no
+   in-deck source, Average Reviews, is read live from the banner, so it auto-
+   updates the moment the template/n8n feeds a real per-lead value.
+   ────────────────────────────────────────────────────────────────────────── */
+(function(){
+  if(typeof FORECAST === 'undefined' || typeof LTL_MONTHLY === 'undefined') return;
+  var MN = (typeof MONTH_NAMES !== 'undefined') ? MONTH_NAMES
+         : ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var gbp = function(n){ return '£' + Math.round(n).toLocaleString('en-GB'); };
+  var signed = function(n){ return (n >= 0 ? '+' : '−') + gbp(Math.abs(n)); };
+
+  // ── Income (The Numbers slide) ───────────────────────────────────────────
+  var ltl  = LTL_MONTHLY;
+  var sum  = FORECAST.reduce(function(a,b){ return a+b; }, 0);
+  var avg  = Math.round(sum / FORECAST.length);
+  var maxV = Math.max.apply(null, FORECAST), minV = Math.min.apply(null, FORECAST);
+  var pIdx = FORECAST.indexOf(maxV), qIdx = FORECAST.indexOf(minV);
+  var avgDelta = avg - ltl;
+  var beats = FORECAST.filter(function(v){ return v > ltl; }).length;
+
+  var ns = document.querySelector('.slide[data-name="The Numbers"]');
+  if(ns){
+    var h2 = ns.querySelector('h2');
+    if(h2) h2.innerHTML = gbp(avg) + ' average per month — <em>' + signed(avgDelta)
+      + '/month ' + (avgDelta >= 0 ? 'more' : 'less') + ' than long-let</em>';
+
+    var sub = ns.querySelector('p.sh');
+    if(sub){
+      var qd = minV - ltl, quiet;
+      if(qd >= 0) quiet = 'Even ' + MN[qIdx] + ' — the quietest month at ' + gbp(minV) + ' — still beats long-let.';
+      else quiet = 'Only the quietest month (' + MN[qIdx] + ', ' + gbp(minV) + ') dips just below long-let, by ' + gbp(Math.abs(qd)) + '.';
+      sub.textContent = 'Short-let averages ' + gbp(avg) + '/month — ' + signed(avgDelta)
+        + ' vs long-let, and beats it in ' + beats + ' of ' + FORECAST.length + ' months. ' + quiet;
+    }
+
+    var chartH = ns.querySelector('.chart-h');
+    if(chartH) chartH.textContent = chartH.textContent.replace(/long-let net £[\d,]+/, 'long-let net ' + gbp(ltl));
+
+    var lbl = ns.querySelector('.ltl-lbl');
+    if(lbl) lbl.textContent = 'LTL ' + gbp(ltl);
+
+    [].forEach.call(ns.querySelectorAll('.income-strip .is-cell'), function(cell){
+      var l = cell.querySelector('.is-l'), v = cell.querySelector('.is-v'), n = cell.querySelector('.is-n');
+      if(!l || !v || !n) return;
+      if(/Quietest/i.test(l.textContent)){
+        var d = minV - ltl;
+        l.textContent = 'Quietest month — ' + MN[qIdx];
+        v.textContent = gbp(minV);
+        n.textContent = signed(d) + (d >= 0 ? ' above' : ' below') + ' long-let, even in the quietest month';
+      } else if(/Peak/i.test(l.textContent)){
+        var d2 = maxV - ltl;
+        l.textContent = 'Peak month — ' + MN[pIdx];
+        v.textContent = gbp(maxV);
+        n.textContent = signed(d2) + (d2 >= 0 ? ' above' : ' below') + ' long-let';
+      }
+    });
+  }
+
+  // ── Long-let line: sit it at the true LTL level on the bar scale ──────────
+  function placeLTL(){
+    var chart = document.getElementById('chart'), bars = document.getElementById('bars'),
+        line = document.getElementById('ltl-line'), lbl2 = document.querySelector('.ltl-lbl');
+    if(!chart || !bars || !line) return;
+    var cr = chart.getBoundingClientRect(), br = bars.getBoundingClientRect();
+    if(br.height < 10) return;                 // slide hidden — retry on slide change
+    var base = cr.bottom - br.bottom;          // px from chart bottom to bars baseline
+    var hpx  = (ltl / maxV) * 110;             // bar px for LTL on the same scale as buildBars
+    line.style.bottom = (base + hpx) + 'px';
+    if(lbl2) lbl2.style.bottom = (base + hpx - 9) + 'px';
+  }
+  placeLTL();
+  var prevOSC = window.__onSlideChange;
+  window.__onSlideChange = function(){ if(prevOSC) prevOSC(); placeLTL(); };
+  window.addEventListener('resize', placeLTL);
+
+  // ── Comparables: averages computed from THIS deck's comp rows ─────────────
+  var rows = [].filter.call(document.querySelectorAll('.comp-table .comp-row'), function(r){
+    return !r.classList.contains('head');
+  });
+  if(rows.length){
+    var num = function(s){ return parseFloat(String(s).replace(/[^0-9.]/g, '')) || 0; };
+    var dist = [], nightly = [], occ = [], annual = [], rating = [];
+    rows.forEach(function(r){
+      var c = r.children;
+      dist.push(num(c[1].textContent));
+      nightly.push(num(c[2].textContent));
+      occ.push(num(c[3].textContent));
+      annual.push(num(c[4].textContent));
+      rating.push(num(c[5].textContent));
+    });
+    var mean = function(a){ return a.reduce(function(x,y){ return x+y; }, 0) / a.length; };
+    // Average Rating is authoritative from the template/PDF — read it, don't recompute
+    var ratingIt = [].slice.call(document.querySelectorAll('.comp-banner .cb-item')).filter(function(it){
+      var l = it.querySelector('.cb-l'); return l && /Average Rating/i.test(l.textContent);
+    })[0];
+    var avgRating = ratingIt ? ratingIt.querySelector('.cb-v').textContent.replace(/[^0-9.]/g, '').trim() : '';
+    var maxAnnual = Math.max.apply(null, annual);
+    var maxDist   = Math.max.apply(null, dist);
+
+    // banner — Average Reviews and Average Rating come from the template/PDF; only
+    // nightly / occupancy / annual are computed from the comp rows.
+    [].forEach.call(document.querySelectorAll('.comp-banner .cb-item'), function(it){
+      var lEl = it.querySelector('.cb-l'), vEl = it.querySelector('.cb-v');
+      if(!lEl || !vEl) return;
+      var lab = lEl.textContent;
+      if(/Average Nightly/i.test(lab))        vEl.textContent = gbp(mean(nightly));
+      else if(/Average Occupancy/i.test(lab)) vEl.textContent = Math.round(mean(occ)) + '%';
+      else if(/Average Annual/i.test(lab))    vEl.textContent = gbp(mean(annual));
+    });
+
+    // comp-section header — real listing count + real max radius
+    var ceb = [].slice.call(document.querySelectorAll('.eb')).filter(function(e){
+      return /active Airbnb listings within/i.test(e.textContent);
+    })[0];
+    if(ceb) ceb.textContent = ceb.textContent.replace(
+      /\d+ active Airbnb listings within [\d.]+ km/,
+      rows.length + ' active Airbnb listings within ' + maxDist.toFixed(2) + ' km');
+
+    // top-10% net — from the area top performer's gross
+    var annualNet  = Math.round(maxAnnual * 0.52);
+    var monthlyNet = Math.round(annualNet / 12);
+    [].forEach.call(document.querySelectorAll('.ro-fig'), function(f){
+      var lEl = f.querySelector('.ro-fig-l'), vEl = f.querySelector('.ro-fig-v');
+      if(!lEl || !vEl) return;
+      if(/Annual net/i.test(lEl.textContent))       vEl.textContent = gbp(annualNet);
+      else if(/Monthly net/i.test(lEl.textContent)) vEl.textContent = gbp(monthlyNet);
+    });
+    // Best/Likely/Worst scenario cards — read each lead's values straight from the
+    // risk chart (data-v), so the cards always agree with the chart + caption.
+    function setScV(card, val){ var v = card && card.querySelector('.sc-v'); if(v == null || val == null) return; var sp = v.querySelector('span'); v.textContent = gbp(val); if(sp) v.appendChild(sp); }
+    function barV(cls){ var el = document.querySelector('.risk-bar.' + cls + ' .risk-num'); if(!el) return null; var n = parseFloat(el.getAttribute('data-v')); return isNaN(n) ? null : n; }
+    setScV(document.querySelector('.sc-card.sc-best'),   barV('bar-best')   != null ? barV('bar-best')   : monthlyNet);
+    setScV(document.querySelector('.sc-card.sc-likely'), barV('bar-likely') != null ? barV('bar-likely') : avg);
+    setScV(document.querySelector('.sc-card.sc-worst'),  barV('bar-worst')  != null ? barV('bar-worst')  : minV);
+    var worstNeed = document.querySelector('.sc-card.sc-worst .sc-need');
+    if(worstNeed) worstNeed.innerHTML = worstNeed.innerHTML.replace(/performed like [A-Z][a-z]+ —/, 'performed like ' + MN[qIdx] + ' —');
+    var note = [].slice.call(document.querySelectorAll('.ro-note')).filter(function(n){
+      return /top performer/i.test(n.textContent);
+    })[0];
+    if(note) note.innerHTML = note.innerHTML.replace(/£[\d,]+ gross/, gbp(maxAnnual) + ' gross');
+
+    // journey — reviews read live from the banner, rating computed from comps
+    var revIt = [].slice.call(document.querySelectorAll('.comp-banner .cb-item')).filter(function(it){
+      var l = it.querySelector('.cb-l'); return l && /Average Reviews/i.test(l.textContent);
+    })[0];
+    var reviews = revIt ? revIt.querySelector('.cb-v').textContent.trim() : '';
+    if(reviews){
+      var intro = document.querySelector('.journey-intro');
+      if(intro) intro.innerHTML = intro.innerHTML.replace(
+        /area average of <strong>[^<]*<\/strong> and <strong>[^<]*<\/strong>/,
+        'area average of <strong>' + reviews + ' reviews</strong> and <strong>' + avgRating + '★</strong>');
+      var top = document.querySelector('.jt-node.is-top .jt-above');
+      if(top) top.innerHTML = '<span class="jt-stat">' + reviews + '+</span><div class="jt-mini">reviews · ' + avgRating + '★</div>';
+      var roh = [].slice.call(document.querySelectorAll('.ro-headline')).filter(function(h){
+        return /market average of/i.test(h.textContent);
+      })[0];
+      if(roh) roh.innerHTML = roh.innerHTML.replace(/market average of \d[\d,]* reviews/, 'market average of ' + reviews + ' reviews');
+    }
+  }
+})();
 </script>
 </body>
 </html>
