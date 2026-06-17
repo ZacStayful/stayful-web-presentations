@@ -3128,6 +3128,161 @@ document.getElementById('np-copy').addEventListener('click', async () => {
 
 buildBars();
 update();
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Self-correcting per-lead figures.
+   Every displayed number below is derived at render time from THIS deck's own
+   source data — FORECAST[] (monthly net), LTL_MONTHLY (long-let net) and the
+   comparables table — so the headline, income callouts, comp-banner averages
+   and top-10% net can never drift from the data again. The one figure with no
+   in-deck source, Average Reviews, is read live from the banner, so it auto-
+   updates the moment the template/n8n feeds a real per-lead value.
+   ────────────────────────────────────────────────────────────────────────── */
+(function(){
+  if(typeof FORECAST === 'undefined' || typeof LTL_MONTHLY === 'undefined') return;
+  var MN = (typeof MONTH_NAMES !== 'undefined') ? MONTH_NAMES
+         : ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var gbp = function(n){ return '£' + Math.round(n).toLocaleString('en-GB'); };
+  var signed = function(n){ return (n >= 0 ? '+' : '−') + gbp(Math.abs(n)); };
+
+  // ── Income (The Numbers slide) ───────────────────────────────────────────
+  var ltl  = LTL_MONTHLY;
+  var sum  = FORECAST.reduce(function(a,b){ return a+b; }, 0);
+  var avg  = Math.round(sum / FORECAST.length);
+  var maxV = Math.max.apply(null, FORECAST), minV = Math.min.apply(null, FORECAST);
+  var pIdx = FORECAST.indexOf(maxV), qIdx = FORECAST.indexOf(minV);
+  var avgDelta = avg - ltl;
+  var beats = FORECAST.filter(function(v){ return v > ltl; }).length;
+
+  var ns = document.querySelector('.slide[data-name="The Numbers"]');
+  if(ns){
+    var h2 = ns.querySelector('h2');
+    if(h2) h2.innerHTML = gbp(avg) + ' average per month — <em>' + signed(avgDelta)
+      + '/month ' + (avgDelta >= 0 ? 'more' : 'less') + ' than long-let</em>';
+
+    var sub = ns.querySelector('p.sh');
+    if(sub){
+      var qd = minV - ltl, quiet;
+      if(qd >= 0) quiet = 'Even ' + MN[qIdx] + ' — the quietest month at ' + gbp(minV) + ' — still beats long-let.';
+      else quiet = 'Only the quietest month (' + MN[qIdx] + ', ' + gbp(minV) + ') dips just below long-let, by ' + gbp(Math.abs(qd)) + '.';
+      sub.textContent = 'Short-let averages ' + gbp(avg) + '/month — ' + signed(avgDelta)
+        + ' vs long-let, and beats it in ' + beats + ' of ' + FORECAST.length + ' months. ' + quiet;
+    }
+
+    var chartH = ns.querySelector('.chart-h');
+    if(chartH) chartH.textContent = chartH.textContent.replace(/long-let net £[\d,]+/, 'long-let net ' + gbp(ltl));
+
+    var lbl = ns.querySelector('.ltl-lbl');
+    if(lbl) lbl.textContent = 'LTL ' + gbp(ltl);
+
+    [].forEach.call(ns.querySelectorAll('.income-strip .is-cell'), function(cell){
+      var l = cell.querySelector('.is-l'), v = cell.querySelector('.is-v'), n = cell.querySelector('.is-n');
+      if(!l || !v || !n) return;
+      if(/Quietest/i.test(l.textContent)){
+        var d = minV - ltl;
+        l.textContent = 'Quietest month — ' + MN[qIdx];
+        v.textContent = gbp(minV);
+        n.textContent = signed(d) + (d >= 0 ? ' above' : ' below') + ' long-let, even in the quietest month';
+      } else if(/Peak/i.test(l.textContent)){
+        var d2 = maxV - ltl;
+        l.textContent = 'Peak month — ' + MN[pIdx];
+        v.textContent = gbp(maxV);
+        n.textContent = signed(d2) + (d2 >= 0 ? ' above' : ' below') + ' long-let';
+      }
+    });
+  }
+
+  // ── Long-let line: sit it at the true LTL level on the bar scale ──────────
+  function placeLTL(){
+    var chart = document.getElementById('chart'), bars = document.getElementById('bars'),
+        line = document.getElementById('ltl-line'), lbl2 = document.querySelector('.ltl-lbl');
+    if(!chart || !bars || !line) return;
+    var cr = chart.getBoundingClientRect(), br = bars.getBoundingClientRect();
+    if(br.height < 10) return;                 // slide hidden — retry on slide change
+    var base = cr.bottom - br.bottom;          // px from chart bottom to bars baseline
+    var hpx  = (ltl / maxV) * 110;             // bar px for LTL on the same scale as buildBars
+    line.style.bottom = (base + hpx) + 'px';
+    if(lbl2) lbl2.style.bottom = (base + hpx - 9) + 'px';
+  }
+  placeLTL();
+  var prevOSC = window.__onSlideChange;
+  window.__onSlideChange = function(){ if(prevOSC) prevOSC(); placeLTL(); };
+  window.addEventListener('resize', placeLTL);
+
+  // ── Comparables: averages computed from THIS deck's comp rows ─────────────
+  var rows = [].filter.call(document.querySelectorAll('.comp-table .comp-row'), function(r){
+    return !r.classList.contains('head');
+  });
+  if(rows.length){
+    var num = function(s){ return parseFloat(String(s).replace(/[^0-9.]/g, '')) || 0; };
+    var dist = [], nightly = [], occ = [], annual = [], rating = [];
+    rows.forEach(function(r){
+      var c = r.children;
+      dist.push(num(c[1].textContent));
+      nightly.push(num(c[2].textContent));
+      occ.push(num(c[3].textContent));
+      annual.push(num(c[4].textContent));
+      rating.push(num(c[5].textContent));
+    });
+    var mean = function(a){ return a.reduce(function(x,y){ return x+y; }, 0) / a.length; };
+    var avgRating = mean(rating).toFixed(1);
+    var maxAnnual = Math.max.apply(null, annual);
+    var maxDist   = Math.max.apply(null, dist);
+
+    // banner — leave 'Average Reviews' (sourced upstream via the n8n/PDF template)
+    [].forEach.call(document.querySelectorAll('.comp-banner .cb-item'), function(it){
+      var lEl = it.querySelector('.cb-l'), vEl = it.querySelector('.cb-v');
+      if(!lEl || !vEl) return;
+      var lab = lEl.textContent;
+      if(/Average Rating/i.test(lab))        vEl.textContent = avgRating + ' ★';
+      else if(/Average Nightly/i.test(lab))  vEl.textContent = gbp(mean(nightly));
+      else if(/Average Occupancy/i.test(lab))vEl.textContent = Math.round(mean(occ)) + '%';
+      else if(/Average Annual/i.test(lab))   vEl.textContent = gbp(mean(annual));
+    });
+
+    // comp-section header — real listing count + real max radius
+    var ceb = [].slice.call(document.querySelectorAll('.eb')).filter(function(e){
+      return /active Airbnb listings within/i.test(e.textContent);
+    })[0];
+    if(ceb) ceb.textContent = ceb.textContent.replace(
+      /\d+ active Airbnb listings within [\d.]+ km/,
+      rows.length + ' active Airbnb listings within ' + maxDist.toFixed(2) + ' km');
+
+    // top-10% net — from the area top performer's gross
+    var annualNet  = Math.round(maxAnnual * 0.52);
+    var monthlyNet = Math.round(annualNet / 12);
+    [].forEach.call(document.querySelectorAll('.ro-fig'), function(f){
+      var lEl = f.querySelector('.ro-fig-l'), vEl = f.querySelector('.ro-fig-v');
+      if(!lEl || !vEl) return;
+      if(/Annual net/i.test(lEl.textContent))       vEl.textContent = gbp(annualNet);
+      else if(/Monthly net/i.test(lEl.textContent)) vEl.textContent = gbp(monthlyNet);
+    });
+    var best = document.querySelector('.sc-card.sc-best .sc-v');
+    if(best){ var sp = best.querySelector('span'); best.textContent = gbp(monthlyNet); if(sp) best.appendChild(sp); }
+    var note = [].slice.call(document.querySelectorAll('.ro-note')).filter(function(n){
+      return /top performer/i.test(n.textContent);
+    })[0];
+    if(note) note.innerHTML = note.innerHTML.replace(/£[\d,]+ gross/, gbp(maxAnnual) + ' gross');
+
+    // journey — reviews read live from the banner, rating computed from comps
+    var revIt = [].slice.call(document.querySelectorAll('.comp-banner .cb-item')).filter(function(it){
+      var l = it.querySelector('.cb-l'); return l && /Average Reviews/i.test(l.textContent);
+    })[0];
+    var reviews = revIt ? revIt.querySelector('.cb-v').textContent.trim() : '';
+    if(reviews){
+      var intro = document.querySelector('.journey-intro');
+      if(intro) intro.innerHTML = intro.innerHTML.replace(
+        /area average of <strong>[^<]*<\/strong> and <strong>[^<]*<\/strong>/,
+        'area average of <strong>' + reviews + ' reviews</strong> and <strong>' + avgRating + '★</strong>');
+      var top = document.querySelector('.jt-node.is-top .jt-above');
+      if(top) top.innerHTML = '<span class="jt-stat">' + reviews + '+</span><div class="jt-mini">reviews · ' + avgRating + '★</div>';
+      var roh = [].slice.call(document.querySelectorAll('.ro-headline')).filter(function(h){
+        return /market average of/i.test(h.textContent);
+      })[0];
+      if(roh) roh.innerHTML = roh.innerHTML.replace(/market average of \d[\d,]* reviews/, 'market average of ' + reviews + ' reviews');
+    }
+  }
+})();
 </script>
 </body>
 </html>
