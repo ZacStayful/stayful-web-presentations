@@ -3257,8 +3257,15 @@ update();
       if(/Annual net/i.test(lEl.textContent))       vEl.textContent = gbp(annualNet);
       else if(/Monthly net/i.test(lEl.textContent)) vEl.textContent = gbp(monthlyNet);
     });
-    var best = document.querySelector('.sc-card.sc-best .sc-v');
-    if(best){ var sp = best.querySelector('span'); best.textContent = gbp(monthlyNet); if(sp) best.appendChild(sp); }
+    // Best/Likely/Worst scenario cards — read each lead's values straight from the
+    // risk chart (data-v), so the cards always agree with the chart + caption.
+    function setScV(card, val){ var v = card && card.querySelector('.sc-v'); if(v == null || val == null) return; var sp = v.querySelector('span'); v.textContent = gbp(val); if(sp) v.appendChild(sp); }
+    function barV(cls){ var el = document.querySelector('.risk-bar.' + cls + ' .risk-num'); if(!el) return null; var n = parseFloat(el.getAttribute('data-v')); return isNaN(n) ? null : n; }
+    setScV(document.querySelector('.sc-card.sc-best'),   barV('bar-best')   != null ? barV('bar-best')   : monthlyNet);
+    setScV(document.querySelector('.sc-card.sc-likely'), barV('bar-likely') != null ? barV('bar-likely') : avg);
+    setScV(document.querySelector('.sc-card.sc-worst'),  barV('bar-worst')  != null ? barV('bar-worst')  : minV);
+    var worstNeed = document.querySelector('.sc-card.sc-worst .sc-need');
+    if(worstNeed) worstNeed.innerHTML = worstNeed.innerHTML.replace(/performed like [A-Z][a-z]+ —/, 'performed like ' + MN[qIdx] + ' —');
     var note = [].slice.call(document.querySelectorAll('.ro-note')).filter(function(n){
       return /top performer/i.test(n.textContent);
     })[0];
