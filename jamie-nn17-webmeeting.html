@@ -1291,6 +1291,17 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .cue-pill.active{background:var(--green);border-color:var(--green);color:#fff;}
 .cue-pill.reset{background:transparent;border-color:rgba(255,255,255,0.18);color:rgba(243,238,224,0.7);}
 .cue-pill.reset:hover{background:rgba(255,255,255,0.1);}
+.voice-toggle{
+  position:fixed;left:18px;bottom:18px;z-index:80;
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;font-weight:600;letter-spacing:0.02em;font-family:var(--sans,inherit);
+  padding:8px 14px;border-radius:99px;cursor:pointer;
+  color:rgba(243,238,224,0.72);background:rgba(26,36,24,0.92);
+  border:1px solid rgba(255,255,255,0.14);backdrop-filter:blur(12px);
+  box-shadow:0 10px 34px rgba(0,0,0,0.32);transition:all .16s var(--ease);
+}
+.voice-toggle:hover{background:rgba(40,54,37,0.95);}
+.voice-toggle.on{color:#fff;background:rgb(93,129,86);border-color:rgb(93,129,86);}
 
 /* ── Voice command reference (Notes slide) ── */
 .vc-intro{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:12px;}
@@ -1544,7 +1555,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 
     <div class="np-section">
       <div class="np-section-h">Voice commands</div>
-      <div class="vc-intro">Mic is live in presenter mode (<code>?present=1</code>). Say a phrase below to jump to or open that section. Tap a command to see all its variations.</div>
+      <div class="vc-intro">Press <code>V</code> (or click the bottom-left pill) to turn the mic on/off in presenter mode (<code>?present=1</code>) — it starts off, so the deck never jumps on stray conversation. While Voice is ON, say a phrase below to jump to or open that section. Tap a command to see all its variations.</div>
       <div class="vc-ref" id="voiceRef"></div>
     </div>
 
@@ -2997,27 +3008,48 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     else if((e.key === 'c' || e.key === 'C') && !e.metaKey && !e.ctrlKey && !e.altKey){
       barPinned = !barPinned; refresh();
     }
+    else if((e.key === 'v' || e.key === 'V') && !e.metaKey && !e.ctrlKey && !e.altKey){
+      const tag = (document.activeElement && document.activeElement.tagName) || '';
+      if(tag === 'INPUT' || tag === 'TEXTAREA') return;   // don't steal typing
+      window.__stSetVoice(!window.__stVoiceOn());          // toggle voice on/off
+    }
   });
 
-  // Built-in mic (opt-in via ?present=1) — drives stCue directly
+  // Built-in mic (opt-in via ?present=1) — OFF until armed. Press V (or click the
+  // bottom-left pill) to toggle. This stops the deck jumping on stray conversation.
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let armed = false;
+  window.__stVoiceOn = () => armed;
+  window.__stSetVoice = () => {};   // no-op unless presenter mic is available
   if(PRESENT && SR){
     let running = false, dead = false;
     const recog = new SR();
     recog.continuous = true; recog.interimResults = true; recog.lang = 'en-GB';
+    // Voice on/off indicator + click toggle (bottom-left)
+    const voiceBtn = document.createElement('button');
+    voiceBtn.className = 'voice-toggle'; voiceBtn.type = 'button';
+    document.body.appendChild(voiceBtn);
+    const paintVoice = () => {
+      voiceBtn.textContent = '\uD83C\uDF99 Voice ' + (armed ? 'ON' : 'OFF');
+      voiceBtn.classList.toggle('on', armed);
+    };
     recog.onstart = () => { running = true; };
     recog.onresult = e => {
-      // react to keywords as they're spoken (interim) for low latency; stCue de-dupes
-      // so a command only fires once per utterance even as the partial grows
+      if(!armed) return;   // gated: only react while voice is armed
       let t = '';
       for(let i = e.resultIndex; i < e.results.length; i++) t += e.results[i][0].transcript;
       try { stCue(t); } catch(_) {}
     };
     recog.onerror = ev => { if(ev && (ev.error === 'not-allowed' || ev.error === 'service-not-allowed')) dead = true; };
-    recog.onend = () => { running = false; if(!dead) setTimeout(() => { try{ recog.start(); }catch(_){} }, 300); };
-    const kick = () => { if(running || dead) return; try{ recog.start(); }catch(_){} };
-    kick();
-    window.addEventListener('pointerdown', () => { dead = false; kick(); });   // a tap re-arms a dropped mic
+    recog.onend = () => { running = false; if(!dead && armed) setTimeout(() => { try{ recog.start(); }catch(_){} }, 300); };
+    const kick = () => { if(running || dead || !armed) return; try{ recog.start(); }catch(_){} };
+    window.__stSetVoice = on => {
+      armed = !!on; paintVoice();
+      if(armed){ dead = false; kick(); } else { try{ recog.stop(); }catch(_){} }
+    };
+    voiceBtn.onclick = () => window.__stSetVoice(!armed);
+    window.addEventListener('pointerdown', () => { if(armed){ dead = false; kick(); } });   // a tap re-arms a dropped mic
+    paintVoice();
   }
 
   refresh();
