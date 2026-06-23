@@ -2974,7 +2974,26 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     if(!d || d.__stayful !== 1) return;
     if(d.type === 'cue' && typeof d.phrase === 'string'){ try { stCue(d.phrase); } catch(_){} }
   });
-  try { if(window.opener) window.opener.postMessage({__stayful:1, type:'deck-ready'}, '*'); } catch(_){}
+  // Report the current page + section back to the FAQ so it always knows where the deck is.
+  function reportDeckState(){
+    try{
+      if(!window.opener) return;
+      var slide = document.querySelector('.slide.active');
+      var lit = slide ? (slide.querySelector('.lit[data-cue-label]') || slide.querySelector('.cue-block.lit')) : null;
+      window.opener.postMessage({__stayful:1, type:'deck-state',
+        index: (typeof cur!=='undefined'?cur:null),
+        total: (typeof TOTAL!=='undefined'?TOTAL:null),
+        page: ((typeof SLIDE_NAMES!=='undefined' && typeof cur!=='undefined') ? SLIDE_NAMES[cur] : null),
+        section: lit ? (lit.getAttribute('data-cue-label')||null) : null
+      }, '*');
+    }catch(_){}
+  }
+  var _stRpt; function _stScheduleReport(){ clearTimeout(_stRpt); _stRpt = setTimeout(reportDeckState, 120); }
+  try{
+    var _stMo = new MutationObserver(_stScheduleReport);   // catches slide .active + section .lit class changes
+    document.querySelectorAll('.slide').forEach(function(s){ _stMo.observe(s, {attributes:true, attributeFilter:['class'], subtree:true}); });
+  }catch(_){}
+  try { if(window.opener){ window.opener.postMessage({__stayful:1, type:'deck-ready'}, '*'); reportDeckState(); } } catch(_){}
 
   // Cue bar — manual fallback + review aid
   const bar = document.createElement('div');
