@@ -1294,6 +1294,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 .voice-toggle{
   position:fixed;left:18px;bottom:18px;z-index:80;
   display:inline-flex;align-items:center;gap:6px;
+  user-select:none;-webkit-user-select:none;touch-action:none;
   font-size:12px;font-weight:600;letter-spacing:0.02em;font-family:var(--sans,inherit);
   padding:8px 14px;border-radius:99px;cursor:pointer;
   color:rgba(243,238,224,0.72);background:rgba(26,36,24,0.92);
@@ -1555,7 +1556,7 @@ h1 em,h2 em{font-style:italic;color:var(--green);font-weight:400;}
 
     <div class="np-section">
       <div class="np-section-h">Voice commands</div>
-      <div class="vc-intro">Press <code>V</code> (or click the bottom-left pill) to turn the mic on/off in presenter mode (<code>?present=1</code>) — it starts off, so the deck never jumps on stray conversation. While Voice is ON, say a phrase below to jump to or open that section. Tap a command to see all its variations.</div>
+      <div class="vc-intro">Hold <code>V</code> (or press and hold the bottom-left pill) to talk in presenter mode (<code>?present=1</code>) — the mic only listens while you hold it, so the deck never jumps on stray conversation. While holding, say a phrase below to jump to or open that section. Tap a command to see all its variations.</div>
       <div class="vc-ref" id="voiceRef"></div>
     </div>
 
@@ -3005,12 +3006,16 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     else if((e.key === 'v' || e.key === 'V') && !e.metaKey && !e.ctrlKey && !e.altKey){
       const tag = (document.activeElement && document.activeElement.tagName) || '';
       if(tag === 'INPUT' || tag === 'TEXTAREA') return;   // don't steal typing
-      window.__stSetVoice(!window.__stVoiceOn());          // toggle voice on/off
+      if(e.repeat) return;                                 // ignore auto-repeat while held
+      window.__stSetVoice(true);                           // push-to-talk: listen while V is held
     }
   });
+  document.addEventListener('keyup', e => {
+    if((e.key === 'v' || e.key === 'V')) window.__stSetVoice(false);   // release to stop
+  });
 
-  // Built-in mic (opt-in via ?present=1) — OFF until armed. Press V (or click the
-  // bottom-left pill) to toggle. This stops the deck jumping on stray conversation.
+  // Built-in mic (opt-in via ?present=1) — push-to-talk: only listens while V is
+  // held (or the bottom-left pill is pressed). Stops the deck jumping on chatter.
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   let armed = false;
   window.__stVoiceOn = () => armed;
@@ -3019,17 +3024,17 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     let running = false, dead = false;
     const recog = new SR();
     recog.continuous = true; recog.interimResults = true; recog.lang = 'en-GB';
-    // Voice on/off indicator + click toggle (bottom-left)
+    // Push-to-talk indicator + press-and-hold target (bottom-left)
     const voiceBtn = document.createElement('button');
     voiceBtn.className = 'voice-toggle'; voiceBtn.type = 'button';
     document.body.appendChild(voiceBtn);
     const paintVoice = () => {
-      voiceBtn.textContent = '\uD83C\uDF99 Voice ' + (armed ? 'ON' : 'OFF');
+      voiceBtn.textContent = armed ? '\uD83C\uDF99 Listening\u2026' : '\uD83C\uDF99 Hold V to talk';
       voiceBtn.classList.toggle('on', armed);
     };
     recog.onstart = () => { running = true; };
     recog.onresult = e => {
-      if(!armed) return;   // gated: only react while voice is armed
+      if(!armed) return;   // gated: only react while V (or the pill) is held
       let t = '';
       for(let i = e.resultIndex; i < e.results.length; i++) t += e.results[i][0].transcript;
       try { stCue(t); } catch(_) {}
@@ -3038,11 +3043,18 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     recog.onend = () => { running = false; if(!dead && armed) setTimeout(() => { try{ recog.start(); }catch(_){} }, 300); };
     const kick = () => { if(running || dead || !armed) return; try{ recog.start(); }catch(_){} };
     window.__stSetVoice = on => {
-      armed = !!on; paintVoice();
+      const next = !!on;
+      if(next === armed) return;   // de-bounce key auto-repeat / duplicate events
+      armed = next; paintVoice();
       if(armed){ dead = false; kick(); } else { try{ recog.stop(); }catch(_){} }
     };
-    voiceBtn.onclick = () => window.__stSetVoice(!armed);
-    window.addEventListener('pointerdown', () => { if(armed){ dead = false; kick(); } });   // a tap re-arms a dropped mic
+    // mouse / touch press-and-hold on the pill
+    voiceBtn.addEventListener('pointerdown', ev => { ev.preventDefault(); window.__stSetVoice(true); });
+    const release = () => window.__stSetVoice(false);
+    voiceBtn.addEventListener('pointerup', release);
+    voiceBtn.addEventListener('pointerleave', release);
+    voiceBtn.addEventListener('pointercancel', release);
+    window.addEventListener('blur', release);   // window loses focus -> stop listening
     paintVoice();
   }
 
