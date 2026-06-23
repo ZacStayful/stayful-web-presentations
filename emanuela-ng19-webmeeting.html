@@ -2961,6 +2961,14 @@ document.getElementById('np-copy').addEventListener('click', async () => {
     return true;
   }
   window.stCue = stCue;
+  // Remote control: the FAQ (opener window) sends recognised speech here so the deck
+  // can be driven from the tab the presenter is actually looking at.
+  window.addEventListener('message', function(e){
+    var d = e && e.data;
+    if(!d || d.__stayful !== 1) return;
+    if(d.type === 'cue' && typeof d.phrase === 'string'){ try { stCue(d.phrase); } catch(_){} }
+  });
+  try { if(window.opener) window.opener.postMessage({__stayful:1, type:'deck-ready'}, '*'); } catch(_){}
 
   // Cue bar — manual fallback + review aid
   const bar = document.createElement('div');
