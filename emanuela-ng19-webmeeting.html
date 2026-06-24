@@ -3047,7 +3047,11 @@ document.getElementById('np-copy').addEventListener('click', async () => {
   let armed = false;
   window.__stVoiceOn = () => armed;
   window.__stSetVoice = () => {};   // no-op unless presenter mic is available
-  if(PRESENT && SR){
+  if(PRESENT && window.opener){
+    // Driven remotely by the FAQ — don't run our own mic, so the two pages never
+    // fight over the microphone. Show a passive indicator instead.
+    try{ var _vt = document.createElement('div'); _vt.className = 'voice-toggle'; _vt.textContent = '\uD83C\uDF99 Voice via FAQ'; document.body.appendChild(_vt); }catch(_){}
+  } else if(PRESENT && SR){
     let running = false, dead = false;
     const recog = new SR();
     recog.continuous = true; recog.interimResults = true; recog.lang = 'en-GB';
